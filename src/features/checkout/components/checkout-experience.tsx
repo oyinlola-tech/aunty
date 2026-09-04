@@ -175,16 +175,20 @@ export function CheckoutExperience() {
           </h2>
           <div>
             <Label htmlFor="order-notes" className="text-sm font-medium text-bean-black">
-              Anything else we should know?
+              Anything else we should know about this order?
             </Label>
             <Textarea
               id="order-notes"
               value={formData.notes}
               onChange={(e) => setField("notes", e.target.value)}
-              placeholder="Less pepper, extra stew, call before delivery..."
+              placeholder="Call before delivery, gate code, extra napkins..."
               className="mt-1.5 min-h-[100px] rounded-xl bg-cream-deep resize-none"
               rows={4}
             />
+            <p className="mt-2 text-xs text-warm-grey">
+              Dish-level instructions (less pepper, pack separately) are set on
+              each meal when you add it to your cart.
+            </p>
           </div>
         </div>
       </div>

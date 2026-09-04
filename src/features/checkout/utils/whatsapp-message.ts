@@ -1,5 +1,34 @@
 import { formatCurrency } from "@/lib/currency"
 import type { Order } from "@/types/common"
+import type { CartAddOn } from "@/types/cart"
+import { getCartItemUnitPrice } from "@/features/cart/utils/pricing"
+
+const ADD_ON_LABEL: Record<CartAddOn["categoryId"], string> = {
+  sides: "Side",
+  proteins: "Protein",
+}
+
+/** One configured meal, indented under its numbered line. */
+function formatMeal(item: Order["items"][number], index: number): string[] {
+  const lines: string[] = []
+
+  lines.push(`${index + 1}. ${item.name} × ${item.quantity}`)
+
+  for (const addOn of item.addOns) {
+    lines.push(`   ${ADD_ON_LABEL[addOn.categoryId]}: ${addOn.name}`)
+  }
+
+  if (item.notes) {
+    lines.push(`   Special instructions: ${item.notes}`)
+  }
+
+  const unitPrice = getCartItemUnitPrice(item)
+  if (unitPrice > 0) {
+    lines.push(`   @ ${formatCurrency(unitPrice)} each`)
+  }
+
+  return lines
+}
 
 export function generateWhatsAppMessage(order: Order): string {
   const lines: string[] = []
@@ -8,14 +37,10 @@ export function generateWhatsAppMessage(order: Order): string {
   lines.push("")
   lines.push("I'd like to place an order.")
   lines.push("")
-
   lines.push("ORDER SUMMARY")
   lines.push("─".repeat(21))
   order.items.forEach((item, index) => {
-    const notes = item.notes ? ` (${item.notes})` : ""
-    const price =
-      item.price > 0 ? ` @ ${formatCurrency(item.price)} each` : ""
-    lines.push(`${index + 1}. ${item.name} × ${item.quantity}${notes}${price}`)
+    lines.push(...formatMeal(item, index))
   })
   lines.push("")
 
@@ -42,7 +67,7 @@ export function generateWhatsAppMessage(order: Order): string {
   lines.push("")
 
   if (order.notes) {
-    lines.push("SPECIAL INSTRUCTIONS")
+    lines.push("ORDER NOTES")
     lines.push("─".repeat(21))
     lines.push(order.notes)
     lines.push("")

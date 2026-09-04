@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useCartStore } from "@/features/cart/store/cart-store"
@@ -7,9 +8,12 @@ import { useMounted } from "@/hooks/use-mounted"
 import { CartItem } from "@/features/cart/components/cart-item"
 import { CartSummary } from "@/features/cart/components/cart-summary"
 import { EmptyCart } from "@/features/cart/components/empty-cart"
+import { ProductModal } from "@/features/menu/components/product-modal"
+import { menuItems } from "@/data/menu"
 import { SectionContainer } from "@/components/shared/section-container"
 import { ArrowRight, ShoppingBag } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import type { CartItem as CartItemType } from "@/types/cart"
 
 export default function CartPage() {
   const router = useRouter()
@@ -18,6 +22,13 @@ export default function CartPage() {
   const mounted = useMounted()
   const hasItems = mounted && items.length > 0
   const shownTotal = mounted ? totalItems : 0
+
+  // Reopens the meal configuration dialog for one cart line (edit mode).
+  const [editingItem, setEditingItem] = useState<CartItemType | null>(null)
+  const editingMenuItem = editingItem
+    ? (menuItems.find((menuItem) => menuItem.id === editingItem.menuItemId) ??
+      null)
+    : null
 
   const handleCheckout = () => {
     if (hasItems) {
@@ -42,7 +53,7 @@ export default function CartPage() {
         <p className="text-warm-grey">
           {!hasItems
             ? "Your plate is looking a little empty."
-            : `${shownTotal} item${shownTotal === 1 ? "" : "s"} in your cart`}
+            : `${items.length} configured meal${items.length === 1 ? "" : "s"}, ${shownTotal} item${shownTotal === 1 ? "" : "s"} in your cart`}
         </p>
       </div>
 
@@ -52,7 +63,7 @@ export default function CartPage() {
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-4">
             {items.map((item) => (
-              <CartItem key={item.id} item={item} />
+              <CartItem key={item.id} item={item} onEdit={setEditingItem} />
             ))}
           </div>
 
@@ -76,6 +87,17 @@ export default function CartPage() {
             </Link>
           </div>
         </div>
+      )}
+
+      {editingMenuItem && editingItem && (
+        <ProductModal
+          open
+          onOpenChange={(open) => {
+            if (!open) setEditingItem(null)
+          }}
+          item={editingMenuItem}
+          existing={editingItem}
+        />
       )}
     </SectionContainer>
   )

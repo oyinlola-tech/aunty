@@ -14,6 +14,9 @@ import { Button } from "@/components/ui/button"
 
 export function MenuExperience() {
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null)
+  // Bumped on every open so the dialog mounts fresh (its own quantity /
+  // side / protein / instructions) instead of inheriting a previous dish's.
+  const [modalKey, setModalKey] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
 
   const {
@@ -26,23 +29,35 @@ export function MenuExperience() {
 
   const addItem = useCartStore((s) => s.addItem)
 
-  const handleQuickAdd = (item: MenuItem) => {
+  const openConfiguration = (item: MenuItem) => {
     if (!item.available) return
+    setSelectedItem(item)
+    setModalKey((key) => key + 1)
+    setModalOpen(true)
+  }
+
+  // "Add" on a dish that can take a side/protein opens the configuration
+  // dialog (the meal builder). Only plain dishes without a customization
+  // slot are added straight to the cart.
+  const handleAdd = (item: MenuItem) => {
+    if (!item.available) return
+
+    if (item.customization) {
+      openConfiguration(item)
+      return
+    }
 
     addItem({
       menuItemId: item.id,
       name: item.name,
-      price: item.price,
       image: item.image,
+      price: item.price,
       quantity: 1,
     })
   }
 
   const handleViewDetails = (item: MenuItem) => {
-    if (!item.available) return
-
-    setSelectedItem(item)
-    setModalOpen(true)
+    openConfiguration(item)
   }
 
   return (
@@ -95,12 +110,13 @@ export function MenuExperience() {
         <MenuGrid
           items={filteredItems}
           onOpenDetails={handleViewDetails}
-          onQuickAdd={handleQuickAdd}
+          onQuickAdd={handleAdd}
         />
       )}
 
       {selectedItem && (
         <ProductModal
+          key={modalKey}
           open={modalOpen}
           onOpenChange={setModalOpen}
           item={selectedItem}

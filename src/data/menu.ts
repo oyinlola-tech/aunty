@@ -19,6 +19,7 @@ export const menuItems: MenuItem[] = [
     image: "/images/food/beans/ewa-agoyin.jpg",
     featured: true,
     available: true,
+    customization: { sides: 1, proteins: 1 },
   },
   {
     id: "plain-soft-beans",
@@ -31,6 +32,7 @@ export const menuItems: MenuItem[] = [
     image: "/images/food/beans/plain-soft-beans.jpg",
     featured: false,
     available: true,
+    customization: { sides: 1, proteins: 1 },
   },
   {
     id: "soft-porridge-beans",
@@ -43,6 +45,7 @@ export const menuItems: MenuItem[] = [
     image: "/images/food/beans/soft-porridge-beans.jpg",
     featured: true,
     available: true,
+    customization: { sides: 1, proteins: 1 },
   },
 
   // Sides
