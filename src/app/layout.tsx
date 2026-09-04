@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Fredoka } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
@@ -48,6 +48,9 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [ogImage],
   },
+};
+
+export const viewport: Viewport = {
   themeColor: "#FBF3E7",
 };
 
@@ -59,7 +62,6 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      data-scroll-behavior="smooth"
       className={`${fredoka.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

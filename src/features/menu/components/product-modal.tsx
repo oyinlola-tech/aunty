@@ -32,6 +32,17 @@ function findMenuItem(id: string): MenuItem | undefined {
   return menuItems.find((menuItem) => menuItem.id === id)
 }
 
+function addOnKindNoun(kind: AddOnKind): string {
+  return kind === "sides" ? "side" : "protein"
+}
+
+/** Reads an existing cart line's selected add-ons of one kind. */
+function selectionFromItem(existing: CartItem | undefined, kind: AddOnKind): string[] {
+  return (existing?.addOns ?? [])
+    .filter((addOn) => addOn.categoryId === kind)
+    .map((addOn) => addOn.menuItemId)
+}
+
 export function ProductModal({
   open,
   onOpenChange,
@@ -41,64 +52,89 @@ export function ProductModal({
   const addItem = useCartStore((s) => s.addItem)
   const updateItem = useCartStore((s) => s.updateItem)
 
+  // A dish advertises how many of each kind it accepts (0 = none).
+  // A value above 1 means the customer may pick several of that kind.
   const sideMax = item.customization?.sides ?? 0
   const proteinMax = item.customization?.proteins ?? 0
   const isMealBase = sideMax > 0 || proteinMax > 0
 
   const [quantity, setQuantity] = useState(existing?.quantity ?? 1)
   const [notes, setNotes] = useState(existing?.notes ?? "")
-  const [selectedSideId, setSelectedSideId] = useState(
-    existing?.addOns.find((addOn) => addOn.categoryId === "sides")?.menuItemId ?? ""
+  const [selectedSideIds, setSelectedSideIds] = useState<string[]>(() =>
+    selectionFromItem(existing, "sides")
   )
-  const [selectedProteinId, setSelectedProteinId] = useState(
-    existing?.addOns.find((addOn) => addOn.categoryId === "proteins")?.menuItemId ?? ""
+  const [selectedProteinIds, setSelectedProteinIds] = useState<string[]>(() =>
+    selectionFromItem(existing, "proteins")
   )
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const sideOptions = sideMax > 0
-    ? menuItems.filter(
-        (option) => option.categoryId === "sides" && option.available
-      )
-    : []
-  const proteinOptions = proteinMax > 0
-    ? menuItems.filter(
-        (option) => option.categoryId === "proteins" && option.available
-      )
-    : []
+  const sideOptions =
+    sideMax > 0
+      ? menuItems.filter(
+          (option) => option.categoryId === "sides" && option.available
+        )
+      : []
+  const proteinOptions =
+    proteinMax > 0
+      ? menuItems.filter(
+          (option) => option.categoryId === "proteins" && option.available
+        )
+      : []
 
+  // Every selected add-on, snapshotted as typed cart data so identity,
+  // pricing and the WhatsApp message all share one representation.
   const selectedAddOns: CartAddOn[] = []
-  const selectedSide = selectedSideId ? findMenuItem(selectedSideId) : undefined
-  if (selectedSide) {
-    selectedAddOns.push({
-      menuItemId: selectedSide.id,
-      categoryId: "sides",
-      name: selectedSide.name,
-      price: selectedSide.price,
-    })
+  for (const id of selectedSideIds) {
+    const side = findMenuItem(id)
+    if (side) {
+      selectedAddOns.push({
+        menuItemId: side.id,
+        categoryId: "sides",
+        name: side.name,
+        price: side.price,
+      })
+    }
   }
-  const selectedProtein = selectedProteinId
-    ? findMenuItem(selectedProteinId)
-    : undefined
-  if (selectedProtein) {
-    selectedAddOns.push({
-      menuItemId: selectedProtein.id,
-      categoryId: "proteins",
-      name: selectedProtein.name,
-      price: selectedProtein.price,
-    })
+  for (const id of selectedProteinIds) {
+    const protein = findMenuItem(id)
+    if (protein) {
+      selectedAddOns.push({
+        menuItemId: protein.id,
+        categoryId: "proteins",
+        name: protein.name,
+        price: protein.price,
+      })
+    }
   }
 
-  const unitPrice = getCartItemUnitPrice({ price: item.price, addOns: selectedAddOns })
+  const unitPrice = getCartItemUnitPrice({
+    price: item.price,
+    addOns: selectedAddOns,
+  })
   const lineTotal = unitPrice * quantity
   const isEditing = existing !== undefined
   const canSave = item.available && quantity >= 1
 
+  const customizationHint = (): string | null => {
+    const parts: string[] = []
+    if (sideMax > 0)
+      parts.push(sideMax === 1 ? "a side" : `up to ${sideMax} sides`)
+    if (proteinMax > 0)
+      parts.push(proteinMax === 1 ? "a protein" : `up to ${proteinMax} proteins`)
+    if (parts.length === 0) return null
+    return `Build your plate — add ${parts.join(" and ")}. Everything optional.`
+  }
+
+  // Toggle one add-on of a kind; refuses a pick when the dish's max for that
+  // kind is already reached (the customer deselects one to swap it out).
   const handleAddOnToggle = (kind: AddOnKind, id: string) => {
-    if (kind === "sides") {
-      setSelectedSideId((current) => (current === id ? "" : id))
-    } else {
-      setSelectedProteinId((current) => (current === id ? "" : id))
-    }
+    const max = kind === "sides" ? sideMax : proteinMax
+    const setter = kind === "sides" ? setSelectedSideIds : setSelectedProteinIds
+    setter((current) => {
+      if (current.includes(id)) return current.filter((value) => value !== id)
+      if (current.length >= max) return current
+      return [...current, id]
+    })
   }
 
   const handleSave = () => {
@@ -106,16 +142,6 @@ export function ProductModal({
     setIsSubmitting(true)
 
     try {
-      const input = {
-        menuItemId: item.id,
-        name: item.name,
-        image: item.image,
-        price: item.price,
-        quantity,
-        notes: notes.trim() || undefined,
-        addOns: selectedAddOns,
-      }
-
       if (isEditing && existing) {
         updateItem(existing.id, {
           quantity,
@@ -123,7 +149,15 @@ export function ProductModal({
           addOns: selectedAddOns,
         })
       } else {
-        addItem(input)
+        addItem({
+          menuItemId: item.id,
+          name: item.name,
+          image: item.image,
+          price: item.price,
+          quantity,
+          notes: notes.trim() || undefined,
+          addOns: selectedAddOns,
+        })
       }
 
       onOpenChange(false)
@@ -134,27 +168,42 @@ export function ProductModal({
 
   function renderOptionGroup(kind: AddOnKind) {
     const options = kind === "sides" ? sideOptions : proteinOptions
-    const selected = kind === "sides" ? selectedSideId : selectedProteinId
+    const max = kind === "sides" ? sideMax : proteinMax
+    const selectedIds = kind === "sides" ? selectedSideIds : selectedProteinIds
+    const noun = addOnKindNoun(kind)
 
     if (options.length === 0) return null
 
+    const isMulti = max > 1
+    const countLabel =
+      isMulti && selectedIds.length > 0
+        ? `${selectedIds.length} of ${max} selected`
+        : "Optional"
+
     return (
       <fieldset className="flex flex-col gap-2">
-        <legend className="flex items-baseline justify-between gap-2 text-sm font-medium text-bean-black">
-          <span>Choose a {ADD_ON_LABEL[kind].toLowerCase()}</span>
-          <span className="text-xs font-normal text-warm-grey">Optional</span>
+        <legend className="flex w-full items-baseline justify-between gap-2 text-sm font-medium text-bean-black">
+          <span>
+            {isMulti
+              ? `Choose your ${noun}s`
+              : `Choose a ${noun}`}
+          </span>
+          <span className="text-xs font-normal text-warm-grey">{countLabel}</span>
         </legend>
         <div className="flex flex-wrap gap-2">
           {options.map((option) => {
-            const isSelected = selected === option.id
+            const isSelected = selectedIds.includes(option.id)
+            const atCapacity =
+              !isSelected && selectedIds.length >= max
             return (
               <button
                 key={option.id}
                 type="button"
                 aria-pressed={isSelected}
+                disabled={atCapacity}
                 onClick={() => handleAddOnToggle(kind, option.id)}
                 className={cn(
-                  "flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-palace-orange",
+                  "flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-palace-orange disabled:cursor-not-allowed disabled:opacity-40",
                   isSelected
                     ? "border-espresso bg-espresso text-white"
                     : "border-border/60 bg-cream-deep text-bean-black hover:border-palace-orange hover:text-palace-orange"
@@ -200,9 +249,9 @@ export function ProductModal({
                 <DialogTitle className="font-heading text-2xl font-bold text-bean-black">
                   {item.name}
                 </DialogTitle>
-                {isMealBase && (
+                {isMealBase && customizationHint() && (
                   <p className="mt-1 text-sm text-warm-grey">
-                    Build your plate — add a side or protein (optional).
+                    {customizationHint()}
                   </p>
                 )}
               </div>
@@ -245,7 +294,7 @@ export function ProductModal({
             </div>
 
             {selectedAddOns.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" aria-label="Selected extras">
                 {selectedAddOns.map((addOn) => (
                   <span
                     key={`${addOn.categoryId}-${addOn.menuItemId}`}

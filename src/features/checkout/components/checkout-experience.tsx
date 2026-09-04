@@ -41,6 +41,10 @@ export function CheckoutExperience() {
     resolver: zodResolver(checkoutSchema),
     mode: "onTouched",
   })
+  // react-hook-form's watch is the supported way to mirror one field live
+  // into the summary; React Compiler merely opts this component out of auto
+  // memoization, which is safe here.
+  // eslint-disable-next-line react-hooks/incompatible-library
   const orderNotes = watch("notes")
 
   // Avoid rendering cart-dependent content before hydration so the server

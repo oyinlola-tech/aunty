@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { SectionContainer } from "@/components/shared/section-container"
+import { Reveal } from "@/components/shared/reveal"
 import { siteConfig } from "@/config/site"
 import { createWhatsAppUrl } from "@/features/checkout/utils/whatsapp-url"
 import { MessageCircle, Phone, MapPin, Clock, ArrowRight } from "lucide-react"
@@ -43,7 +44,7 @@ export default function ContactPage() {
   return (
     <div className="flex flex-col gap-16">
       <SectionContainer className="flex flex-col gap-10 py-16">
-        <div className="flex flex-col items-center gap-3 text-center">
+        <Reveal className="flex flex-col items-center gap-3 text-center">
           <span className="font-heading text-sm font-semibold uppercase tracking-widest text-palace-orange">
             Get in Touch
           </span>
@@ -53,7 +54,7 @@ export default function ContactPage() {
           <p className="max-w-md text-warm-grey">
             Have a question or want to place an order? Reach out to us.
           </p>
-        </div>
+        </Reveal>
 
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="rounded-2xl bg-cream p-6">
