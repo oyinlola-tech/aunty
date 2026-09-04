@@ -5,13 +5,16 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ArrowRight, Check, MessageCircle } from "lucide-react"
 import { useCartStore } from "@/features/cart/store/cart-store"
 import { useMounted } from "@/hooks/use-mounted"
 import { CustomerDetails } from "./customer-details"
 import { DeliveryDetails } from "./delivery-details"
 import { OrderSummary } from "./order-summary"
+import { PaymentSection } from "./payment-section"
 import { checkoutSchema, type CheckoutFormData } from "../schemas/checkout.schema"
 import { createOrder } from "../utils/create-order"
+import { generateOrderReference } from "../utils/order-reference"
 import { generateWhatsAppMessage } from "../utils/whatsapp-message"
 import { createWhatsAppUrl } from "../utils/whatsapp-url"
 import { siteConfig } from "@/config/site"
@@ -19,7 +22,6 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { ArrowRight } from "lucide-react"
 
 export function CheckoutExperience() {
   const router = useRouter()
@@ -29,7 +31,13 @@ export function CheckoutExperience() {
   const mounted = useMounted()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null)
+  // One stable reference + WhatsApp link per submission action. They are
+  // generated together exactly once and reused for every follow-up render,
+  // so a rerender or a second tap can never mint a different order number.
+  const [submitted, setSubmitted] = useState<{
+    reference: string
+    whatsappUrl: string
+  } | null>(null)
   const [configError, setConfigError] = useState<string | null>(null)
 
   const {
@@ -46,6 +54,12 @@ export function CheckoutExperience() {
   // memoization, which is safe here.
   // eslint-disable-next-line react-hooks/incompatible-library
   const orderNotes = watch("notes")
+
+  const paymentConfigured = Boolean(
+    siteConfig.payment.bankName ||
+      siteConfig.payment.accountName ||
+      siteConfig.payment.accountNumber
+  )
 
   // Avoid rendering cart-dependent content before hydration so the server
   // HTML and first client render match.
@@ -80,6 +94,9 @@ export function CheckoutExperience() {
   }
 
   const onSubmit = (data: CheckoutFormData) => {
+    // Never generate a second reference or a second draft for one action.
+    if (submitted) return
+
     const whatsappNumber = siteConfig.contact.whatsapp
     if (!whatsappNumber) {
       setConfigError(
@@ -92,7 +109,9 @@ export function CheckoutExperience() {
     setConfigError(null)
 
     try {
+      const reference = generateOrderReference()
       const order = createOrder({
+        reference,
         customer: {
           name: data.customerName,
           phone: data.phoneNumber.replace(/[\s-]/g, ""),
@@ -109,12 +128,17 @@ export function CheckoutExperience() {
 
       const orderMessage = generateWhatsAppMessage(order)
       const url = createWhatsAppUrl(whatsappNumber, orderMessage)
-      setWhatsappUrl(url)
+      setSubmitted({ reference, whatsappUrl: url })
 
       window.open(url, "_blank", "noopener,noreferrer")
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const handleDone = () => {
+    clearCart()
+    router.push("/menu")
   }
 
   return (
@@ -157,7 +181,7 @@ export function CheckoutExperience() {
               id="notes"
               {...register("notes")}
               placeholder="Call before delivery, gate code, extra napkins..."
-              className="mt-1.5 min-h-[100px] rounded-xl bg-cream-deep resize-none"
+              className="mt-1.5 min-h-[100px] resize-none rounded-xl bg-cream-deep"
               rows={4}
             />
             <p className="mt-2 text-xs text-warm-grey">
@@ -175,16 +199,49 @@ export function CheckoutExperience() {
           notes={orderNotes || undefined}
         />
 
+        <PaymentSection amount={subtotal} payment={siteConfig.payment} />
+
         {configError && (
           <p className="rounded-xl bg-peach p-4 text-sm font-medium text-warm-brown">
             {configError}
           </p>
         )}
 
-        <div className="flex flex-col gap-4">
-          {whatsappUrl ? (
+        {submitted ? (
+          <div className="flex flex-col gap-4 rounded-2xl border border-palace-orange/40 bg-cream p-5">
+            <div className="flex items-start gap-3">
+              <div className="flex size-10 flex-shrink-0 items-center justify-center rounded-full bg-muted-green">
+                <Check className="size-5 text-white" aria-hidden="true" />
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <h3 className="font-heading text-lg font-bold text-bean-black">
+                  Your order is ready to send
+                </h3>
+                <p className="text-sm text-warm-grey">
+                  Review it in WhatsApp, attach your payment receipt, then send.
+                </p>
+              </div>
+            </div>
+
+            <div
+              role="status"
+              aria-live="polite"
+              className="flex flex-col gap-1 rounded-xl bg-espresso p-4 text-white"
+            >
+              <span className="text-xs tracking-wide text-white/70 uppercase">
+                Your order reference
+              </span>
+              <span className="font-mono text-xl font-bold tracking-wider text-palace-orange">
+                {submitted.reference}
+              </span>
+              <p className="mt-1 text-xs leading-relaxed text-white/70">
+                Keep this reference to discuss your order with us — it also
+                appears at the top and bottom of your WhatsApp message.
+              </p>
+            </div>
+
             <a
-              href={whatsappUrl}
+              href={submitted.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
@@ -192,40 +249,64 @@ export function CheckoutExperience() {
                 "w-full no-underline"
               )}
             >
-              Open WhatsApp
-              <ArrowRight className="size-4" />
+              Open WhatsApp with my order
+              <MessageCircle className="size-4" />
             </a>
-          ) : (
+
+            <p className="text-center text-xs leading-relaxed text-warm-grey">
+              WhatsApp should have opened automatically. If it did not, tap the
+              button above. Before sending, attach your bank transfer receipt
+              to the conversation.
+            </p>
+
+            <div className="flex flex-col gap-2 border-t border-border/50 pt-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDone}
+              >
+                Done — back to the menu
+              </Button>
+              <p className="text-center text-xs text-warm-grey">
+                Nothing is charged by this website — your transfer is confirmed
+                by Soft Beans Palace when your receipt arrives.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4">
+            {paymentConfigured && (
+              <div className="flex items-start gap-2 rounded-xl bg-cream-deep p-3 text-sm leading-relaxed text-bean-black/80">
+                <Check
+                  className="mt-0.5 size-4 flex-shrink-0 text-muted-green"
+                  aria-hidden="true"
+                />
+                <p>
+                  Made your transfer? Tap below and WhatsApp opens with your
+                  order and reference ready.
+                </p>
+              </div>
+            )}
             <Button
               type="submit"
               className="w-full"
               size="lg"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Preparing..." : "Continue on WhatsApp"}
+              {isSubmitting
+                ? "Preparing..."
+                : paymentConfigured
+                  ? "I've Made Payment — Open WhatsApp"
+                  : "Continue on WhatsApp"}
               {!isSubmitting && <ArrowRight className="size-4" />}
             </Button>
-          )}
-
-          {whatsappUrl && (
-            <div className="flex flex-col gap-3 rounded-xl bg-cream-deep p-4">
-              <p className="text-sm text-warm-grey">
-                WhatsApp should have opened with your order pre-filled. Review
-                it, press send, and we&apos;ll take it from there.
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  clearCart()
-                  router.push("/menu")
-                }}
-              >
-                Done — back to the menu
-              </Button>
-            </div>
-          )}
-        </div>
+            <p className="text-center text-xs leading-relaxed text-warm-grey">
+              {paymentConfigured
+                ? "Tapping this states that you have paid — Soft Beans Palace confirms the transfer when your receipt arrives on WhatsApp."
+                : "WhatsApp opens with your order pre-filled — review it, attach anything we should see, and send."}
+            </p>
+          </div>
+        )}
       </div>
     </form>
   )

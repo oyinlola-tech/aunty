@@ -36,4 +36,13 @@ export const siteConfig = {
     weekdays: readText(process.env.NEXT_PUBLIC_HOURS_WEEKDAYS),
     weekends: readText(process.env.NEXT_PUBLIC_HOURS_WEEKENDS),
   },
+  // Manual bank-transfer payment details used at checkout. This is NOT a
+  // payment gateway: the website only shows the account and asks the
+  // customer to transfer externally, then send the receipt via WhatsApp.
+  // Leave empty until the owner provides the real account.
+  payment: {
+    bankName: readText(process.env.NEXT_PUBLIC_BANK_NAME),
+    accountName: readText(process.env.NEXT_PUBLIC_BANK_ACCOUNT_NAME),
+    accountNumber: readText(process.env.NEXT_PUBLIC_BANK_ACCOUNT_NUMBER),
+  },
 }

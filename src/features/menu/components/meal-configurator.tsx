@@ -1,6 +1,7 @@
 "use client"
 
 import { useId, useState } from "react"
+import { ArrowRight, Plus, X } from "lucide-react"
 import { formatCurrency } from "@/lib/currency"
 import { cn } from "@/lib/utils"
 import type { CartAddOn, CartItem } from "@/types/cart"
@@ -13,12 +14,24 @@ import {
   getAddOnTotal,
 } from "@/features/cart/utils/pricing"
 import { QuantitySelector } from "./quantity-selector"
+import { AddOnPicker } from "./add-on-picker"
 
 type AddOnKind = "sides" | "proteins"
 
-const ADD_ON_TITLE: Record<AddOnKind, string> = {
-  sides: "Add sides",
-  proteins: "Add proteins",
+const ADD_ON_GROUP: Record<
+  AddOnKind,
+  { title: string; hint: string; emptyHint: string }
+> = {
+  sides: {
+    title: "Sides",
+    hint: "Optional extras to round out your meal.",
+    emptyHint: "Nothing yet — beans on its own works great.",
+  },
+  proteins: {
+    title: "Proteins",
+    hint: "Optional — add your favourites with no limits.",
+    emptyHint: "No protein yet — that is perfectly fine.",
+  },
 }
 
 interface MealConfiguratorProps {
@@ -27,6 +40,12 @@ interface MealConfiguratorProps {
   existing?: CartItem
   /** Called after the meal is added/updated successfully. */
   onAdded?: () => void
+  /**
+   * Where the sticky order bar is anchored:
+   * - "dialog": pinned to the bottom of the scrollable dialog
+   * - "page": pinned above the mobile bottom navigation on dish pages
+   */
+  stickyBar?: "dialog" | "page"
   className?: string
 }
 
@@ -35,11 +54,17 @@ interface MealConfiguratorProps {
  * collections: each option carries its own quantity, so a customer can add
  * any combination (e.g. Fried Plantain x 2, Soft Bread x 1, Fried Fish x 3)
  * with no artificial maximum.
+ *
+ * Rather than listing every option at once, each group shows a compact
+ * summary of what is already chosen and an "Add" button that opens a focused
+ * picker overlay. The live total and Add-to-Cart action stay pinned to the
+ * bottom of the viewport while the customer builds the meal.
  */
 export function MealConfigurator({
   item,
   existing,
   onAdded,
+  stickyBar = "dialog",
   className,
 }: MealConfiguratorProps) {
   const notesId = useId()
@@ -58,6 +83,7 @@ export function MealConfigurator({
   const [proteinCounts, setProteinCounts] = useState<Record<string, number>>(
     () => countsFromAddOns(existing, "proteins")
   )
+  const [picker, setPicker] = useState<AddOnKind | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const sideOptions = allowSides
@@ -85,16 +111,20 @@ export function MealConfigurator({
   const hasPrices = unitPrice > 0
   const canSave = item.available && mealQuantity >= 1
 
-  const selectedSideCount = sumCounts(sideCounts)
-  const selectedProteinCount = sumCounts(proteinCounts)
-
-  function updateCount(
-    kind: AddOnKind,
-    optionId: string,
-    value: number
-  ) {
+  function commitAddOns(kind: AddOnKind, counts: Record<string, number>) {
     const setter = kind === "sides" ? setSideCounts : setProteinCounts
-    setter((counts) => ({ ...counts, [optionId]: Math.max(0, value) }))
+    setter(counts)
+  }
+
+  function removeAddOn(kind: AddOnKind, optionId: string) {
+    commitAddOns(
+      kind,
+      Object.fromEntries(
+        Object.entries(kind === "sides" ? sideCounts : proteinCounts).filter(
+          ([id, quantity]) => id !== optionId && quantity > 0
+        )
+      )
+    )
   }
 
   function handleSave() {
@@ -131,25 +161,37 @@ export function MealConfigurator({
 
   return (
     <div className={cn("flex flex-col gap-6", className)}>
+      {/* Meal quantity */}
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-medium text-bean-black">
+          How many of this meal?
+        </span>
+        <QuantitySelector
+          value={mealQuantity}
+          onChange={setMealQuantity}
+          subject={`${item.name} meal`}
+        />
+      </div>
+
       {/* Sides collection */}
-      {sideOptions.length > 0 && (
-        <AddOnSection
+      {allowSides && (
+        <AddOnSummary
           kind="sides"
           options={sideOptions}
           counts={sideCounts}
-          selectedTotal={selectedSideCount}
-          onChange={(id, value) => updateCount("sides", id, value)}
+          onOpen={() => setPicker("sides")}
+          onRemove={(optionId) => removeAddOn("sides", optionId)}
         />
       )}
 
       {/* Proteins collection */}
-      {proteinOptions.length > 0 && (
-        <AddOnSection
+      {allowProteins && (
+        <AddOnSummary
           kind="proteins"
           options={proteinOptions}
           counts={proteinCounts}
-          selectedTotal={selectedProteinCount}
-          onChange={(id, value) => updateCount("proteins", id, value)}
+          onOpen={() => setPicker("proteins")}
+          onRemove={(optionId) => removeAddOn("proteins", optionId)}
         />
       )}
 
@@ -159,7 +201,7 @@ export function MealConfigurator({
           htmlFor={notesId}
           className="text-sm font-medium text-bean-black"
         >
-          Special instructions{" "}
+          Special request{" "}
           <span className="font-normal text-warm-grey">(optional)</span>
         </label>
         <textarea
@@ -175,28 +217,23 @@ export function MealConfigurator({
         </p>
       </div>
 
-      {/* Meal quantity */}
-      <div className="flex flex-col gap-2">
-        <span className="text-sm font-medium text-bean-black">
-          How many of this meal?
-        </span>
-        <QuantitySelector
-          value={mealQuantity}
-          onChange={setMealQuantity}
-          subject={`${item.name} meal`}
-        />
-      </div>
-
-      {/* Price summary */}
-      <div className="rounded-xl border border-border/50 bg-cream p-4">
-        <div className="flex flex-col gap-1.5 text-sm">
+      {/* Sticky order bar: price breakdown + total + action */}
+      <div
+        className={cn(
+          "sticky z-10 -mx-5 -mb-5 flex flex-col rounded-b-2xl border-t border-border/50 bg-cream/95 shadow-[0_-6px_24px_rgba(27,22,17,0.07)] backdrop-blur-sm sm:-mx-6 sm:-mb-6",
+          stickyBar === "page" && "bottom-16 md:bottom-0"
+        )}
+      >
+        <div className="flex flex-col gap-1.5 px-4 pt-3.5 text-sm sm:px-6">
           <div className="flex items-center justify-between gap-3">
             <span className="font-medium text-bean-black">{item.name}</span>
             {item.price > 0 ? (
               <span className="text-warm-grey">
                 {formatCurrency(item.price)}
               </span>
-            ) : null}
+            ) : (
+              <span className="text-xs text-warm-grey">Price on request</span>
+            )}
           </div>
 
           {selectedAddOns.map((addOn) => (
@@ -212,61 +249,82 @@ export function MealConfigurator({
                   {formatCurrency(getAddOnTotal(addOn))}
                 </span>
               ) : (
-                <span className="text-xs text-warm-grey">
-                  Price on request
-                </span>
+                <span className="text-xs text-warm-grey">Price on request</span>
               )}
             </div>
           ))}
 
           {selectedAddOns.length === 0 &&
-            (sideOptions.length > 0 || proteinOptions.length > 0) && (
+            (allowSides || allowProteins) && (
               <p className="text-xs text-warm-grey">
-                No sides or proteins added — beans only is perfectly fine.
+                No extras added — beans only is perfectly fine.
               </p>
             )}
         </div>
 
-        <div className="mt-3 flex flex-col gap-1 border-t border-border/60 pt-3">
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-t border-border/60 px-4 py-3 sm:px-6">
           {hasPrices ? (
-            <>
-              <div className="flex items-center justify-between text-sm text-warm-grey">
-                <span>
-                  Meal price × {mealQuantity}
-                </span>
-                <span>{formatCurrency(unitPrice)}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-bean-black">
-                  Line total
-                </span>
-                <span className="font-heading text-xl font-bold text-bean-black">
-                  {formatCurrency(lineTotal)}
-                </span>
-              </div>
-            </>
+            <div className="flex flex-col leading-tight">
+              <span className="text-xs text-warm-grey">
+                Total · {mealQuantity} × {formatCurrency(unitPrice)}
+              </span>
+              <span className="font-heading text-xl font-bold text-bean-black">
+                {formatCurrency(lineTotal)}
+              </span>
+            </div>
           ) : (
             <p className="text-xs text-warm-grey">
               Total is confirmed on WhatsApp once prices are available.
             </p>
           )}
+
+          <Button
+            size="lg"
+            className="flex-shrink-0"
+            disabled={!canSave || isSubmitting}
+            onClick={handleSave}
+          >
+            {isSubmitting
+              ? isEditing
+                ? "Saving..."
+                : "Adding..."
+              : isEditing
+                ? "Save Changes"
+                : "Add to Cart"}
+            {!isSubmitting && <ArrowRight className="size-4" aria-hidden="true" />}
+          </Button>
         </div>
       </div>
 
-      <Button
-        className="w-full"
-        size="lg"
-        disabled={!canSave || isSubmitting}
-        onClick={handleSave}
-      >
-        {isSubmitting
-          ? isEditing
-            ? "Saving..."
-            : "Adding..."
-          : isEditing
-            ? "Save Changes"
-            : "Add to Cart"}
-      </Button>
+      {/* Focused side/protein picker */}
+      {allowSides && picker === "sides" && (
+        <AddOnPicker
+          open={picker === "sides"}
+          onOpenChange={(open) => {
+            if (!open) setPicker(null)
+          }}
+          kind="sides"
+          title="Choose your sides"
+          description="Add as many sides as you like — each with its own quantity."
+          options={sideOptions}
+          counts={sideCounts}
+          onCommit={(counts) => commitAddOns("sides", counts)}
+        />
+      )}
+      {allowProteins && picker === "proteins" && (
+        <AddOnPicker
+          open={picker === "proteins"}
+          onOpenChange={(open) => {
+            if (!open) setPicker(null)
+          }}
+          kind="proteins"
+          title="Choose your proteins"
+          description="Add as many proteins as you like — each with its own quantity."
+          options={proteinOptions}
+          counts={proteinCounts}
+          onCommit={(counts) => commitAddOns("proteins", counts)}
+        />
+      )}
     </div>
   )
 }
@@ -313,72 +371,79 @@ function sumCounts(counts: Record<string, number>): number {
 
 /* ------------------------------------------------------------------ */
 
-interface AddOnSectionProps {
+interface AddOnSummaryProps {
   kind: AddOnKind
   options: MenuItem[]
   counts: Record<string, number>
-  selectedTotal: number
-  onChange: (optionId: string, value: number) => void
+  onOpen: () => void
+  onRemove: (optionId: string) => void
 }
 
-function AddOnSection({
+/**
+ * Compact summary of one add-on group. When nothing is selected it is a
+ * quiet two-line block with a single "+ Add" action; once items are chosen
+ * they appear as removable chips so the configuration stays short even with
+ * many selections.
+ */
+function AddOnSummary({
   kind,
   options,
   counts,
-  selectedTotal,
-  onChange,
-}: AddOnSectionProps) {
-  const title = ADD_ON_TITLE[kind]
+  onOpen,
+  onRemove,
+}: AddOnSummaryProps) {
+  const group = ADD_ON_GROUP[kind]
+  const selected = options.filter((option) => (counts[option.id] ?? 0) > 0)
+  const selectedCount = selected.length
+  const selectedPortions = sumCounts(counts)
+  const noun = kind === "sides" ? "side" : "protein"
 
   return (
-    <fieldset className="flex flex-col gap-3">
-      <legend className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 w-full">
-        <span className="text-base font-semibold text-bean-black">
-          {title}
-        </span>
-        <span className="text-xs font-normal text-warm-grey">
-          {selectedTotal > 0
-            ? `${selectedTotal} ${selectedTotal === 1 ? "portion" : "portions"} selected`
-            : "Optional — skip if you only want the beans"}
-        </span>
-      </legend>
+    <section
+      aria-label={group.title}
+      className="flex flex-col gap-3 rounded-2xl border border-border/50 bg-cream-deep/50 p-4"
+    >
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <span className="text-base font-semibold text-bean-black">
+            {group.title}
+          </span>
+          <span className="text-xs text-warm-grey">
+            {selectedCount > 0
+              ? `${selectedCount} ${noun}${selectedCount === 1 ? "" : "s"} · ${selectedPortions} portion${selectedPortions === 1 ? "" : "s"}`
+              : group.hint}
+          </span>
+        </div>
+        <Button variant="soft" size="sm" onClick={onOpen}>
+          <Plus className="size-4" aria-hidden="true" />
+          {selectedCount > 0 ? "Add more" : `Add ${noun}s`}
+        </Button>
+      </div>
 
-      <ul role="list" aria-label={title} className="flex flex-col gap-2">
-        {options.map((option) => {
-          const quantity = counts[option.id] ?? 0
-          return (
-            <li
-              key={option.id}
-              className="flex items-center gap-3 rounded-xl border border-border/50 bg-cream-deep px-3 py-2 sm:px-4"
-            >
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-bean-black">
-                  {option.name}
-                </p>
-                <p className="text-xs text-warm-grey">
-                  {option.price > 0
-                    ? formatCurrency(option.price)
-                    : "Price on request"}
-                  {quantity > 0 && option.price > 0 && (
-                    <span className="ml-1.5 font-semibold text-warm-brown">
-                      = {formatCurrency(option.price * quantity)}
-                    </span>
-                  )}
-                </p>
-              </div>
-
-              <QuantitySelector
-                compact
-                min={0}
-                value={quantity}
-                onChange={(value) => onChange(option.id, value)}
-                subject={option.name}
-              />
+      {selected.length > 0 ? (
+        <ul role="list" aria-label={`Selected ${kind}`} className="flex flex-wrap gap-2">
+          {selected.map((option) => (
+            <li key={option.id}>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-palace-orange/25 bg-white py-1.5 pr-1.5 pl-3 text-sm font-medium text-bean-black shadow-sm">
+                {option.name}
+                <span className="font-bold text-palace-orange">
+                  × {counts[option.id]}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => onRemove(option.id)}
+                  aria-label={`Remove ${option.name}`}
+                  className="flex size-6 items-center justify-center rounded-full text-warm-grey transition-colors hover:bg-cream-deep hover:text-rich-red focus-visible:ring-2 focus-visible:ring-palace-orange/50 focus-visible:outline-none"
+                >
+                  <X className="size-3.5" aria-hidden="true" />
+                </button>
+              </span>
             </li>
-          )
-        })}
-      </ul>
-
-    </fieldset>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-xs text-warm-grey italic">{group.emptyHint}</p>
+      )}
+    </section>
   )
 }

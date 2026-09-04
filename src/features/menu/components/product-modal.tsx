@@ -63,6 +63,7 @@ export function ProductModal({
           <MealConfigurator
             item={item}
             existing={existing}
+            stickyBar="dialog"
             onAdded={() => onOpenChange(false)}
           />
         </div>

@@ -3,6 +3,7 @@
 import { ShoppingBag } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useCartStore } from "../store/cart-store"
 import { useMounted } from "@/hooks/use-mounted"
 import { cn } from "@/lib/utils"
@@ -15,8 +16,13 @@ export function FloatingCart() {
   const totalItems = useCartStore((s) => s.getTotalItems())
   const subtotal = useCartStore((s) => s.getSubtotal())
   const mounted = useMounted()
+  const pathname = usePathname()
 
-  if (!mounted || totalItems === 0) return null
+  // Dish pages already carry their own sticky Add-to-Cart bar, so the
+  // floating pill would collide with it — skip those routes.
+  const isDishPage = pathname.startsWith("/menu/") && pathname !== "/menu"
+
+  if (!mounted || totalItems === 0 || isDishPage) return null
 
   const previewItem = items[0]
 

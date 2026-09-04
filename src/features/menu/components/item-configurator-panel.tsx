@@ -15,7 +15,11 @@ export function ItemConfiguratorPanel({ item }: ItemConfiguratorPanelProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <MealConfigurator item={item} onAdded={() => setJustAdded(true)} />
+      <MealConfigurator
+        item={item}
+        stickyBar="page"
+        onAdded={() => setJustAdded(true)}
+      />
 
       {justAdded && (
         <div className="flex items-start gap-3 rounded-xl bg-muted-green/15 p-4">

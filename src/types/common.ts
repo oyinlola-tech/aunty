@@ -25,7 +25,8 @@ export interface CheckoutFormData {
 }
 
 export interface Order {
-  id: string
+  /** Unique order reference (e.g. SBP-20260904-A82F7C) used in WhatsApp and for payment follow-up. */
+  reference: string
   customer: {
     name: string
     phone: string
