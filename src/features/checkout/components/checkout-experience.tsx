@@ -189,7 +189,7 @@ export function CheckoutExperience() {
               rel="noopener noreferrer"
               className={cn(
                 buttonVariants({ size: "lg" }),
-                "w-full rounded-xl no-underline"
+                "w-full no-underline"
               )}
             >
               Open WhatsApp
@@ -198,7 +198,7 @@ export function CheckoutExperience() {
           ) : (
             <Button
               type="submit"
-              className="w-full rounded-xl"
+              className="w-full"
               size="lg"
               disabled={isSubmitting}
             >

@@ -1,5 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
 import { Sticker } from "@/components/shared/sticker"
 import { Reveal } from "@/components/shared/reveal"
 import { ArrowRight } from "lucide-react"
@@ -28,20 +30,22 @@ export function FinalCTA() {
               you&apos;re craving, we&apos;ve got you covered.
             </p>
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/menu"
-                className="group inline-flex items-center gap-2 rounded-full bg-palace-orange px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-palace-orange-hover"
-              >
-                Explore Menu
-                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-
-              <Link
-                href="/checkout"
-                className="group inline-flex items-center gap-2 rounded-full border border-palace-orange/30 px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-palace-orange hover:text-white"
+                className={cn(buttonVariants({ size: "lg" }), "no-underline")}
               >
                 Order Now
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href="/cart"
+                className={cn(
+                  buttonVariants({ variant: "soft", size: "lg" }),
+                  "no-underline"
+                )}
+              >
+                View Cart
               </Link>
             </div>
           </Reveal>

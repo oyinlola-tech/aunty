@@ -1,9 +1,10 @@
 import Link from "next/link"
 import { menuItems } from "@/data/menu"
 import { SectionContainer } from "@/components/shared/section-container"
-import { Sticker } from "@/components/shared/sticker"
+import { SectionHeading } from "@/components/shared/section-heading"
 import { Reveal } from "@/components/shared/reveal"
 import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
 import Image from "next/image"
 
@@ -12,14 +13,12 @@ const featuredItems = menuItems.filter((item) => item.featured)
 export function FeaturedDishes() {
   return (
     <SectionContainer className="flex flex-col gap-10">
-      <Reveal className="flex flex-col items-center gap-3 text-center">
-        <Sticker variant="orange">The favourites</Sticker>
-        <h2 className="font-heading text-3xl font-bold text-bean-black sm:text-4xl">
-          The favourites. For good reason.
-        </h2>
-        <p className="max-w-md text-warm-grey">
-          These are the dishes our customers love the most.
-        </p>
+      <Reveal>
+        <SectionHeading
+          sticker="The favourites"
+          title="The favourites. For good reason."
+          description="These are the dishes our customers love the most."
+        />
       </Reveal>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -38,7 +37,6 @@ export function FeaturedDishes() {
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  priority
                 />
               </div>
 
@@ -66,7 +64,7 @@ export function FeaturedDishes() {
       <Reveal className="flex justify-center">
         <Link
           href="/menu"
-          className="group inline-flex items-center gap-2 rounded-full bg-palace-orange px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-palace-orange-hover"
+          className={cn(buttonVariants({ size: "lg" }), "no-underline")}
         >
           View Full Menu
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />

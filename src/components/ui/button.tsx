@@ -11,6 +11,8 @@ const buttonVariants = cva(
           "bg-palace-orange text-white hover:bg-palace-orange-hover shadow-sm",
         dark:
           "bg-espresso text-white hover:bg-espresso/90 shadow-sm",
+        soft:
+          "border border-palace-orange/30 bg-white text-bean-black hover:border-palace-orange hover:bg-palace-orange hover:text-white shadow-sm",
         outline:
           "border-border bg-transparent text-bean-black hover:bg-cream-deep",
         secondary:

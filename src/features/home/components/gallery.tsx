@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { SectionContainer } from "@/components/shared/section-container"
+import { SectionHeading } from "@/components/shared/section-heading"
 import { Reveal } from "@/components/shared/reveal"
 import { Doodle } from "@/components/shared/doodle"
 import { cn } from "@/lib/utils"
@@ -26,13 +27,11 @@ export function Gallery() {
   return (
     <section className="relative overflow-hidden bg-cream py-16 sm:py-20">
       <SectionContainer className="flex flex-col gap-10">
-        <Reveal className="flex flex-col items-center gap-3 text-center">
-          <span className="font-heading text-sm font-semibold uppercase tracking-widest text-palace-orange">
-            A Feast for Your Eyes
-          </span>
-          <h2 className="font-heading text-3xl font-bold text-bean-black sm:text-4xl">
-            A feast for your eyes.
-          </h2>
+        <Reveal>
+          <SectionHeading
+            eyebrow="Fresh from Our Kitchen"
+            title="A feast for your eyes."
+          />
         </Reveal>
 
         <Reveal>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { ArrowRight, ShoppingBag } from "lucide-react"
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -84,25 +85,21 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
             <ArrowRight className="size-4" />
           </Button>
 
-          <SheetContentFooterLink />
+          <SheetClose
+            render={
+              <Link
+                href="/cart"
+                className={cn(
+                  buttonVariants({ variant: "soft" }),
+                  "w-full no-underline"
+                )}
+              />
+            }
+          >
+            View full cart &amp; edit meals
+          </SheetClose>
         </div>
       </SheetContent>
     </Sheet>
-  )
-}
-
-function SheetContentFooterLink() {
-  return (
-    <SheetPrimitiveCloseAsChild>
-      <Link
-        href="/cart"
-        className={cn(
-          buttonVariants({ variant: "outline" }),
-          "w-full no-underline"
-        )}
-      >
-        View full cart &amp; edit meals
-      </Link>
-    </SheetPrimitiveCloseAsChild>
   )
 }

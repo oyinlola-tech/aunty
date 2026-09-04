@@ -204,7 +204,7 @@ export default function ContactPage() {
                   rel="noopener noreferrer"
                   className={cn(
                     buttonVariants({ size: "lg" }),
-                    "w-full rounded-xl no-underline"
+                    "w-full no-underline"
                   )}
                 >
                   Chat With Us on WhatsApp

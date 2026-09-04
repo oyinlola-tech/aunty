@@ -4,6 +4,8 @@ import Image from "next/image"
 import { SectionContainer } from "@/components/shared/section-container"
 import { Sticker } from "@/components/shared/sticker"
 import { Reveal } from "@/components/shared/reveal"
+import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { ArrowRight, Flame, Soup, Puzzle, ChefHat } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -171,14 +173,14 @@ export default function AboutPage() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <Link
               href="/menu"
-              className="group inline-flex items-center gap-2 rounded-full bg-palace-orange px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-palace-orange-hover"
+              className={cn(buttonVariants({ size: "lg" }), "no-underline")}
             >
               Explore Menu
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-full border border-palace-orange/30 bg-white px-6 py-4 text-sm font-bold text-bean-black transition-colors hover:border-palace-orange hover:bg-palace-orange hover:text-white"
+              className={cn(buttonVariants({ variant: "soft", size: "lg" }), "no-underline")}
             >
               Contact Us
             </Link>

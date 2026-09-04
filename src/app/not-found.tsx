@@ -1,6 +1,9 @@
 import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 import { SectionContainer } from "@/components/shared/section-container"
 import { Sticker } from "@/components/shared/sticker"
+import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 export default function NotFound() {
   return (
@@ -32,20 +35,10 @@ export default function NotFound() {
 
       <Link
         href="/menu"
-        className="group inline-flex items-center gap-2 rounded-full bg-palace-orange px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-palace-orange-hover"
+        className={cn(buttonVariants({ size: "lg" }), "no-underline")}
       >
         Back to the Menu
-        <svg
-          className="size-4 transition-transform group-hover:translate-x-1"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M5 12h14M12 5l7 7-7 7" />
-        </svg>
+        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
       </Link>
     </SectionContainer>
   )

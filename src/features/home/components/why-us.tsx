@@ -1,5 +1,5 @@
 import { SectionContainer } from "@/components/shared/section-container"
-import { Sticker } from "@/components/shared/sticker"
+import { SectionHeading } from "@/components/shared/section-heading"
 import { Reveal } from "@/components/shared/reveal"
 import { Flame, Soup, Puzzle, ChefHat } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
@@ -37,14 +37,13 @@ const valuePoints: ValuePoint[] = [
 export function WhyUs() {
   return (
     <SectionContainer className="flex flex-col gap-10">
-      <Reveal className="flex flex-col items-center gap-3 text-center">
-        <Sticker variant="purple">Why Us</Sticker>
-        <h2 className="font-heading text-3xl font-bold text-bean-black sm:text-4xl">
-          What makes us different
-        </h2>
-        <p className="max-w-lg text-warm-grey">
-          We believe in good food, good service, and making you happy.
-        </p>
+      <Reveal>
+        <SectionHeading
+          sticker="Why Us"
+          stickerVariant="purple"
+          title="What makes us different"
+          description="We believe in good food, good service, and making you happy."
+        />
       </Reveal>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

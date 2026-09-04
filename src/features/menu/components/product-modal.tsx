@@ -325,7 +325,7 @@ export function ProductModal({
             )}
 
             <Button
-              className="w-full rounded-xl"
+              className="w-full"
               size="lg"
               disabled={!canSave || isSubmitting}
               onClick={handleSave}

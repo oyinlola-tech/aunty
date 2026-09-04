@@ -1,7 +1,10 @@
 import Link from "next/link"
 import { menuItems } from "@/data/menu"
 import { SectionContainer } from "@/components/shared/section-container"
+import { SectionHeading } from "@/components/shared/section-heading"
 import { Reveal } from "@/components/shared/reveal"
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
 import { ArrowRight, ArrowDown, Plus } from "lucide-react"
 
 const stepConfig = [
@@ -33,16 +36,12 @@ export function BuildYourPlate() {
   return (
     <section className="bg-cream-deep py-16 sm:py-20">
       <SectionContainer className="flex flex-col gap-10">
-        <Reveal className="flex flex-col items-center gap-3 text-center">
-          <span className="font-heading text-sm font-semibold uppercase tracking-widest text-palace-orange">
-            Build Your Perfect Plate
-          </span>
-          <h2 className="font-heading text-3xl font-bold text-bean-black sm:text-4xl">
-            Mix. Match. Enjoy.
-          </h2>
-          <p className="max-w-lg text-warm-grey">
-            Combine beans, sides, and proteins the way you like them.
-          </p>
+        <Reveal>
+          <SectionHeading
+            eyebrow="Build Your Perfect Plate"
+            title="Mix. Match. Enjoy."
+            description="Combine beans, sides, and proteins the way you like them."
+          />
         </Reveal>
 
         <div className="flex flex-col gap-8">
@@ -106,7 +105,7 @@ export function BuildYourPlate() {
         <div className="flex justify-center">
           <Link
             href="/menu"
-            className="group inline-flex items-center gap-2 rounded-full bg-palace-orange px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-palace-orange-hover"
+            className={cn(buttonVariants({ size: "lg" }), "no-underline")}
           >
             Start Building
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />

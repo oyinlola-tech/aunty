@@ -22,10 +22,14 @@ export function CartSummary() {
         {totalItems > 0 && (
           <button
             type="button"
-            onClick={clearCart}
+            onClick={() => {
+              if (window.confirm("Clear everything from your cart?")) {
+                clearCart()
+              }
+            }}
             className="text-xs text-warm-grey hover:text-rich-red"
           >
-            Clear
+            Clear cart
           </button>
         )}
       </div>

@@ -1,5 +1,7 @@
 import Link from "next/link"
-import { ShoppingBag } from "lucide-react"
+import { ArrowRight, ShoppingBag } from "lucide-react"
+import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 export function EmptyCart() {
   return (
@@ -19,20 +21,10 @@ export function EmptyCart() {
 
       <Link
         href="/menu"
-        className="group inline-flex items-center gap-2 rounded-full bg-palace-orange px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-palace-orange-hover"
+        className={cn(buttonVariants({ size: "lg" }), "no-underline")}
       >
         Explore Menu
-        <svg
-          className="size-4 transition-transform group-hover:translate-x-1"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M5 12h14M12 5l7 7-7 7" />
-        </svg>
+        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
       </Link>
     </div>
   )

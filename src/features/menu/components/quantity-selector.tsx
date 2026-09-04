@@ -34,7 +34,6 @@ export function QuantitySelector({
       <Button
         variant="outline"
         size="icon"
-        className="h-10 w-10 rounded-xl"
         aria-label="Decrease quantity"
         onClick={handleDecrement}
         disabled={value <= 1}
@@ -42,14 +41,13 @@ export function QuantitySelector({
         <Minus className="size-4" />
       </Button>
 
-      <span className="w-10 text-center text-lg font-bold text-bean-black">
+      <span className="w-10 text-center text-lg font-bold text-bean-black" role="status" aria-live="polite">
         {value}
       </span>
 
       <Button
         variant="outline"
         size="icon"
-        className="h-10 w-10 rounded-xl"
         aria-label="Increase quantity"
         onClick={handleIncrement}
         disabled={value >= max}

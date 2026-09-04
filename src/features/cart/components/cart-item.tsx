@@ -88,23 +88,23 @@ export function CartItem({ item, onEdit }: CartItemProps) {
             <Button
               variant="outline"
               size="icon"
-              className="size-8 rounded-lg"
-              aria-label="Decrease quantity"
+              className="size-8"
+              aria-label={`Decrease quantity of ${item.name}`}
               onClick={() => decrementQuantity(item.id)}
               disabled={item.quantity <= 1}
             >
               <Minus className="size-3.5" />
             </Button>
 
-            <span className="w-7 text-center text-sm font-semibold text-bean-black">
+            <span className="w-7 text-center text-sm font-semibold text-bean-black" role="status" aria-live="polite">
               {item.quantity}
             </span>
 
             <Button
               variant="outline"
               size="icon"
-              className="size-8 rounded-lg"
-              aria-label="Increase quantity"
+              className="size-8"
+              aria-label={`Increase quantity of ${item.name}`}
               onClick={() => incrementQuantity(item.id)}
             >
               <Plus className="size-3.5" />

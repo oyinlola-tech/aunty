@@ -1,8 +1,10 @@
 import Link from "next/link"
 import { SectionContainer } from "@/components/shared/section-container"
-import { Sticker } from "@/components/shared/sticker"
+import { SectionHeading } from "@/components/shared/section-heading"
 import { Reveal } from "@/components/shared/reveal"
 import { Doodle } from "@/components/shared/doodle"
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
 
 const steps = [
@@ -32,14 +34,12 @@ export function HowItWorks() {
   return (
     <section className="relative overflow-hidden bg-cream-deep py-16 sm:py-20">
       <SectionContainer className="relative flex flex-col gap-10">
-        <Reveal className="flex flex-col items-center gap-3 text-center">
-          <Sticker variant="orange">How It Works</Sticker>
-          <h2 className="font-heading text-3xl font-bold text-bean-black sm:text-4xl">
-            Simple ordering.
-          </h2>
-          <p className="max-w-md text-warm-grey">
-            From craving to order in just a few taps.
-          </p>
+        <Reveal>
+          <SectionHeading
+            sticker="How It Works"
+            title="Simple ordering."
+            description="From craving to order in just a few taps."
+          />
         </Reveal>
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -69,7 +69,7 @@ export function HowItWorks() {
         <Reveal className="flex justify-center">
           <Link
             href="/menu"
-            className="group inline-flex items-center gap-2 rounded-full bg-palace-orange px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-palace-orange-hover"
+            className={cn(buttonVariants({ size: "lg" }), "no-underline")}
           >
             Get Started
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />

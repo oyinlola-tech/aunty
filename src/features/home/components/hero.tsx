@@ -1,6 +1,8 @@
 import Link from "next/link"
-import { ArrowRight, UtensilsCrossed } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import Image from "next/image"
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
 import { Sticker } from "@/components/shared/sticker"
 import { Reveal } from "@/components/shared/reveal"
 
@@ -27,21 +29,22 @@ export function Hero() {
               delicious sides and perfectly seasoned proteins.
             </p>
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/menu"
-                className="group inline-flex items-center gap-2 rounded-full bg-palace-orange px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-palace-orange-hover"
+                className={cn(buttonVariants({ size: "lg" }), "no-underline")}
               >
                 Explore Menu
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
               </Link>
-
               <Link
-                href="/checkout"
-                className="group inline-flex items-center gap-2 rounded-full border border-palace-orange/30 bg-white px-6 py-4 text-sm font-bold text-bean-black transition-colors hover:border-palace-orange hover:bg-palace-orange hover:text-white"
+                href="/about"
+                className={cn(
+                  buttonVariants({ variant: "soft", size: "lg" }),
+                  "no-underline"
+                )}
               >
-                <UtensilsCrossed className="size-4" />
-                Order Now
+                Our Story
               </Link>
             </div>
 
