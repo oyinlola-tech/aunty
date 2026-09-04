@@ -3,7 +3,8 @@ import Link from "next/link"
 import Image from "next/image"
 import { SectionContainer } from "@/components/shared/section-container"
 import { Sticker } from "@/components/shared/sticker"
-import { ArrowRight } from "lucide-react"
+import { Reveal } from "@/components/shared/reveal"
+import { ArrowRight, Flame, Soup, Puzzle, ChefHat } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "About",
@@ -15,7 +16,7 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col gap-16">
       <SectionContainer className="flex flex-col gap-10 py-16">
-        <div className="flex flex-col items-center gap-3 text-center">
+        <Reveal className="flex flex-col items-center gap-3 text-center">
           <Sticker variant="orange">Our Story</Sticker>
           <h1 className="font-heading text-3xl font-bold text-bean-black sm:text-4xl lg:text-5xl">
             About Soft Beans Palace
@@ -23,7 +24,7 @@ export default function AboutPage() {
           <p className="max-w-lg text-warm-grey">
             A short story about good food, good people, and Port Harcourt.
           </p>
-        </div>
+        </Reveal>
 
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
@@ -76,15 +77,7 @@ export default function AboutPage() {
           <div className="rounded-2xl bg-cream p-6">
             <div className="flex items-center gap-3">
               <div className="flex size-10 items-center justify-center rounded-full bg-palace-orange">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="size-5 text-white"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M12 2v20M2 12h20" />
-                </svg>
+                <Flame className="size-5 text-white" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-heading text-lg font-bold text-bean-black">
@@ -99,15 +92,7 @@ export default function AboutPage() {
           <div className="rounded-2xl bg-cream p-6">
             <div className="flex items-center gap-3">
               <div className="flex size-10 items-center justify-center rounded-full bg-palace-orange">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="size-5 text-white"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M12 8c-2 4-4 6-4 6s2-2 4-4c2 2 4 4 4 4s-2-2-4-4c-2 1-2-1-2-1z" />
-                </svg>
+                <Soup className="size-5 text-white" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-heading text-lg font-bold text-bean-black">
@@ -122,16 +107,7 @@ export default function AboutPage() {
           <div className="rounded-2xl bg-cream p-6">
             <div className="flex items-center gap-3">
               <div className="flex size-10 items-center justify-center rounded-full bg-palace-orange">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="size-5 text-white"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M3 3v18h18" />
-                  <path d="M7 16l4-8 4 4 4-6" />
-                </svg>
+                <Puzzle className="size-5 text-white" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-heading text-lg font-bold text-bean-black">
@@ -146,15 +122,7 @@ export default function AboutPage() {
           <div className="rounded-2xl bg-cream p-6">
             <div className="flex items-center gap-3">
               <div className="flex size-10 items-center justify-center rounded-full bg-palace-orange">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="size-5 text-white"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M12 21c-4 0-7-3-7-7 0-3 2-5 4-6 2 1 4 3 4 6 0 4-3 7-7 7z" />
-                </svg>
+                <ChefHat className="size-5 text-white" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-heading text-lg font-bold text-bean-black">
@@ -191,29 +159,31 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <SectionContainer className="flex flex-col items-center gap-8 py-16 text-center">
-        <Sticker variant="orange">Order Now</Sticker>
-        <h2 className="font-heading text-2xl font-bold text-bean-black">
-          Ready to eat?
-        </h2>
-        <p className="max-w-md text-warm-grey">
-          Browse our menu, build your order, and send it via WhatsApp.
-        </p>
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-          <Link
-            href="/menu"
-            className="group inline-flex items-center gap-2 rounded-full bg-palace-orange px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-palace-orange-hover"
-          >
-            Explore Menu
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 rounded-full border border-palace-orange/30 bg-white px-6 py-4 text-sm font-bold text-bean-black transition-colors hover:border-palace-orange hover:bg-palace-orange hover:text-white"
-          >
-            Contact Us
-          </Link>
-        </div>
+      <SectionContainer className="py-16">
+        <Reveal className="flex flex-col items-center gap-8 text-center">
+          <Sticker variant="orange">Order Now</Sticker>
+          <h2 className="font-heading text-2xl font-bold text-bean-black">
+            Ready to eat?
+          </h2>
+          <p className="max-w-md text-warm-grey">
+            Browse our menu, build your order, and send it via WhatsApp.
+          </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <Link
+              href="/menu"
+              className="group inline-flex items-center gap-2 rounded-full bg-palace-orange px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-palace-orange-hover"
+            >
+              Explore Menu
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 rounded-full border border-palace-orange/30 bg-white px-6 py-4 text-sm font-bold text-bean-black transition-colors hover:border-palace-orange hover:bg-palace-orange hover:text-white"
+            >
+              Contact Us
+            </Link>
+          </div>
+        </Reveal>
       </SectionContainer>
     </div>
   )

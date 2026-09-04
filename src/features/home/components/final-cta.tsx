@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Sticker } from "@/components/shared/sticker"
+import { Reveal } from "@/components/shared/reveal"
 import { ArrowRight } from "lucide-react"
 
 export function FinalCTA() {
@@ -10,7 +11,7 @@ export function FinalCTA() {
 
       <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div className="flex flex-col gap-6">
+          <Reveal className="flex flex-col gap-6">
             <div className="flex items-center gap-3">
               <Sticker variant="gold">Hungry already?</Sticker>
               <span className="text-white/60">Order now</span>
@@ -43,9 +44,9 @@ export function FinalCTA() {
                 Order Now
               </Link>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="relative">
+          <Reveal delay={0.08} className="relative">
             <div className="relative h-80 lg:h-full w-80 lg:w-96">
               <div className="absolute inset-0 rotate-6 rounded-3xl bg-cream-deep border border-border/50 shadow-xl lg:rotate-0 lg:inset-y-12 lg:inset-x-12">
                 <Image
@@ -66,7 +67,7 @@ export function FinalCTA() {
                 />
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

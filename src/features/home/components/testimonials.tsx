@@ -1,5 +1,6 @@
 import { testimonials } from "@/data/testimonials"
 import { SectionContainer } from "@/components/shared/section-container"
+import { Reveal } from "@/components/shared/reveal"
 import { cn } from "@/lib/utils"
 import { Star } from "lucide-react"
 
@@ -14,21 +15,25 @@ export function Testimonials() {
   return (
     <section className="bg-cream py-16 sm:py-20">
       <SectionContainer className="flex flex-col gap-10">
-        <div className="flex flex-col items-center gap-3 text-center">
+        <Reveal className="flex flex-col items-center gap-3 text-center">
           <span className="font-heading text-sm font-semibold uppercase tracking-widest text-palace-orange">
             What People Say
           </span>
           <h2 className="font-heading text-3xl font-bold text-bean-black sm:text-4xl">
             Happy customers
           </h2>
-        </div>
+        </Reveal>
 
         <div className="flex gap-6 overflow-x-auto pb-4 sm:flex-wrap lg:justify-center">
           {testimonials.map((testimonial, index) => (
-            <div
+            <Reveal
               key={testimonial.id}
+              delay={index * 0.06}
+              className="w-72 shrink-0"
+            >
+            <figure
               className={cn(
-                "flex shrink-0 w-72 flex-col gap-3 rounded-2xl bg-cream-deep p-6",
+                "flex h-full flex-col gap-3 rounded-2xl bg-cream-deep p-6",
                 pastelBackgrounds[index % pastelBackgrounds.length]
               )}
             >
@@ -47,7 +52,8 @@ export function Testimonials() {
                 <span>— {testimonial.customerName}</span>
               </div>
               <p className="text-xs text-warm-grey">{testimonial.location}</p>
-            </div>
+            </figure>
+            </Reveal>
           ))}
         </div>
       </SectionContainer>

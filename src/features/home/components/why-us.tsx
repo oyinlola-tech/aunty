@@ -1,44 +1,34 @@
 import { SectionContainer } from "@/components/shared/section-container"
 import { Sticker } from "@/components/shared/sticker"
+import { Reveal } from "@/components/shared/reveal"
+import { Flame, Soup, Puzzle, ChefHat } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-const valuePoints = [
+interface ValuePoint {
+  icon: LucideIcon
+  title: string
+  description: string
+}
+
+const valuePoints: ValuePoint[] = [
   {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="size-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2v20M2 12h20" />
-      </svg>
-    ),
+    icon: Flame,
     title: "Freshly Prepared",
     description: "Made fresh to give you the best flavour in every bite.",
   },
   {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="size-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 8c-2 4-4 6-4 6s2-2 4-4c2 2 4 4 4 4s-2-2-4-4c-2 1-2-1-2-1z" />
-        <path d="M12 22v-4" />
-      </svg>
-    ),
+    icon: Soup,
     title: "Comfort in Every Bite",
     description: "Soft, satisfying food made to feel like home.",
   },
   {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="size-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 3v18h18" />
-        <path d="M7 16l4-8 4 4 4-6" />
-      </svg>
-    ),
+    icon: Puzzle,
     title: "Your Plate, Your Way",
     description: "Mix your beans, sides, and proteins the way you like them.",
   },
   {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="size-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 21c-4 0-7-3-7-7 0-3 2-5 4-6 2 1 4 3 4 6 0 4-3 7-7 7z" />
-        <path d="M9 9h6M12 6v6" />
-      </svg>
-    ),
+    icon: ChefHat,
     title: "Made With Care",
     description: "Good food deserves attention from preparation to delivery.",
   },
@@ -47,7 +37,7 @@ const valuePoints = [
 export function WhyUs() {
   return (
     <SectionContainer className="flex flex-col gap-10">
-      <div className="flex flex-col items-center gap-3 text-center">
+      <Reveal className="flex flex-col items-center gap-3 text-center">
         <Sticker variant="purple">Why Us</Sticker>
         <h2 className="font-heading text-3xl font-bold text-bean-black sm:text-4xl">
           What makes us different
@@ -55,26 +45,30 @@ export function WhyUs() {
         <p className="max-w-lg text-warm-grey">
           We believe in good food, good service, and making you happy.
         </p>
-      </div>
+      </Reveal>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {valuePoints.map((point, index) => (
-          <div
-            key={point.title}
-            className={cn(
-              "flex flex-col gap-4 rounded-2xl bg-cream p-6 transition-all hover:shadow-md",
-              index % 2 === 1 && "bg-cream-deep"
-            )}
-          >
-            <div className="flex size-12 items-center justify-center rounded-full bg-palace-orange text-white">
-              {point.icon}
-            </div>
-            <h3 className="font-heading text-lg font-bold text-bean-black">
-              {point.title}
-            </h3>
-            <p className="text-sm text-warm-grey">{point.description}</p>
-          </div>
-        ))}
+        {valuePoints.map((point, index) => {
+          const Icon = point.icon
+          return (
+            <Reveal key={point.title} delay={index * 0.06} className="flex">
+              <div
+                className={cn(
+                  "flex h-full w-full flex-col gap-4 rounded-2xl bg-cream p-6 transition-all hover:shadow-md",
+                  index % 2 === 1 && "bg-cream-deep"
+                )}
+              >
+                <div className="flex size-12 items-center justify-center rounded-full bg-palace-orange text-white">
+                  <Icon className="size-6" aria-hidden="true" />
+                </div>
+                <h3 className="font-heading text-lg font-bold text-bean-black">
+                  {point.title}
+                </h3>
+                <p className="text-sm text-warm-grey">{point.description}</p>
+              </div>
+            </Reveal>
+          )
+        })}
       </div>
     </SectionContainer>
   )

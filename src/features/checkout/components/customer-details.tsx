@@ -1,32 +1,23 @@
-"use client"
-
-import { forwardRef } from "react"
 import { User } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import type { UseFormRegisterReturn } from "react-hook-form"
 
 interface CustomerDetailsProps {
-  name: string
-  phone: string
-  onNameChange: (value: string) => void
-  onPhoneChange: (value: string) => void
+  nameField: UseFormRegisterReturn
+  phoneField: UseFormRegisterReturn
   nameError?: string
   phoneError?: string
 }
 
-export const CustomerDetails = forwardRef<
-  HTMLDivElement,
-  CustomerDetailsProps
->(function CustomerDetails({
-  name,
-  phone,
-  onNameChange,
-  onPhoneChange,
+export function CustomerDetails({
+  nameField,
+  phoneField,
   nameError,
   phoneError,
-}, ref) {
+}: CustomerDetailsProps) {
   return (
-    <div ref={ref} className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
         <div className="flex size-10 items-center justify-center rounded-full bg-palace-orange">
           <User className="size-5 text-white" />
@@ -43,15 +34,16 @@ export const CustomerDetails = forwardRef<
 
       <div className="flex flex-col gap-4 rounded-xl border border-border/50 bg-cream p-4">
         <div>
-          <Label className="text-sm font-medium text-bean-black">
+          <Label htmlFor="customerName" className="text-sm font-medium text-bean-black">
             Full Name
           </Label>
           <Input
             type="text"
-            value={name}
-            onChange={(e) => onNameChange(e.target.value)}
+            id="customerName"
+            {...nameField}
             placeholder="Chioma Okafor"
             className="mt-1.5 h-12 rounded-xl bg-cream-deep"
+            aria-invalid={nameError ? true : undefined}
             aria-describedby={nameError ? "name-error" : undefined}
           />
           {nameError && (
@@ -62,15 +54,16 @@ export const CustomerDetails = forwardRef<
         </div>
 
         <div>
-          <Label className="text-sm font-medium text-bean-black">
+          <Label htmlFor="phoneNumber" className="text-sm font-medium text-bean-black">
             Phone Number
           </Label>
           <Input
             type="tel"
-            value={phone}
-            onChange={(e) => onPhoneChange(e.target.value)}
+            id="phoneNumber"
+            {...phoneField}
             placeholder="08012345678"
             className="mt-1.5 h-12 rounded-xl bg-cream-deep"
+            aria-invalid={phoneError ? true : undefined}
             aria-describedby={phoneError ? "phone-error" : undefined}
           />
           {phoneError && (
@@ -82,4 +75,4 @@ export const CustomerDetails = forwardRef<
       </div>
     </div>
   )
-})
+}

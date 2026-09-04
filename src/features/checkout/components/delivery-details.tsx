@@ -1,36 +1,25 @@
-"use client"
-
-import { forwardRef } from "react"
 import { MapPin } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import type { UseFormRegisterReturn } from "react-hook-form"
 
 interface DeliveryDetailsProps {
-  area: string
-  address: string
-  directions: string
-  onAreaChange: (value: string) => void
-  onAddressChange: (value: string) => void
-  onDirectionsChange: (value: string) => void
+  areaField: UseFormRegisterReturn
+  addressField: UseFormRegisterReturn
+  directionsField: UseFormRegisterReturn
   areaError?: string
   addressError?: string
 }
 
-export const DeliveryDetails = forwardRef<
-  HTMLDivElement,
-  DeliveryDetailsProps
->(function DeliveryDetails({
-  area,
-  address,
-  directions,
-  onAreaChange,
-  onAddressChange,
-  onDirectionsChange,
+export function DeliveryDetails({
+  areaField,
+  addressField,
+  directionsField,
   areaError,
   addressError,
-}, ref) {
+}: DeliveryDetailsProps) {
   return (
-    <div ref={ref} className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
         <div className="flex size-10 items-center justify-center rounded-full bg-espresso">
           <MapPin className="size-5 text-white" />
@@ -47,15 +36,16 @@ export const DeliveryDetails = forwardRef<
 
       <div className="flex flex-col gap-4 rounded-xl border border-border/50 bg-cream p-4">
         <div>
-          <Label className="text-sm font-medium text-bean-black">
+          <Label htmlFor="area" className="text-sm font-medium text-bean-black">
             Area / Location
           </Label>
           <Input
             type="text"
-            value={area}
-            onChange={(e) => onAreaChange(e.target.value)}
+            id="area"
+            {...areaField}
             placeholder="GRA Phase 1"
             className="mt-1.5 h-12 rounded-xl bg-cream-deep"
+            aria-invalid={areaError ? true : undefined}
             aria-describedby={areaError ? "area-error" : undefined}
           />
           {areaError && (
@@ -66,15 +56,16 @@ export const DeliveryDetails = forwardRef<
         </div>
 
         <div>
-          <Label className="text-sm font-medium text-bean-black">
+          <Label htmlFor="address" className="text-sm font-medium text-bean-black">
             Full Address
           </Label>
           <Input
             type="text"
-            value={address}
-            onChange={(e) => onAddressChange(e.target.value)}
+            id="address"
+            {...addressField}
             placeholder="123 Example Street"
             className="mt-1.5 h-12 rounded-xl bg-cream-deep"
+            aria-invalid={addressError ? true : undefined}
             aria-describedby={addressError ? "address-error" : undefined}
           />
           {addressError && (
@@ -85,13 +76,16 @@ export const DeliveryDetails = forwardRef<
         </div>
 
         <div>
-          <Label className="text-sm font-medium text-bean-black">
+          <Label
+            htmlFor="directions"
+            className="text-sm font-medium text-bean-black"
+          >
             Landmark (optional)
           </Label>
           <Input
             type="text"
-            value={directions}
-            onChange={(e) => onDirectionsChange(e.target.value)}
+            id="directions"
+            {...directionsField}
             placeholder="Near Example Junction"
             className="mt-1.5 h-12 rounded-xl bg-cream-deep"
           />
@@ -99,4 +93,4 @@ export const DeliveryDetails = forwardRef<
       </div>
     </div>
   )
-})
+}

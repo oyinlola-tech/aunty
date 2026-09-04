@@ -9,15 +9,38 @@ import { MenuSearch } from "./menu-search"
 import { ProductModal } from "./product-modal"
 import { useMenuFilter } from "../hooks/use-menu-filter"
 import type { MenuItem } from "@/types/menu"
+import type { MenuFilter } from "@/types/common"
 import { useCartStore } from "@/features/cart/store/cart-store"
 import { Button } from "@/components/ui/button"
 
-export function MenuExperience() {
-  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null)
-  // Bumped on every open so the dialog mounts fresh (its own quantity /
-  // side / protein / instructions) instead of inheriting a previous dish's.
+interface MenuExperienceProps {
+  /** Optional category filter from ?category= (beans|sides|proteins). */
+  initialCategory?: string
+  /** Optional dish slug from ?item= to open directly in the dialog. */
+  initialItemSlug?: string
+}
+
+const VALID_FILTERS: MenuFilter[] = ["all", "beans", "sides", "proteins"]
+
+export function MenuExperience({
+  initialCategory,
+  initialItemSlug,
+}: MenuExperienceProps) {
+  const defaultFilter = VALID_FILTERS.includes(initialCategory as MenuFilter)
+    ? (initialCategory as MenuFilter)
+    : "all"
+
+  // A ?item= deep link auto-opens that dish's configuration dialog on mount.
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(() =>
+    initialItemSlug
+      ? (menuItems.find(
+          (menuItem) =>
+            menuItem.slug === initialItemSlug && menuItem.available
+        ) ?? null)
+      : null
+  )
   const [modalKey, setModalKey] = useState(0)
-  const [modalOpen, setModalOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(selectedItem !== null)
 
   const {
     activeFilter,
@@ -25,7 +48,7 @@ export function MenuExperience() {
     filteredItems,
     handleFilterChange,
     setSearchQuery,
-  } = useMenuFilter(menuItems)
+  } = useMenuFilter(menuItems, defaultFilter)
 
   const addItem = useCartStore((s) => s.addItem)
 
@@ -54,10 +77,6 @@ export function MenuExperience() {
       price: item.price,
       quantity: 1,
     })
-  }
-
-  const handleViewDetails = (item: MenuItem) => {
-    openConfiguration(item)
   }
 
   return (
@@ -109,7 +128,7 @@ export function MenuExperience() {
       ) : (
         <MenuGrid
           items={filteredItems}
-          onOpenDetails={handleViewDetails}
+          onOpenDetails={openConfiguration}
           onQuickAdd={handleAdd}
         />
       )}

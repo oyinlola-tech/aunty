@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { SectionContainer } from "@/components/shared/section-container"
 import { Sticker } from "@/components/shared/sticker"
+import { Reveal } from "@/components/shared/reveal"
+import { Doodle } from "@/components/shared/doodle"
 import { ArrowRight } from "lucide-react"
 
 const steps = [
@@ -28,9 +30,9 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="bg-cream-deep py-16 sm:py-20">
-      <SectionContainer className="flex flex-col gap-10">
-        <div className="flex flex-col items-center gap-3 text-center">
+    <section className="relative overflow-hidden bg-cream-deep py-16 sm:py-20">
+      <SectionContainer className="relative flex flex-col gap-10">
+        <Reveal className="flex flex-col items-center gap-3 text-center">
           <Sticker variant="orange">How It Works</Sticker>
           <h2 className="font-heading text-3xl font-bold text-bean-black sm:text-4xl">
             Simple ordering.
@@ -38,12 +40,13 @@ export function HowItWorks() {
           <p className="max-w-md text-warm-grey">
             From craving to order in just a few taps.
           </p>
-        </div>
+        </Reveal>
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step) => (
-            <div
+          {steps.map((step, index) => (
+            <Reveal
               key={step.number}
+              delay={index * 0.07}
               className="flex flex-col gap-4 relative"
             >
               <div className="flex justify-center">
@@ -59,11 +62,11 @@ export function HowItWorks() {
                   {step.description}
                 </p>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
 
-        <div className="flex justify-center">
+        <Reveal className="flex justify-center">
           <Link
             href="/menu"
             className="group inline-flex items-center gap-2 rounded-full bg-palace-orange px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-palace-orange-hover"
@@ -71,8 +74,10 @@ export function HowItWorks() {
             Get Started
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
           </Link>
-        </div>
+        </Reveal>
       </SectionContainer>
+
+      <Doodle className="pointer-events-none absolute -bottom-8 -left-8 w-40 -rotate-12 opacity-60 lg:w-52" />
     </section>
   )
 }

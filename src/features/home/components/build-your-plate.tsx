@@ -1,7 +1,8 @@
 import Link from "next/link"
 import { menuItems } from "@/data/menu"
 import { SectionContainer } from "@/components/shared/section-container"
-import { ArrowRight, ArrowDown } from "lucide-react"
+import { Reveal } from "@/components/shared/reveal"
+import { ArrowRight, ArrowDown, Plus } from "lucide-react"
 
 const stepConfig = [
   {
@@ -32,7 +33,7 @@ export function BuildYourPlate() {
   return (
     <section className="bg-cream-deep py-16 sm:py-20">
       <SectionContainer className="flex flex-col gap-10">
-        <div className="flex flex-col items-center gap-3 text-center">
+        <Reveal className="flex flex-col items-center gap-3 text-center">
           <span className="font-heading text-sm font-semibold uppercase tracking-widest text-palace-orange">
             Build Your Perfect Plate
           </span>
@@ -42,7 +43,7 @@ export function BuildYourPlate() {
           <p className="max-w-lg text-warm-grey">
             Combine beans, sides, and proteins the way you like them.
           </p>
-        </div>
+        </Reveal>
 
         <div className="flex flex-col gap-8">
           {stepConfig.map((step, index) => {
@@ -54,35 +55,33 @@ export function BuildYourPlate() {
                 : proteinsItems
 
             return (
-              <div key={step.category} className="flex gap-6">
-                <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-palace-orange text-white">
-                  <span className="font-heading text-xl font-bold">{step.number}</span>
-                </div>
+              <Reveal key={step.category} delay={index * 0.08}>
+                <div className="flex gap-6">
+                  <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-palace-orange text-white">
+                    <span className="font-heading text-xl font-bold">{step.number}</span>
+                  </div>
 
-                <div className="flex flex-col gap-3">
-                  <h3 className="font-heading text-xl font-bold text-bean-black">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-warm-grey">{step.description}</p>
+                  <div className="flex min-w-0 flex-col gap-3">
+                    <h3 className="font-heading text-xl font-bold text-bean-black">
+                      {step.title}
+                    </h3>
+                    <p className="text-sm text-warm-grey">{step.description}</p>
 
-                  <div className="flex flex-col gap-2">
-                    {items.map((item) => (
-                      <Link
-                        key={item.id}
-                        href="/menu"
-                        className="inline-flex items-center gap-2 rounded-full border border-border/50 bg-cream px-3 py-1.5 text-sm text-warm-grey transition-colors hover:border-palace-orange hover:text-palace-orange"
-                      >
-                        <span className="flex items-center gap-1.5">
-                          <span className="flex size-5 items-center justify-center rounded-full bg-cream-deep">
-                            {index + 1}
-                          </span>
+                    <div className="flex flex-wrap gap-2">
+                      {items.map((item) => (
+                        <Link
+                          key={item.id}
+                          href={`/menu?category=${step.category}`}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-border/50 bg-cream px-3.5 py-1.5 text-sm text-warm-grey transition-colors hover:border-palace-orange hover:text-palace-orange"
+                        >
+                          <Plus className="size-3.5 text-palace-orange" />
                           {item.name}
-                        </span>
-                      </Link>
-                    ))}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             )
           })}
         </div>

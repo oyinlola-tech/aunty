@@ -1,14 +1,16 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useCartStore } from "@/features/cart/store/cart-store"
 import { useMounted } from "@/hooks/use-mounted"
 import { CustomerDetails } from "./customer-details"
 import { DeliveryDetails } from "./delivery-details"
 import { OrderSummary } from "./order-summary"
-import { checkoutSchema } from "../schemas/checkout.schema"
+import { checkoutSchema, type CheckoutFormData } from "../schemas/checkout.schema"
 import { createOrder } from "../utils/create-order"
 import { generateWhatsAppMessage } from "../utils/whatsapp-message"
 import { createWhatsAppUrl } from "../utils/whatsapp-url"
@@ -18,13 +20,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { ArrowRight } from "lucide-react"
-
-interface FieldErrors {
-  customerName?: string
-  phoneNumber?: string
-  area?: string
-  address?: string
-}
 
 export function CheckoutExperience() {
   const router = useRouter()
@@ -36,22 +31,17 @@ export function CheckoutExperience() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null)
   const [configError, setConfigError] = useState<string | null>(null)
-  const [errors, setErrors] = useState<FieldErrors>({})
 
-  const [formData, setFormData] = useState({
-    customerName: "",
-    phoneNumber: "",
-    area: "",
-    address: "",
-    directions: "",
-    notes: "",
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<CheckoutFormData>({
+    resolver: zodResolver(checkoutSchema),
+    mode: "onTouched",
   })
-
-  useEffect(() => {
-    if (mounted && items.length === 0 && !isSubmitting) {
-      router.replace("/menu")
-    }
-  }, [mounted, items.length, isSubmitting, router])
+  const orderNotes = watch("notes")
 
   // Avoid rendering cart-dependent content before hydration so the server
   // HTML and first client render match.
@@ -66,6 +56,8 @@ export function CheckoutExperience() {
     )
   }
 
+  // Phase 1 never submits through a backend: the customer reviews and sends
+  // the order inside WhatsApp, so there is nothing to do with an empty cart.
   if (items.length === 0) {
     return (
       <div className="flex flex-col items-center gap-6 py-20 text-center">
@@ -83,26 +75,7 @@ export function CheckoutExperience() {
     )
   }
 
-  const setField = (field: keyof typeof formData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-
-    const result = checkoutSchema.safeParse(formData)
-    if (!result.success) {
-      const nextErrors: FieldErrors = {}
-      for (const issue of result.error.issues) {
-        const field = issue.path[0] as keyof FieldErrors
-        if (field) nextErrors[field] = issue.message
-      }
-      setErrors(nextErrors)
-      return
-    }
-    setErrors({})
-    setConfigError(null)
-
+  const onSubmit = (data: CheckoutFormData) => {
     const whatsappNumber = siteConfig.contact.whatsapp
     if (!whatsappNumber) {
       setConfigError(
@@ -112,21 +85,22 @@ export function CheckoutExperience() {
     }
 
     setIsSubmitting(true)
+    setConfigError(null)
 
     try {
       const order = createOrder({
         customer: {
-          name: result.data.customerName,
-          phone: result.data.phoneNumber.replace(/[\s-]/g, ""),
+          name: data.customerName,
+          phone: data.phoneNumber.replace(/[\s-]/g, ""),
         },
         delivery: {
-          area: result.data.area,
-          address: result.data.address,
-          directions: result.data.directions || undefined,
+          area: data.area,
+          address: data.address,
+          directions: data.directions || undefined,
         },
         items,
         subtotal,
-        notes: result.data.notes || undefined,
+        notes: data.notes || undefined,
       })
 
       const orderMessage = generateWhatsAppMessage(order)
@@ -141,31 +115,26 @@ export function CheckoutExperience() {
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-8 lg:flex-row lg:gap-8"
     >
       <div className="flex flex-col gap-8 lg:max-w-lg">
         <div className="flex flex-col gap-4 rounded-2xl border border-border/50 bg-cream p-6">
           <CustomerDetails
-            name={formData.customerName}
-            phone={formData.phoneNumber}
-            onNameChange={(value) => setField("customerName", value)}
-            onPhoneChange={(value) => setField("phoneNumber", value)}
-            nameError={errors.customerName}
-            phoneError={errors.phoneNumber}
+            nameField={register("customerName")}
+            phoneField={register("phoneNumber")}
+            nameError={errors.customerName?.message}
+            phoneError={errors.phoneNumber?.message}
           />
         </div>
 
         <div className="flex flex-col gap-4 rounded-2xl border border-border/50 bg-cream p-6">
           <DeliveryDetails
-            area={formData.area}
-            address={formData.address}
-            directions={formData.directions}
-            onAreaChange={(value) => setField("area", value)}
-            onAddressChange={(value) => setField("address", value)}
-            onDirectionsChange={(value) => setField("directions", value)}
-            areaError={errors.area}
-            addressError={errors.address}
+            areaField={register("area")}
+            addressField={register("address")}
+            directionsField={register("directions")}
+            areaError={errors.area?.message}
+            addressError={errors.address?.message}
           />
         </div>
 
@@ -174,13 +143,15 @@ export function CheckoutExperience() {
             Order Notes
           </h2>
           <div>
-            <Label htmlFor="order-notes" className="text-sm font-medium text-bean-black">
+            <Label
+              htmlFor="notes"
+              className="text-sm font-medium text-bean-black"
+            >
               Anything else we should know about this order?
             </Label>
             <Textarea
-              id="order-notes"
-              value={formData.notes}
-              onChange={(e) => setField("notes", e.target.value)}
+              id="notes"
+              {...register("notes")}
               placeholder="Call before delivery, gate code, extra napkins..."
               className="mt-1.5 min-h-[100px] rounded-xl bg-cream-deep resize-none"
               rows={4}
@@ -194,7 +165,11 @@ export function CheckoutExperience() {
       </div>
 
       <div className="flex flex-col gap-6 lg:max-w-md">
-        <OrderSummary items={items} subtotal={subtotal} notes={formData.notes} />
+        <OrderSummary
+          items={items}
+          subtotal={subtotal}
+          notes={orderNotes || undefined}
+        />
 
         {configError && (
           <p className="rounded-xl bg-peach p-4 text-sm font-medium text-warm-brown">
