@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Plain soft beans with stew placeholder illustration</title>
+  <desc id="desc">Plate of soft beans with savoury tomato stew</desc>
+  <rect width="800" height="800" fill="#F7ECDC"/>
+  <circle cx="400" cy="420" r="250" fill="#FFFDF8" stroke="#E7DFCF" stroke-width="8"/>
+  <path d="M215 330 Q210 235 300 225 L500 225 Q590 235 585 330 L570 470 Q565 560 400 570 Q235 560 230 470 Z" fill="#EFE2C8"/>
+  <path d="M230 470 Q230 300 400 295 Q570 300 570 470 Q570 545 400 552 Q230 545 230 470 Z" fill="#7A4A2B"/>
+  <ellipse cx="340" cy="400" rx="52" ry="14" fill="#8A5836" opacity="0.55"/>
+  <ellipse cx="440" cy="430" rx="48" ry="13" fill="#8A5836" opacity="0.45"/>
+  <ellipse cx="500" cy="395" rx="40" ry="12" fill="#8A5836" opacity="0.5"/>
+  <path d="M250 520 Q250 380 400 375 Q550 380 550 520 Q550 560 400 566 Q250 560 250 520 Z" fill="#C84B2F"/>
+  <path d="M270 505 Q278 408 400 400 Q522 408 530 505 Q534 540 400 548 Q266 540 270 505 Z" fill="#B03F24"/>
+  <ellipse cx="320" cy="470" rx="11" ry="7" fill="#8F321A" transform="rotate(-16 320 470)"/>
+  <ellipse cx="470" cy="455" rx="12" ry="7" fill="#8F321A" transform="rotate(12 470 455)"/>
+  <ellipse cx="395" cy="520" rx="10" ry="6" fill="#8F321A" transform="rotate(-6 395 520)"/>
+  <path d="M300 640 q100 -60 200 0" fill="none" stroke="#6B655D" stroke-width="8" stroke-linecap="round"/>
+  <rect x="330" y="690" width="140" height="26" rx="13" fill="#E7DFCF"/>
+</svg>

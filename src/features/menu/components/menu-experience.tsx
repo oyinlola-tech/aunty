@@ -53,21 +53,19 @@ export function MenuExperience({
 
   const addItem = useCartStore((s) => s.addItem)
 
-  const openConfiguration = (item: MenuItem) => {
-    if (!item.available) return
-    setSelectedItem(item)
-    setModalKey((key) => key + 1)
-    setModalOpen(true)
-  }
-
-  // "Add" on a dish that can take a side/protein opens the configuration
-  // dialog (the meal builder). Only plain dishes without a customization
-  // slot are added straight to the cart.
+  // "Add" on a meal base (beans) opens the configuration dialog so the
+  // customer can add sides/proteins first. Plain dishes are added straight
+  // to the cart, and every card links through to its own /menu/[slug] page.
   const handleAdd = (item: MenuItem) => {
     if (!item.available) return
 
-    if (item.customization) {
-      openConfiguration(item)
+    const isMealBase =
+      item.customization?.sides === true || item.customization?.proteins === true
+
+    if (isMealBase) {
+      setSelectedItem(item)
+      setModalKey((key) => key + 1)
+      setModalOpen(true)
       return
     }
 
@@ -118,11 +116,7 @@ export function MenuExperience({
           </Button>
         </div>
       ) : (
-        <MenuGrid
-          items={filteredItems}
-          onOpenDetails={openConfiguration}
-          onQuickAdd={handleAdd}
-        />
+        <MenuGrid items={filteredItems} onAdd={handleAdd} />
       )}
 
       {selectedItem && (

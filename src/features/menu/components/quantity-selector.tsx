@@ -8,49 +8,70 @@ interface QuantitySelectorProps {
   value: number
   onChange: (value: number) => void
   className?: string
-  max?: number
+  /**
+   * What the counter refers to, used for accessible button names, e.g.
+   * "Fried Plantain" -> "Increase Fried Plantain quantity". Falls back to
+   * a generic "quantity" label when omitted.
+   */
+  subject?: string
+  /** Smallest allowed value. Add-on rows use 0 (0 = not selected). */
+  min?: number
+  /** Compact sizing for dense rows (food configuration). */
+  compact?: boolean
 }
 
 export function QuantitySelector({
   value,
   onChange,
   className,
-  max = 10,
+  subject = "quantity",
+  min = 1,
+  compact = false,
 }: QuantitySelectorProps) {
   const handleDecrement = () => {
-    if (value > 1) {
+    if (value > min) {
       onChange(value - 1)
     }
   }
 
   const handleIncrement = () => {
-    if (value < max) {
-      onChange(value + 1)
-    }
+    onChange(value + 1)
   }
 
+  const buttonClass = compact ? "size-9" : "size-10"
+  const valueClass = compact ? "w-9 text-base" : "w-10 text-lg"
+
   return (
-    <div className={cn("flex items-center gap-2", className)}>
+    <div className={cn("flex items-center gap-1.5", className)}>
       <Button
         variant="outline"
         size="icon"
-        aria-label="Decrease quantity"
+        className={buttonClass}
+        aria-label={`Decrease ${subject} quantity`}
         onClick={handleDecrement}
-        disabled={value <= 1}
+        disabled={value <= min}
       >
         <Minus className="size-4" />
       </Button>
 
-      <span className="w-10 text-center text-lg font-bold text-bean-black" role="status" aria-live="polite">
+      <span
+        className={cn(
+          "text-center font-bold text-bean-black",
+          valueClass
+        )}
+        role="status"
+        aria-live="polite"
+        aria-label={`${subject} quantity: ${value}`}
+      >
         {value}
       </span>
 
       <Button
         variant="outline"
         size="icon"
-        aria-label="Increase quantity"
+        className={buttonClass}
+        aria-label={`Increase ${subject} quantity`}
         onClick={handleIncrement}
-        disabled={value >= max}
       >
         <Plus className="size-4" />
       </Button>

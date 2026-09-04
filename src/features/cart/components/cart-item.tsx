@@ -3,7 +3,7 @@
 import { Minus, Plus, Trash2, PencilLine } from "lucide-react"
 import Image from "next/image"
 import { useCartStore } from "../store/cart-store"
-import { getCartItemLineTotal } from "../utils/pricing"
+import { getAddOnTotal, getCartItemLineTotal } from "../utils/pricing"
 import { formatCurrency } from "@/lib/currency"
 import { Button } from "@/components/ui/button"
 import type { CartItem } from "@/types/cart"
@@ -67,9 +67,10 @@ export function CartItem({ item, onEdit }: CartItemProps) {
                 className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-cream px-2.5 py-1 text-xs font-medium text-bean-black"
               >
                 {ADD_ON_LABEL[addOn.categoryId]}: {addOn.name}
-                {addOn.price > 0 && (
+                {addOn.quantity > 1 && <span>× {addOn.quantity}</span>}
+                {addOn.unitPrice > 0 && (
                   <span className="text-warm-grey">
-                    +{formatCurrency(addOn.price)}
+                    +{formatCurrency(getAddOnTotal(addOn))}
                   </span>
                 )}
               </li>

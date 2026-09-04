@@ -7,17 +7,17 @@ import { cn } from "@/lib/utils"
 
 const galleryImages = [
   {
-    src: "/images/food/beans/ewa-agoyin.jpg",
+    src: "/images/food/beans/ewa-agoyin.svg",
     alt: "Ewa Agoyin served with rich agoyin stew",
     size: "large",
   },
   {
-    src: "/images/food/proteins/fried-fish.jpg",
+    src: "/images/food/proteins/fried-fish.svg",
     alt: "Crispy fried fish",
     size: "small",
   },
   {
-    src: "/images/food/beans/plain-soft-beans.jpg",
+    src: "/images/food/beans/plain-soft-beans.svg",
     alt: "Plain soft beans with stew",
     size: "small",
   },

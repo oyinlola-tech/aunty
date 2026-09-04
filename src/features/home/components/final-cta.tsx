@@ -54,7 +54,7 @@ export function FinalCTA() {
             <div className="relative mx-auto h-80 w-full max-w-xs lg:h-full lg:w-96 lg:max-w-none">
               <div className="absolute inset-0 rotate-6 rounded-3xl bg-cream-deep border border-border/50 shadow-xl lg:rotate-0 lg:inset-y-12 lg:inset-x-12">
                 <Image
-                  src="/images/food/beans/soft-porridge-beans.jpg"
+                  src="/images/food/beans/soft-porridge-beans.svg"
                   alt="Soft Porridge Beans"
                   fill
                   sizes="(max-width: 1024px) 50vw, 33vw"
@@ -63,7 +63,7 @@ export function FinalCTA() {
               </div>
               <div className="absolute -right-12 -bottom-12 h-32 w-32 lg:-right-16 lg:-bottom-16 rotate-12 rounded-2xl bg-palace-orange shadow-xl">
                 <Image
-                  src="/images/food/sides/fried-plantain.jpg"
+                  src="/images/food/sides/fried-plantain.svg"
                   alt="Fried Plantain"
                   fill
                   sizes="(max-width: 1024px) 25vw, 16vw"

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Soft porridge beans placeholder illustration</title>
+  <desc id="desc">Creamy bowl of soft porridge beans</desc>
+  <rect width="800" height="800" fill="#F7ECDC"/>
+  <circle cx="400" cy="420" r="250" fill="#FFFDF8" stroke="#E7DFCF" stroke-width="8"/>
+  <circle cx="400" cy="420" r="205" fill="#FBF3E7"/>
+  <path d="M215 330 Q210 235 300 225 L500 225 Q590 235 585 330 L570 470 Q565 560 400 570 Q235 560 230 470 Z" fill="#EFE2C8"/>
+  <path d="M230 500 Q228 330 400 320 Q572 330 570 500 Q570 560 400 568 Q230 560 230 500 Z" fill="#E0741A"/>
+  <path d="M258 470 Q260 360 400 350 Q540 360 542 470 Q543 525 400 532 Q257 525 258 470 Z" fill="#C85F10"/>
+  <circle cx="330" cy="420" r="26" fill="#B3550D" opacity="0.55"/>
+  <circle cx="430" cy="390" r="22" fill="#B3550D" opacity="0.45"/>
+  <circle cx="500" cy="440" r="20" fill="#B3550D" opacity="0.5"/>
+  <circle cx="370" cy="465" r="16" fill="#B3550D" opacity="0.4"/>
+  <path d="M340 330 q20 -16 40 0 q20 16 40 0" fill="none" stroke="#7E9B72" stroke-width="10" stroke-linecap="round" opacity="0.85"/>
+  <path d="M452 322 q16 -12 32 0" fill="none" stroke="#7E9B72" stroke-width="9" stroke-linecap="round" opacity="0.8"/>
+  <path d="M300 640 q100 -60 200 0" fill="none" stroke="#6B655D" stroke-width="8" stroke-linecap="round"/>
+  <rect x="330" y="690" width="140" height="26" rx="13" fill="#E7DFCF"/>
+</svg>

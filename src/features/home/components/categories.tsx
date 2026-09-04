@@ -7,9 +7,9 @@ import { Reveal } from "@/components/shared/reveal"
 import { UtensilsCrossed, Fish, Croissant } from "lucide-react"
 
 const categoryImages = {
-  beans: "/images/food/beans/ewa-agoyin.jpg",
-  sides: "/images/food/sides/fried-plantain.jpg",
-  proteins: "/images/food/proteins/fried-fish.jpg",
+  beans: "/images/food/beans/ewa-agoyin.svg",
+  sides: "/images/food/sides/fried-plantain.svg",
+  proteins: "/images/food/proteins/fried-fish.svg",
 }
 
 const categoryIcons = {

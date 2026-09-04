@@ -1,18 +1,17 @@
 /**
- * How many complements of each kind a dish can be combined with.
+ * Which complements a meal base can be combined with.
  *
  * - Absent / undefined means the dish cannot take that kind of add-on.
- * - The value is the MAXIMUM the customer may pick for that kind.
- * - 1 = single select; >1 = multiple select (e.g. sides: 2 lets a customer
- *   add two different sides to one meal). All picks are optional in
- *   Phase 1, so a customer may always choose fewer than the maximum.
+ * - A `true` flag means the dish accepts that kind, with NO limit: the
+ *   customer may add any number of sides/proteins and any quantity of each.
+ *   Every add-on is optional — a customer may always choose zero.
  *
- * Example: beans dishes currently allow up to two sides and one protein:
- * { sides: 2, proteins: 1 }.
+ * Example: beans dishes are meal bases and take both kinds:
+ * { sides: true, proteins: true }
  */
 export interface MenuCustomization {
-  sides?: number
-  proteins?: number
+  sides?: boolean
+  proteins?: boolean
 }
 
 export interface MenuItem {

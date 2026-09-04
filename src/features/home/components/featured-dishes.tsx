@@ -25,7 +25,7 @@ export function FeaturedDishes() {
         {featuredItems.slice(0, 4).map((item, index) => (
           <Reveal key={item.id} delay={index * 0.06} className="flex">
             <Link
-              href={`/menu?category=${item.categoryId}&item=${item.slug}`}
+              href={`/menu/${item.slug}`}
               className={cn(
                 "group relative flex h-full w-full flex-col overflow-hidden rounded-2xl bg-cream-deep border border-border/50 transition-all hover:shadow-lg"
               )}

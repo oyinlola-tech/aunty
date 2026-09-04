@@ -9,9 +9,10 @@ import { cn } from "@/lib/utils"
 import { ArrowRight, Flame, Soup, Puzzle, ChefHat } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About Us",
   description:
-    "Learn about Soft Beans Palace — freshly made Nigerian comfort food in Port Harcourt.",
+    "Soft Beans Palace serves soft beans, sides and proteins in Port Harcourt. Learn what we make, how we cook it, and how ordering on WhatsApp works.",
+  alternates: { canonical: "/about" },
 }
 
 export default function AboutPage() {
@@ -24,20 +25,24 @@ export default function AboutPage() {
             About Soft Beans Palace
           </h1>
           <p className="max-w-lg text-warm-grey">
-            A short story about good food, good people, and Port Harcourt.
+            Soft beans, done right — made fresh in Port Harcourt.
           </p>
         </Reveal>
 
         <div className="grid gap-10 lg:grid-cols-2">
-          <div>
-            <h2 className="font-heading text-2xl font-bold text-bean-black mb-4">
+          <div className="flex flex-col gap-4">
+            <h2 className="font-heading text-2xl font-bold text-bean-black mb-1">
               What We Do
             </h2>
             <p className="text-warm-grey leading-relaxed">
-              Soft Beans Palace is a Nigerian food business based in Port Harcourt.
-              We specialize in soft beans dishes, sides, and proteins. Everything we
-              make is prepared fresh, with care, and served exactly the way you like
-              it — soft, delicious, and satisfying.
+              Soft Beans Palace is a food business based in Port Harcourt built
+              around beans — Ewa Agoyin, soft porridge beans and plain soft
+              beans — cooked slow and served soft.
+            </p>
+            <p className="text-warm-grey leading-relaxed">
+              Every plate is built to order. Pick your beans, add the sides
+              and proteins you feel like, tell us how you want it, and your
+              order goes straight to us on WhatsApp.
             </p>
           </div>
 
@@ -137,17 +142,14 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </SectionContainer>
-
-      <div className="rounded-2xl overflow-hidden bg-cream-deep">
+      </SectionContainer>    <div className="rounded-2xl overflow-hidden bg-cream-deep">
         <div className="relative h-64 sm:h-80 lg:h-96">
           <Image
-            src="/images/food/beans/ewa-agoyin.jpg"
-            alt="Our delicious Ewa Agoyin"
+            src="/images/food/beans/ewa-agoyin.svg"
+            alt="Bowl of Ewa Agoyin with rich agoyin stew"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
-            priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cream/20 to-cream/40" />
         </div>

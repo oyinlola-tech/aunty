@@ -1,21 +1,32 @@
 import { formatCurrency } from "@/lib/currency"
 import type { Order } from "@/types/common"
 import type { CartAddOn } from "@/types/cart"
-import { getCartItemUnitPrice } from "@/features/cart/utils/pricing"
+import {
+  getCartItemLineTotal,
+  getCartItemUnitPrice,
+} from "@/features/cart/utils/pricing"
 
 const ADD_ON_LABEL: Record<CartAddOn["categoryId"], string> = {
-  sides: "Side",
-  proteins: "Protein",
+  sides: "Sides",
+  proteins: "Proteins",
 }
 
-/** One configured meal, indented under its numbered line. */
+/** One configured meal, printed with all of its sides, proteins and totals. */
 function formatMeal(item: Order["items"][number], index: number): string[] {
   const lines: string[] = []
 
-  lines.push(`${index + 1}. ${item.name} × ${item.quantity}`)
+  lines.push(`${index + 1}. ${item.name}`)
+  lines.push(`   Meal quantity: ${item.quantity}`)
 
-  for (const addOn of item.addOns) {
-    lines.push(`   ${ADD_ON_LABEL[addOn.categoryId]}: ${addOn.name}`)
+  for (const kind of ["sides", "proteins"] as const) {
+    const ofKind = item.addOns.filter((addOn) => addOn.categoryId === kind)
+    if (ofKind.length === 0) continue
+
+    lines.push(`   ${ADD_ON_LABEL[kind]}:`)
+    for (const addOn of ofKind) {
+      const unit = addOn.unitPrice > 0 ? ` (${formatCurrency(addOn.unitPrice)} each)` : ""
+      lines.push(`   - ${addOn.name} x ${addOn.quantity}${unit}`)
+    }
   }
 
   if (item.notes) {
@@ -23,8 +34,12 @@ function formatMeal(item: Order["items"][number], index: number): string[] {
   }
 
   const unitPrice = getCartItemUnitPrice(item)
+  const lineTotal = getCartItemLineTotal(item)
   if (unitPrice > 0) {
-    lines.push(`   @ ${formatCurrency(unitPrice)} each`)
+    lines.push(`   Meal price: ${formatCurrency(unitPrice)}`)
+  }
+  if (lineTotal > 0) {
+    lines.push(`   Line total: ${formatCurrency(lineTotal)}`)
   }
 
   return lines

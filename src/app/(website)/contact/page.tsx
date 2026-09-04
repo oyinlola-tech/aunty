@@ -8,9 +8,10 @@ import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact Us",
   description:
-    "Get in touch with Soft Beans Palace. Chat with us on WhatsApp or give us a call.",
+    "Contact Soft Beans Palace in Port Harcourt. Chat on WhatsApp, call, or send us a message — we're happy to help with your order.",
+  alternates: { canonical: "/contact" },
 }
 
 function InstagramIcon({ className }: { className?: string }) {

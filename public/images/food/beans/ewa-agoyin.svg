@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Ewa Agoyin placeholder illustration</title>
+  <desc id="desc">Bowl of soft beans topped with rich agoyin stew</desc>
+  <rect width="800" height="800" fill="#F7ECDC"/>
+  <circle cx="400" cy="420" r="250" fill="#FFFDF8" stroke="#E7DFCF" stroke-width="8"/>
+  <circle cx="400" cy="420" r="205" fill="#FBF3E7"/>
+  <path d="M215 330 Q210 235 300 225 L500 225 Q590 235 585 330 L570 470 Q565 560 400 570 Q235 560 230 470 Z" fill="#EFE2C8"/>
+  <path d="M230 380 Q232 300 330 292 L470 292 Q568 300 570 380 Q572 470 400 480 Q228 470 230 380 Z" fill="#7A4A2B"/>
+  <path d="M230 360 Q240 285 330 278 L470 278 Q560 285 570 360 Q574 455 400 462 Q226 455 230 360 Z" fill="#C84B2F"/>
+  <path d="M250 340 Q260 300 320 292 L480 292 Q540 300 550 340 Q556 420 400 424 Q244 420 250 340 Z" fill="#A63B22"/>
+  <ellipse cx="300" cy="340" rx="10" ry="6" fill="#7A3B1E" transform="rotate(-18 300 340)"/>
+  <ellipse cx="430" cy="312" rx="9" ry="5" fill="#7A3B1E" transform="rotate(14 430 312)"/>
+  <ellipse cx="520" cy="360" rx="10" ry="6" fill="#7A3B1E" transform="rotate(-8 520 360)"/>
+  <ellipse cx="365" cy="380" rx="8" ry="5" fill="#8F321A" transform="rotate(22 365 380)"/>
+  <circle cx="470" cy="430" r="12" fill="#FBF3E7" opacity="0.9"/>
+  <circle cx="330" cy="424" r="10" fill="#FBF3E7" opacity="0.8"/>
+  <path d="M300 640 q100 -60 200 0" fill="none" stroke="#6B655D" stroke-width="8" stroke-linecap="round"/>
+  <rect x="330" y="690" width="140" height="26" rx="13" fill="#E7DFCF"/>
+</svg>

@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next"
 import { siteConfig } from "@/config/site"
+import { menuItems } from "@/data/menu"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteConfig.url
 
-  return [
+  const pages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -30,4 +31,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
   ]
+
+  const dishes: MetadataRoute.Sitemap = menuItems.map((item) => ({
+    url: `${baseUrl}/menu/${item.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }))
+
+  return [...pages, ...dishes]
 }

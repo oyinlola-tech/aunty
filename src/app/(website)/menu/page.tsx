@@ -7,7 +7,8 @@ import { Reveal } from "@/components/shared/reveal"
 export const metadata: Metadata = {
   title: "Menu",
   description:
-    "Explore delicious beans, sides and proteins from Soft Beans Palace.",
+    "Explore delicious beans, sides and proteins from Soft Beans Palace. Ewa Agoyin, soft porridge beans, fried plantain and more — order on WhatsApp.",
+  alternates: { canonical: "/menu" },
 }
 
 interface MenuPageProps {

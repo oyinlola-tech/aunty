@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Fried plantain placeholder illustration</title>
+  <desc id="desc">Golden slices of fried plantain on a plate</desc>
+  <rect width="800" height="800" fill="#F7ECDC"/>
+  <circle cx="400" cy="420" r="250" fill="#FFFDF8" stroke="#E7DFCF" stroke-width="8"/>
+  <circle cx="400" cy="420" r="210" fill="#FBF3E7"/>
+  <path d="M300 560 q-40 -230 100 -250 q70 -6 100 60 q40 80 20 190 Z" fill="#F5C518" stroke="#E0A90C" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M300 560 q-40 -230 100 -250 q70 -6 100 60 q40 80 20 190 Z" fill="none" stroke="#C98F0B" stroke-width="5" stroke-dasharray="2 14" stroke-linecap="round" opacity="0.5"/>
+  <ellipse cx="385" cy="420" rx="34" ry="70" fill="#F5C518" stroke="#E0A90C" stroke-width="5" transform="rotate(-14 385 420)"/>
+  <ellipse cx="492" cy="452" rx="28" ry="58" fill="#F5C518" stroke="#E0A90C" stroke-width="5" transform="rotate(24 492 452)"/>
+  <ellipse cx="298" cy="430" rx="24" ry="50" fill="#F5C518" stroke="#E0A90C" stroke-width="5" transform="rotate(-38 298 430)"/>
+  <path d="M300 640 q100 -60 200 0" fill="none" stroke="#6B655D" stroke-width="8" stroke-linecap="round"/>
+  <rect x="330" y="690" width="140" height="26" rx="13" fill="#E7DFCF"/>
+</svg>

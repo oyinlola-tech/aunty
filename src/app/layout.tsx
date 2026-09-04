@@ -21,7 +21,7 @@ const dmSans = DM_Sans({
   fallback: ["system-ui", "sans-serif"],
 });
 
-const ogImage = `${siteConfig.url}/images/food/beans/ewa-agoyin.jpg`;
+const ogImage = `${siteConfig.url}/images/brand/og-card.png`;
 
 export const metadata: Metadata = {
   title: {
@@ -40,7 +40,14 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: `${siteConfig.name} | Soft beans. Big flavour.`,
     description: siteConfig.description,
-    images: [{ url: ogImage, width: 1200, height: 630, alt: "Ewa Agoyin from Soft Beans Palace" }],
+    images: [
+      {
+        url: ogImage,
+        width: 1200,
+        height: 630,
+        alt: "Soft Beans Palace — soft beans with sides and proteins",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -54,6 +61,33 @@ export const viewport: Viewport = {
   themeColor: "#FBF3E7",
 };
 
+/**
+ * Organization-level structured data. Only properties with reliable values
+ * are included — no invented address, hours, reviews or ratings.
+ */
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteConfig.name,
+  url: siteConfig.url,
+  description: siteConfig.description,
+  inLanguage: "en",
+};
+
+const restaurantJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  name: siteConfig.name,
+  description: siteConfig.description,
+  url: siteConfig.url,
+  image: ogImage,
+  servesCuisine: "Nigerian",
+  areaServed: "Port Harcourt",
+  ...(siteConfig.contact.phone
+    ? { telephone: siteConfig.contact.phone }
+    : {}),
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -64,6 +98,16 @@ export default function RootLayout({
       lang="en"
       className={`${fredoka.variable} ${dmSans.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantJsonLd) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

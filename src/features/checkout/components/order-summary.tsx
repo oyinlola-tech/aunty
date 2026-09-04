@@ -4,7 +4,10 @@ import Image from "next/image"
 import { formatCurrency } from "@/lib/currency"
 import { Check } from "lucide-react"
 import type { CartItem } from "@/types/cart"
-import { getCartItemLineTotal } from "@/features/cart/utils/pricing"
+import {
+  getAddOnTotal,
+  getCartItemLineTotal,
+} from "@/features/cart/utils/pricing"
 
 const ADD_ON_LABEL: Record<string, string> = {
   sides: "Side",
@@ -73,10 +76,11 @@ export function OrderSummary({ items, subtotal, notes }: OrderSummaryProps) {
                             {ADD_ON_LABEL[addOn.categoryId]}:
                           </span>{" "}
                           {addOn.name}
-                          {addOn.price > 0 && (
+                          {addOn.quantity > 1 && <span> × {addOn.quantity}</span>}
+                          {addOn.unitPrice > 0 && (
                             <span className="text-warm-grey">
                               {" "}
-                              (+{formatCurrency(addOn.price)})
+                              (+{formatCurrency(getAddOnTotal(addOn))})
                             </span>
                           )}
                         </li>
