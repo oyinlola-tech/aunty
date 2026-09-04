@@ -33,7 +33,7 @@ function formatMeal(item: Order["items"][number], index: number): string[] {
 export function generateWhatsAppMessage(order: Order): string {
   const lines: string[] = []
 
-  lines.push("Hello Soft Beans Palace 👋")
+  lines.push("Hello Soft Beans Palace!")
   lines.push("")
   lines.push("I'd like to place an order.")
   lines.push("")
@@ -73,7 +73,7 @@ export function generateWhatsAppMessage(order: Order): string {
     lines.push("")
   }
 
-  lines.push("Thank you! 😊")
+  lines.push("Thank you!")
 
   return lines.join("\n")
 }

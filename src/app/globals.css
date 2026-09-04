@@ -9,7 +9,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-dm-sans);
   --font-heading: var(--font-fredoka);
-  --font-mono: var(--font-geist-mono);
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
@@ -89,5 +88,37 @@
   }
   html {
     @apply font-sans scroll-smooth;
+  }
+}
+
+/* Playful sticker/decoration motion — subtle, never on everything. */
+@keyframes sbp-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-sbp-float {
+  animation: sbp-float 5s ease-in-out infinite;
+}
+
+.animate-sbp-float-delayed {
+  animation: sbp-float 6s ease-in-out -2.5s infinite;
+}
+
+/* Respect users who prefer reduced motion: kill decorative animation and
+   make animated presence states resolve instantly. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

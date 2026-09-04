@@ -1,48 +1,76 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { ShoppingBag } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCartStore } from "@/features/cart/store/cart-store"
 import { useMounted } from "@/hooks/use-mounted"
 import { navigation } from "@/data/navigation"
+import { cn } from "@/lib/utils"
+import { siteConfig } from "@/config/site"
 
 export function Navbar() {
+  const pathname = usePathname()
   const totalItems = useCartStore((s) => s.getTotalItems())
   const mounted = useMounted()
   const visibleCount = mounted ? totalItems : 0
 
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href)
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/85 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="font-heading text-xl font-bold text-bean-black">
-            Soft Beans Palace
+        <Link href="/" className="flex items-center gap-2.5" aria-label={`${siteConfig.name} home`}>
+          <Image
+            src="/images/brand/logo.svg"
+            alt=""
+            width={32}
+            height={32}
+            className="size-8 rounded-xl"
+            aria-hidden="true"
+          />
+          <span className="font-heading text-lg leading-none font-bold text-bean-black">
+            Soft Beans
+            <span className="block text-xs font-semibold tracking-wide text-palace-orange">
+              Palace
+            </span>
           </span>
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
-          {navigation.navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-warm-grey transition-colors hover:text-bean-black"
-            >
-              {link.label}
-            </Link>
-          ))}
+        <div className="hidden items-center gap-7 md:flex">
+          {navigation.navLinks.map((link) => {
+            const active = isActive(link.href)
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "relative text-sm font-medium transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:rounded-full after:bg-palace-orange after:transition-all",
+                  active
+                    ? "text-bean-black after:w-full"
+                    : "text-warm-grey after:w-0 hover:text-bean-black hover:after:w-full"
+                )}
+              >
+                {link.label}
+              </Link>
+            )
+          })}
         </div>
 
         <div className="flex items-center gap-3">
           <Link
             href="/cart"
-            className="relative"
+            className="relative inline-flex items-center"
             aria-label={`Shopping cart${visibleCount > 0 ? ` with ${visibleCount} items` : ""}`}
           >
             <Button variant="ghost" size="icon" className="cursor-pointer">
               <ShoppingBag className="size-5" />
               {visibleCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-palace-orange text-[10px] font-bold text-white">
+                <span className="absolute -top-0.5 -right-0.5 flex size-5 items-center justify-center rounded-full bg-palace-orange text-[10px] font-bold text-white">
                   {visibleCount}
                 </span>
               )}
