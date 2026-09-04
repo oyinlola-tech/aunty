@@ -1,0 +1,93 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-dm-sans);
+  --font-heading: var(--font-fredoka);
+  --font-mono: var(--font-geist-mono);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-cream: #FBF3E7;
+  --color-cream-deep: #F7ECDC;
+  --color-ivory: #FFFDF8;
+  --color-bean-black: #1B1611;
+  --color-warm-grey: #6B655D;
+  --color-palace-orange: #F5821F;
+  --color-palace-orange-hover: #E0741A;
+  --color-espresso: #211A14;
+  --color-rich-red: #C84B2F;
+  --color-golden-yellow: #F5C518;
+  --color-warm-brown: #7A4A2B;
+  --color-muted-green: #7E9B72;
+  --color-tan: #EFE2C8;
+  --color-pink-card: #F4B8CB;
+  --color-peach: #F6C9A8;
+  --color-lavender: #D8CCEE;
+  --color-doodle: #E7DFCF;
+  --color-purple-sticker: #C9A6E8;
+  --color-pink-sticker: #F25C9A;
+  --color-gold-sticker: #F5C518;
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: #FBF3E7;
+  --foreground: #1B1611;
+  --card: #FFFDF8;
+  --card-foreground: #1B1611;
+  --popover: #FFFDF8;
+  --popover-foreground: #1B1611;
+  --primary: #F5821F;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F7ECDC;
+  --secondary-foreground: #1B1611;
+  --muted: #F7ECDC;
+  --muted-foreground: #6B655D;
+  --accent: #211A14;
+  --accent-foreground: #FFFFFF;
+  --destructive: #C84B2F;
+  --border: #E7DFCF;
+  --input: #E7DFCF;
+  --ring: #F5821F;
+  --radius: 1rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans scroll-smooth;
+  }
+}
