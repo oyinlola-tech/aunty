@@ -51,7 +51,7 @@ export function FinalCTA() {
           </Reveal>
 
           <Reveal delay={0.08} className="relative">
-            <div className="relative h-80 lg:h-full w-80 lg:w-96">
+            <div className="relative mx-auto h-80 w-full max-w-xs lg:h-full lg:w-96 lg:max-w-none">
               <div className="absolute inset-0 rotate-6 rounded-3xl bg-cream-deep border border-border/50 shadow-xl lg:rotate-0 lg:inset-y-12 lg:inset-x-12">
                 <Image
                   src="/images/food/beans/soft-porridge-beans.jpg"

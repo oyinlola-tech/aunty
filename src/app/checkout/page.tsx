@@ -4,6 +4,7 @@ import { CheckoutExperience } from "@/features/checkout/components/checkout-expe
 export const metadata: Metadata = {
   title: "Checkout",
   description: "Review your order and complete it via WhatsApp with Soft Beans Palace.",
+  robots: { index: false },
 }
 
 export default function CheckoutPage() {

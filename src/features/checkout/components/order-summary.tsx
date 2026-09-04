@@ -132,9 +132,9 @@ export function OrderSummary({ items, subtotal, notes }: OrderSummaryProps) {
         </div>
       )}
 
-      <div className="flex items-start gap-2 rounded-xl bg-muted-green/20 p-3">
-        <Check className="mt-0.5 size-5 text-muted-green" />
-        <p className="text-sm text-muted-green">
+      <div className="flex items-start gap-2 rounded-xl bg-muted-green/15 p-3">
+        <Check className="mt-0.5 size-5 flex-shrink-0 text-muted-green" aria-hidden="true" />
+        <p className="text-sm leading-relaxed text-bean-black/80">
           You will complete the order via WhatsApp after reviewing this message.
         </p>
       </div>

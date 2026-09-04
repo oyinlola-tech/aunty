@@ -48,7 +48,7 @@ export function Hero() {
               </Link>
             </div>
 
-            <div className="flex items-center gap-4 text-sm text-warm-grey">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-warm-grey">
               <span className="flex items-center gap-1">
                 <span className="size-2 rounded-full bg-palace-orange" />
                 Fresh daily

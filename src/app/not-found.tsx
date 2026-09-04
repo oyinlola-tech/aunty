@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { AlertCircle, ArrowRight } from "lucide-react"
 import { SectionContainer } from "@/components/shared/section-container"
 import { Sticker } from "@/components/shared/sticker"
 import { buttonVariants } from "@/components/ui/button"
@@ -9,18 +9,7 @@ export default function NotFound() {
   return (
     <SectionContainer className="flex flex-col items-center gap-8 py-16 text-center">
       <div className="flex size-24 items-center justify-center rounded-full bg-cream-deep">
-        <svg
-          className="size-12 text-warm-grey"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 8v4M12 16h.01" />
-        </svg>
+        <AlertCircle className="size-12 text-warm-grey" aria-hidden="true" />
       </div>
 
       <div className="flex flex-col items-center gap-3">

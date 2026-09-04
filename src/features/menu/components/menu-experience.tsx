@@ -12,6 +12,7 @@ import type { MenuItem } from "@/types/menu"
 import type { MenuFilter } from "@/types/common"
 import { useCartStore } from "@/features/cart/store/cart-store"
 import { Button } from "@/components/ui/button"
+import { Search } from "lucide-react"
 
 interface MenuExperienceProps {
   /** Optional category filter from ?category= (beans|sides|proteins). */
@@ -98,16 +99,7 @@ export function MenuExperience({
       {filteredItems.length === 0 ? (
         <div className="flex flex-col items-center gap-6 py-16 text-center">
           <div className="flex size-16 items-center justify-center rounded-full bg-cream-deep">
-            <svg
-              className="size-8 text-warm-grey"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <circle cx="11" cy="11" r="7" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
+            <Search className="size-8 text-warm-grey" aria-hidden="true" />
           </div>
           <h3 className="font-heading text-xl font-bold text-bean-black">
             No dishes found

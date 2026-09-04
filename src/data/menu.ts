@@ -6,6 +6,19 @@ import type { MenuItem } from "@/types/menu"
  */
 export const PHOTO_PLACEHOLDER = "/images/food/photo-coming-soon.svg"
 
+/**
+ * PRICES — the single place to change prices.
+ *
+ * `price` is the numeric Naira amount for one portion of the dish (no
+ * formatting, no currency symbol). Edit the number below and every part of
+ * the app — menu card, food dialog, cart, checkout and the WhatsApp order
+ * message — updates automatically.
+ *
+ * A price of `0` means the owner has not confirmed it yet; the UI shows
+ * "Price on request" instead of ₦0. Never hardcode formatted prices in
+ * components; format through formatCurrency() (src/lib/currency.ts).
+ */
+
 export const menuItems: MenuItem[] = [
   // Beans
   {

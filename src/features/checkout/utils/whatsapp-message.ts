@@ -38,7 +38,7 @@ export function generateWhatsAppMessage(order: Order): string {
   lines.push("I'd like to place an order.")
   lines.push("")
   lines.push("ORDER SUMMARY")
-  lines.push("─".repeat(21))
+  lines.push("-".repeat(24))
   order.items.forEach((item, index) => {
     lines.push(...formatMeal(item, index))
   })
@@ -52,13 +52,13 @@ export function generateWhatsAppMessage(order: Order): string {
   lines.push("")
 
   lines.push("CUSTOMER DETAILS")
-  lines.push("─".repeat(21))
+  lines.push("-".repeat(24))
   lines.push(`Name: ${order.customer.name}`)
   lines.push(`Phone: ${order.customer.phone}`)
   lines.push("")
 
   lines.push("DELIVERY DETAILS")
-  lines.push("─".repeat(21))
+  lines.push("-".repeat(24))
   lines.push(`Area: ${order.delivery.area}`)
   lines.push(`Address: ${order.delivery.address}`)
   if (order.delivery.directions) {
@@ -68,7 +68,7 @@ export function generateWhatsAppMessage(order: Order): string {
 
   if (order.notes) {
     lines.push("ORDER NOTES")
-    lines.push("─".repeat(21))
+    lines.push("-".repeat(24))
     lines.push(order.notes)
     lines.push("")
   }

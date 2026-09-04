@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ArrowRight, ShoppingBag } from "lucide-react"
@@ -38,12 +39,17 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
     router.push("/checkout")
   }
 
+  // Removing the last item while the drawer is open closes it instead of
+  // leaving an empty panel hanging over the page.
+  useEffect(() => {
+    if (open && items.length === 0) {
+      onOpenChange(false)
+    }
+  }, [open, items.length, onOpenChange])
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent
-        side="right"
-        className="w-full gap-0 p-0 sm:max-w-md"
-      >
+      <SheetContent side="right" className="gap-0 p-0">
         <SheetHeader className="border-b border-border/50 px-5 py-4 pr-14">
           <SheetTitle className="flex items-center gap-2 font-heading text-xl font-bold text-bean-black">
             <ShoppingBag className="size-5 text-palace-orange" />
