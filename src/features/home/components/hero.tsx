@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ArrowRight, UtensilsCrossed } from "lucide-react"
 import Image from "next/image"
 import { Sticker } from "@/components/shared/sticker"
+import { Reveal } from "@/components/shared/reveal"
 
 export function Hero() {
   return (
@@ -10,7 +11,7 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div className="flex flex-col gap-6 lg:max-w-lg">
+          <Reveal immediate className="flex flex-col gap-6 lg:max-w-lg">
             <Sticker variant="orange">
               Freshly Made in Port Harcourt
             </Sticker>
@@ -58,9 +59,13 @@ export function Hero() {
                 Port Harcourt
               </span>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="relative flex aspect-square lg:order-1">
+          <Reveal
+            immediate
+            delay={0.08}
+            className="relative flex aspect-square lg:order-1"
+          >
             <div className="absolute -right-8 -top-8 h-1/2 w-1/2 rotate-12 rounded-2xl bg-cream-deep border border-border/50 shadow-xl lg:-right-16 lg:-top-16 lg:h-2/3 lg:w-2/3">
               <Image
                 src="/images/food/beans/ewa-agoyin.jpg"
@@ -82,14 +87,18 @@ export function Hero() {
               />
             </div>
 
-            <div className="absolute top-8 right-8 lg:top-16 lg:right-16">
-              <Sticker variant="gold">SO SOFT!</Sticker>
+            <div className="absolute top-8 right-6 rotate-6 lg:top-16 lg:right-14">
+              <div className="animate-sbp-float">
+                <Sticker variant="gold">SO SOFT!</Sticker>
+              </div>
             </div>
 
-            <div className="absolute bottom-16 left-0 lg:bottom-24 lg:left-8">
-              <Sticker variant="pink">YOU GO LOVE AM</Sticker>
+            <div className="absolute bottom-16 left-0 -rotate-3 lg:bottom-24 lg:left-6">
+              <div className="animate-sbp-float-delayed">
+                <Sticker variant="pink">YOU GO LOVE AM</Sticker>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
 

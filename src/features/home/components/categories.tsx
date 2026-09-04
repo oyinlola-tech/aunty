@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { categories } from "@/data/categories"
 import { SectionContainer } from "@/components/shared/section-container"
+import { Reveal } from "@/components/shared/reveal"
 import { UtensilsCrossed, Fish, Croissant } from "lucide-react"
 
 const categoryImages = {
@@ -20,28 +21,28 @@ export function Categories() {
   return (
     <section className="bg-cream-deep py-16 sm:py-20">
       <SectionContainer className="flex flex-col gap-10">
-        <div className="flex flex-col gap-3 text-center">
+        <Reveal className="flex flex-col gap-3 text-center">
           <span className="font-heading text-sm font-semibold uppercase tracking-widest text-palace-orange">
             Browse by Category
           </span>
           <h2 className="font-heading text-3xl font-bold text-bean-black sm:text-4xl">
             What are you craving?
           </h2>
-        </div>
+        </Reveal>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {categories
             .filter((cat) => cat.id !== "all")
-            .map((category) => {
+            .map((category, index) => {
               const Icon = categoryIcons[category.id as keyof typeof categoryIcons]
               const image = categoryImages[category.id as keyof typeof categoryImages]
 
               return (
-                <Link
-                  key={category.id}
-                  href={`/menu?category=${category.slug}`}
-                  className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl bg-cream p-6 transition-all hover:shadow-lg hover:-translate-y-1"
-                >
+                <Reveal key={category.id} delay={index * 0.07} className="flex">
+                  <Link
+                    href={`/menu?category=${category.slug}`}
+                    className="group relative flex h-full w-full flex-col gap-4 overflow-hidden rounded-2xl bg-cream p-6 transition-all hover:shadow-lg hover:-translate-y-1"
+                  >
                   <div className="relative aspect-square rounded-xl overflow-hidden bg-palace-orange/20">
                     {image && (
                       <Image
@@ -67,7 +68,8 @@ export function Categories() {
                   <span className="self-start rounded-full border border-palace-orange/30 bg-white px-3 py-1 text-xs font-semibold text-palace-orange transition-colors group-hover:bg-palace-orange group-hover:text-white">
                     View
                   </span>
-                </Link>
+                  </Link>
+                </Reveal>
               )
             })}
         </div>
