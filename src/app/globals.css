@@ -110,8 +110,15 @@
   animation: sbp-float 6s ease-in-out -2.5s infinite;
 }
 
-/* Respect users who prefer reduced motion: kill decorative animation and
-   make animated presence states resolve instantly. */
+@keyframes sbp-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
