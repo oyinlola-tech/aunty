@@ -28,7 +28,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Configuration
 
-Business information (WhatsApp number, phone, Instagram, location, hours)
+Business information (WhatsApp number, phone, TikTok, Facebook, location, hours)
 lives in `src/config/site.ts`, which reads from environment variables.
 Copy `.env.example` to `.env.local` and fill in the real values.
 

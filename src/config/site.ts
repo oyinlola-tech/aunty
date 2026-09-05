@@ -30,7 +30,8 @@ export const siteConfig = {
     email: readText(process.env.NEXT_PUBLIC_EMAIL),
   },
   social: {
-    instagram: readText(process.env.NEXT_PUBLIC_INSTAGRAM),
+    tiktok: readText(process.env.NEXT_PUBLIC_TIKTOK),
+    facebook: readText(process.env.NEXT_PUBLIC_FACEBOOK),
   },
   hours: {
     weekdays: readText(process.env.NEXT_PUBLIC_HOURS_WEEKDAYS),
