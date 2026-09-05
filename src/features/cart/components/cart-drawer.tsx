@@ -3,10 +3,7 @@
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useCartStore } from "../store/cart-store";
-import { CartItem } from "./cart-item";
-import { CartSummary } from "./cart-summary";
 import { EmptyCart } from "./empty-cart";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -21,7 +18,6 @@ interface CartDrawerProps {
 export function CartDrawer({ open, onOpenChange, onCheckout }: CartDrawerProps) {
   const items = useCartStore((s) => s.items);
   const subtotal = useCartStore((s) => s.getSubtotal());
-  const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleCheckout = () => {
