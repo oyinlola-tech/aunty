@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/currency";
 import { useCartStore } from "@/features/cart/store/cart-store";
 import { FoodImage } from "@/components/shared/food-image";
+import { PriceDisplay } from "@/components/shared/price-display";
 import { QuantitySelector } from "./quantity-selector";
 import type { MenuItem } from "@/types/menu";
 import type { CartItem } from "@/types/cart";
@@ -81,9 +82,13 @@ export function ProductModal({
             {item.name}
           </h2>
           <p className="mt-2 text-sm text-warm-grey">{item.description}</p>
-          <p className="mt-3 font-heading text-xl font-bold text-palace-orange">
-            {formatCurrency(item.price)}
-          </p>
+          <div className="mt-3">
+            <PriceDisplay
+              price={item.price}
+              originalPrice={item.originalPrice}
+              size="lg"
+            />
+          </div>
 
           <div className="mt-6">
             <label className="mb-2 block text-sm font-medium text-bean-black">

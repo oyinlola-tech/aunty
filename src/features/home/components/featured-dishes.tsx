@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { SectionContainer } from "@/components/shared/section-container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { FoodImage } from "@/components/shared/food-image";
+import { PriceDisplay } from "@/components/shared/price-display";
 import { menuItems } from "@/data/menu";
-import { formatCurrency } from "@/lib/currency";
 
 const featured = menuItems.filter((item) => item.featured).slice(0, 4);
 
@@ -34,9 +34,11 @@ export function FeaturedDishes() {
             >
               {/* Price badge */}
               <div className="absolute right-3 top-3 z-10 rounded-full bg-white/95 px-3 py-1.5 shadow-sm backdrop-blur-sm">
-                <span className="font-heading text-sm font-bold text-bean-black">
-                  {formatCurrency(item.price)}
-                </span>
+                <PriceDisplay
+                  price={item.price}
+                  originalPrice={item.originalPrice}
+                  size="sm"
+                />
               </div>
 
               {/* Featured badge */}

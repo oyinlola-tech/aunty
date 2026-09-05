@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { formatCurrency } from "@/lib/currency";
 import { useCartStore } from "@/features/cart/store/cart-store";
 import { FoodImage } from "@/components/shared/food-image";
+import { PriceDisplay } from "@/components/shared/price-display";
 import type { MenuItem } from "@/types/menu";
 import { Plus } from "lucide-react";
 
@@ -75,9 +75,11 @@ export function MenuCard({ item, onViewDetails, onAdd }: MenuCardProps) {
           {item.description}
         </p>
         <div className="mt-3 flex items-center justify-between">
-          <span className="font-heading text-lg font-bold text-bean-black">
-            {formatCurrency(item.price)}
-          </span>
+          <PriceDisplay
+            price={item.price}
+            originalPrice={item.originalPrice}
+            size="md"
+          />
           {item.available && (
             <button
               onClick={handleQuickAdd}
