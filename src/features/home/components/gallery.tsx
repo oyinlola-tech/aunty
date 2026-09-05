@@ -3,7 +3,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 
 const galleryItems = [
   {
-    src: "/images/gallery/beans-porridge.jpg",
+    src: "/images/gallery/beans-porridge.png",
     label: "Beans Porridge",
     span: "col-span-2 row-span-2",
     aspect: "aspect-square",
@@ -15,13 +15,13 @@ const galleryItems = [
     aspect: "aspect-square",
   },
   {
-    src: "/images/gallery/african-beans.jpg",
+    src: "/images/gallery/african-beans.png",
     label: "African Beans",
     span: "",
     aspect: "aspect-square",
   },
   {
-    src: "/images/gallery/beans-soup.jpg",
+    src: "/images/gallery/beans-soup.png",
     label: "Beans Soup",
     span: "",
     aspect: "aspect-square",

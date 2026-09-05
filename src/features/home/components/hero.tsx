@@ -53,7 +53,7 @@ export function Hero() {
                   style={{ zIndex: 1 }}
                 >
                   <Image
-                    src="/images/hero/beans-porridge.jpg"
+                    src="/images/hero/beans-porridge.png"
                     alt="Beans porridge"
                     fill
                     className="object-cover"
@@ -79,8 +79,8 @@ export function Hero() {
                   style={{ zIndex: 3 }}
                 >
                   <Image
-                    src="/images/hero/beans-rice.jpg"
-                    alt="Beans with rice"
+                    src="/images/hero/african-beans.png"
+                    alt="African beans dish"
                     fill
                     className="object-cover"
                     sizes="(max-width: 640px) 200px, 240px"
@@ -90,7 +90,7 @@ export function Hero() {
 
               <div className="absolute -top-2 -right-2 transform rotate-12" style={{ zIndex: 4 }}>
                 <Image
-                  src="/images/stickers/hot-fresh.svg"
+                  src="/images/decorations/stickers/hot-fresh.svg"
                   alt="Hot and fresh sticker"
                   width={112}
                   height={32}
@@ -100,7 +100,7 @@ export function Hero() {
 
               <div className="absolute -bottom-2 -left-2 transform -rotate-6" style={{ zIndex: 4 }}>
                 <Image
-                  src="/images/stickers/so-soft.svg"
+                  src="/images/decorations/stickers/so-soft.svg"
                   alt="So soft sticker"
                   width={112}
                   height={32}
