@@ -46,7 +46,7 @@ export function FinalCTA() {
         </div>
 
         <p className="mt-8 text-sm text-white/40">
-          Port Harcourt delivery &middot; No minimum order &middot; Pay on delivery
+          Port Harcourt delivery &middot; No minimum order &middot; Pay by bank transfer
         </p>
       </div>
     </section>

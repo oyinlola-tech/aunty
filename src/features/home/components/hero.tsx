@@ -9,7 +9,7 @@ export function Hero() {
         <div className="absolute -left-10 bottom-10 size-48 rounded-full bg-golden-yellow/8" />
       </div>
 
-      <div className="relative mx-auto flex min-h-[85vh] flex-col items-center gap-12 px-4 py-20 sm:px-6 lg:flex-row lg:gap-16 lg:px-8">
+      <div className="relative mx-auto flex min-h-[85vh] max-w-7xl flex-col items-center gap-12 px-4 py-20 sm:px-6 lg:flex-row lg:gap-16 lg:px-8">
         <div className="flex-1 text-center lg:text-left">
           <p className="mb-6 font-heading text-sm font-semibold tracking-widest text-palace-orange uppercase">
             Fresh from our kitchen to yours
@@ -45,40 +45,61 @@ export function Hero() {
 
         <div className="relative flex-1 flex justify-center lg:justify-end">
           <div className="relative w-full max-w-lg">
-            <div className="relative aspect-square w-full max-w-md mx-auto">
-              <div className="absolute inset-0 rounded-full bg-cream-deep shadow-[0_8px_40px_rgba(245,130,31,0.12)]" />
-              <div className="absolute inset-6 rounded-full border-2 border-dashed border-palace-orange/20" />
+            <div className="relative flex items-center justify-center">
+              {/* Stacked food images */}
+              <div className="relative w-72 h-72 sm:w-80 sm:h-80">
+                {/* Back image - rotated left */}
+                <div
+                  className="absolute -left-4 top-4 w-56 h-56 sm:w-64 sm:h-64 rounded-3xl overflow-hidden shadow-2xl transform -rotate-6 border-4 border-white"
+                  style={{ zIndex: 1 }}
+                >
+                  <img
+                    src="/images/hero/jollof-plantain.jpg"
+                    alt="Jollof rice with fried plantain"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative">
-                  <div className="size-48 rounded-full bg-gradient-to-br from-amber-700 via-amber-800 to-amber-900 shadow-lg sm:size-56" />
-                  <div className="absolute inset-4 rounded-full bg-gradient-to-br from-red-700 via-red-600 to-orange-500" />
-                  <div className="absolute inset-8 rounded-full opacity-30">
-                    <div className="absolute left-1/4 top-1/4 size-2 rounded-full bg-amber-300" />
-                    <div className="absolute right-1/3 top-1/3 size-1.5 rounded-full bg-amber-200" />
-                    <div className="absolute bottom-1/4 left-1/3 size-2 rounded-full bg-amber-300" />
-                    <div className="absolute bottom-1/3 right-1/4 size-1.5 rounded-full bg-amber-200" />
-                    <div className="absolute left-1/2 top-1/2 size-1 rounded-full bg-amber-400" />
-                  </div>
+                {/* Middle image - rotated right */}
+                <div
+                  className="absolute right-0 top-8 w-52 h-52 sm:w-60 sm:h-60 rounded-3xl overflow-hidden shadow-2xl transform rotate-3 border-4 border-white"
+                  style={{ zIndex: 2 }}
+                >
+                  <img
+                    src="/images/hero/plantain-buffet.jpg"
+                    alt="Fried plantain and skewers"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* Front image - straight */}
+                <div
+                  className="absolute left-1/2 -translate-x-1/2 bottom-0 w-48 h-48 sm:w-56 sm:h-56 rounded-3xl overflow-hidden shadow-2xl border-4 border-white"
+                  style={{ zIndex: 3 }}
+                >
+                  <img
+                    src="/images/hero/nigerian-breakfast.jpg"
+                    alt="Nigerian breakfast with yam and egg"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
 
-              <div className="absolute -right-4 top-12 animate-sbp-float sm:right-0 sm:top-8">
-                <div className="flex items-center gap-2 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 px-4 py-3 shadow-md">
-                  <span className="font-heading text-xs font-bold text-amber-900">Fried Plantain</span>
-                </div>
+              {/* Stickers */}
+              <div className="absolute -top-2 -right-2 transform rotate-12" style={{ zIndex: 4 }}>
+                <img
+                  src="/images/stickers/hot-fresh.svg"
+                  alt="Hot and fresh sticker"
+                  className="w-24 h-8 sm:w-28 sm:h-10 drop-shadow-md"
+                />
               </div>
 
-              <div className="absolute -bottom-2 left-4 animate-sbp-float-delayed sm:bottom-0 sm:left-8">
-                <div className="flex items-center gap-2 rounded-2xl bg-gradient-to-br from-amber-200 to-amber-300 px-4 py-3 shadow-md">
-                  <span className="font-heading text-xs font-bold text-amber-800">Soft Bread</span>
-                </div>
-              </div>
-
-              <div className="absolute -left-6 top-1/2 -translate-y-1/2 animate-sbp-float sm:-left-4">
-                <div className="flex items-center gap-2 rounded-2xl bg-gradient-to-br from-red-500 to-red-600 px-4 py-3 shadow-md">
-                  <span className="font-heading text-xs font-bold text-white">Peppered Fish</span>
-                </div>
+              <div className="absolute -bottom-2 -left-2 transform -rotate-6" style={{ zIndex: 4 }}>
+                <img
+                  src="/images/stickers/so-soft.svg"
+                  alt="So soft sticker"
+                  className="w-24 h-8 sm:w-28 sm:h-10 drop-shadow-md"
+                />
               </div>
             </div>
           </div>
