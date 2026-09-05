@@ -21,7 +21,7 @@ const dmSans = DM_Sans({
   fallback: ["system-ui", "sans-serif"],
 });
 
-const ogImage = `${siteConfig.url}/images/brand/og-card.png`;
+const ogImage = `${siteConfig.url}/images/brand/og-card.webp`;
 
 export const metadata: Metadata = {
   title: {

@@ -53,7 +53,7 @@ export function Hero() {
                   style={{ zIndex: 1 }}
                 >
                   <Image
-                    src="/images/hero/beans-porridge.png"
+                    src="/images/hero/beans-porridge.webp"
                     alt="Beans porridge"
                     fill
                     className="object-cover"
@@ -66,7 +66,7 @@ export function Hero() {
                   style={{ zIndex: 2 }}
                 >
                   <Image
-                    src="/images/hero/fried-plantain.jpg"
+                    src="/images/hero/fried-plantain.webp"
                     alt="Fried plantain"
                     fill
                     className="object-cover"
@@ -79,7 +79,7 @@ export function Hero() {
                   style={{ zIndex: 3 }}
                 >
                   <Image
-                    src="/images/hero/african-beans.png"
+                    src="/images/hero/african-beans.webp"
                     alt="African beans dish"
                     fill
                     className="object-cover"

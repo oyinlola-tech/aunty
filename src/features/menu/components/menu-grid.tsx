@@ -1,5 +1,3 @@
-"use client";
-
 import { MenuCard } from "./menu-card";
 import type { MenuItem } from "@/types/menu";
 

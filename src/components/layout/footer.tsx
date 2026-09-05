@@ -115,7 +115,7 @@ export function Footer() {
               <div className="relative h-64 w-full sm:h-72 lg:h-80">
                 <div className="absolute -left-2 top-2 w-40 h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 rounded-3xl overflow-hidden shadow-2xl transform -rotate-6 border-4 border-white">
                   <Image
-                    src="/images/hero/beans-porridge.png"
+                    src="/images/hero/beans-porridge.webp"
                     alt=""
                     fill
                     className="object-cover"
@@ -125,7 +125,7 @@ export function Footer() {
 
                 <div className="absolute right-0 top-6 w-36 h-36 sm:w-44 sm:h-44 lg:w-52 lg:h-52 rounded-3xl overflow-hidden shadow-2xl transform rotate-3 border-4 border-white">
                   <Image
-                    src="/images/hero/fried-plantain.jpg"
+                    src="/images/hero/fried-plantain.webp"
                     alt=""
                     fill
                     className="object-cover"
@@ -135,7 +135,7 @@ export function Footer() {
 
                 <div className="absolute left-1/2 bottom-0 w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-3xl overflow-hidden shadow-2xl transform -translate-x-1/2 border-4 border-white">
                   <Image
-                    src="/images/hero/african-beans.png"
+                    src="/images/hero/african-beans.webp"
                     alt=""
                     fill
                     className="object-cover"

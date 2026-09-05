@@ -49,6 +49,7 @@ export function FoodImage({
             "h-full w-full object-cover transition-transform duration-300 group-hover:scale-105",
             imgClassName
           )}
+          loading="lazy"
           onError={() => setImgError(true)}
         />
       )}
