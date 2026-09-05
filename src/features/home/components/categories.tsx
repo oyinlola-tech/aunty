@@ -13,10 +13,12 @@ const categoryVisuals: Record<string, { gradient: string; shape: string; icon?: 
   sides: {
     gradient: "from-yellow-400 via-amber-400 to-amber-500",
     shape: "rounded-2xl rotate-3",
+    icon: "/images/icons/categories/sides.svg",
   },
   proteins: {
     gradient: "from-red-500 via-red-600 to-red-700",
     shape: "rounded-full",
+    icon: "/images/icons/categories/proteins.svg",
   },
 };
 
