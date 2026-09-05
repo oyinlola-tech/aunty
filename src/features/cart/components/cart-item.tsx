@@ -1,6 +1,6 @@
 "use client";
 
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Pencil, Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/currency";
 import { useCartStore } from "../store/cart-store";
@@ -9,9 +9,10 @@ import type { CartItem as CartItemType } from "@/types/cart";
 
 interface CartItemProps {
   item: CartItemType;
+  onEdit?: (item: CartItemType) => void;
 }
 
-export function CartItem({ item }: CartItemProps) {
+export function CartItem({ item, onEdit }: CartItemProps) {
   const incrementQuantity = useCartStore((s) => s.incrementQuantity);
   const decrementQuantity = useCartStore((s) => s.decrementQuantity);
   const removeItem = useCartStore((s) => s.removeItem);
@@ -90,6 +91,16 @@ export function CartItem({ item }: CartItemProps) {
             </Button>
           </div>
           <div className="flex items-center gap-1">
+            {onEdit && (
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => onEdit(item)}
+                aria-label={`Edit ${item.name}`}
+              >
+                <Pencil className="size-3 text-warm-grey" />
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="icon-sm"
