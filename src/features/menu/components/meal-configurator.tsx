@@ -220,7 +220,7 @@ export function MealConfigurator({
       {/* Sticky order bar: price breakdown + total + action */}
       <div
         className={cn(
-          "sticky z-10 -mx-5 -mb-5 flex flex-col rounded-b-2xl border-t border-border/50 bg-cream/95 shadow-[0_-6px_24px_rgba(27,22,17,0.07)] backdrop-blur-sm sm:-mx-6 sm:-mb-6",
+          "sticky z-10 bottom-0 flex flex-col rounded-2xl border-t border-border/50 bg-cream/95 shadow-[0_-6px_24px_rgba(27,22,17,0.07)] backdrop-blur-sm",
           stickyBar === "page" && "bottom-16 md:bottom-0"
         )}
       >

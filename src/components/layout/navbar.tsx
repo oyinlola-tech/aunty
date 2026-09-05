@@ -77,20 +77,23 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative cursor-pointer"
-            onClick={handleCartClick}
-            aria-label={`Open shopping cart${visibleCount > 0 ? ` with ${visibleCount} items` : ""}`}
-          >
-            <ShoppingBag className="size-5" />
-            {visibleCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 flex size-5 items-center justify-center rounded-full bg-palace-orange text-[10px] font-bold text-white">
-                {visibleCount}
-              </span>
-            )}
-          </Button>
+          <div className="relative">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative cursor-pointer"
+              onClick={handleCartClick}
+              aria-label={`Open shopping cart${visibleCount > 0 ? ` with ${visibleCount} items` : ""}`}
+            >
+              <ShoppingBag className="size-5" />
+              {visibleCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 flex size-5 items-center justify-center rounded-full bg-palace-orange text-[10px] font-bold text-white">
+                  {visibleCount}
+                </span>
+              )}
+            </Button>
+            <CartDrawer open={cartOpen} onOpenChange={setCartOpen} onCheckout={() => router.push("/checkout")} />
+          </div>
           <Link href="/menu" className="hidden sm:block">
             <Button variant="default" size="sm">
               Order Now
@@ -98,8 +101,6 @@ export function Navbar() {
           </Link>
         </div>
       </nav>
-
-      <CartDrawer open={cartOpen} onOpenChange={setCartOpen} />
     </header>
   )
 }

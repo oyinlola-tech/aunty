@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/currency";
@@ -39,13 +39,34 @@ export function ProductModal({
     item.customization?.sides === true ||
     item.customization?.proteins === true;
 
-  const isProtein = item.categoryId === "proteins"
+  const isProtein = item.categoryId === "proteins";
 
   const isVisible = open !== undefined ? open : true;
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     onClose?.();
     onOpenChange?.(false);
-  };
+  }, [onClose, onOpenChange]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    const body = document.body;
+    const originalOverflow = body.style.overflow;
+    body.style.overflow = "hidden";
+    return () => {
+      body.style.overflow = originalOverflow;
+    };
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        handleClose();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isVisible, handleClose]);
 
   function handleSimpleAddToCart() {
     if (existing) {
@@ -71,89 +92,104 @@ export function ProductModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
-      <div className="fixed inset-0 bg-bean-black/50" onClick={handleClose} />
-      <div className="relative z-10 w-full max-w-lg rounded-t-3xl bg-ivory sm:rounded-3xl">
+      <div
+        className="fixed inset-0 bg-bean-black/50"
+        onClick={handleClose}
+        aria-hidden="true"
+      />
+      <div
+        className="relative z-10 flex h-full max-h-[85vh] w-full flex-col overflow-hidden rounded-t-3xl bg-ivory sm:max-h-[90vh] sm:max-w-lg sm:rounded-3xl"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${item.name} details`}
+      >
         <button
           onClick={handleClose}
-          className="absolute right-4 top-4 z-20 flex size-8 items-center justify-center rounded-full bg-cream-deep text-warm-grey hover:text-bean-black"
+          className="absolute right-4 top-4 z-20 flex size-8 items-center justify-center rounded-full bg-cream-deep text-warm-grey transition-colors hover:text-bean-black"
           aria-label="Close"
         >
           <X className="size-4" />
         </button>
 
-        <FoodImage
-          src={item.image}
-          alt={item.name}
-          category={item.categoryId}
-          className="aspect-video w-full rounded-t-3xl sm:rounded-t-3xl"
-        />
-
-        <div className="p-6">
-          <h2 className="font-heading text-2xl font-bold text-bean-black">
-            {item.name}
-          </h2>
-          <p className="mt-2 text-sm text-warm-grey">{item.description}</p>
-          <div className="mt-3">
-            <PriceDisplay
-              price={item.price}
-              originalPrice={item.originalPrice}
-              size="lg"
-            />
-          </div>
-
-          {isProtein ? (
-            <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-border/50 bg-cream p-5">
-              <p className="font-heading text-base font-semibold text-bean-black">
-                Build a plate first
-              </p>
-              <p className="text-sm text-warm-grey">
-                Proteins are added inside a meal or side plate. Choose a base
-                first, then add your favourite proteins while you build it.
-              </p>
-              <div className="flex flex-col gap-2 sm:flex-row">
-                <Link href="/menu" onClick={handleClose}>
-                  <Button className="w-full sm:w-auto">Browse Meals</Button>
-                </Link>
-                <Link href="/menu?category=sides" onClick={handleClose}>
-                  <Button variant="outline" className="w-full sm:w-auto">
-                    Browse Sides
-                  </Button>
-                </Link>
-              </div>
+        <div className="shrink-0">
+          <FoodImage
+            src={item.image}
+            alt={item.name}
+            category={item.categoryId}
+            className="aspect-video w-full rounded-t-3xl sm:rounded-t-3xl"
+          />
+          <div className="border-b border-border/50 p-5 sm:p-6">
+            <h2 className="font-heading text-2xl font-bold text-bean-black">
+              {item.name}
+            </h2>
+            <p className="mt-2 text-sm text-warm-grey">{item.description}</p>
+            <div className="mt-3">
+              <PriceDisplay
+                price={item.price}
+                originalPrice={item.originalPrice}
+                size="lg"
+              />
             </div>
-          ) : isCustomizable ? (
-            <MealConfigurator
-              item={item}
-              existing={existing}
-              stickyBar="dialog"
-              onAdded={() => {
-                onAdded?.();
-                handleClose();
-              }}
-            />
-          ) : (
-            <>
-              <div className="mt-6">
-                <label className="mb-2 block text-sm font-medium text-bean-black">
-                  Special Instructions
-                </label>
-                <textarea
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="e.g. Extra stew, less pepper..."
-                  className="h-20 w-full resize-none rounded-xl border border-border bg-ivory px-4 py-3 text-sm text-bean-black placeholder:text-warm-grey focus:border-palace-orange focus:outline-none focus:ring-2 focus:ring-palace-orange/20"
-                />
-              </div>
+          </div>
+        </div>
 
-              <div className="mt-6 flex items-center justify-between">
-                <QuantitySelector value={quantity} onChange={setQuantity} />
-                <Button variant="default" onClick={handleSimpleAddToCart}>
-                  {existing ? "Update" : "Add to Cart"} -{" "}
-                  {formatCurrency(item.price * quantity)}
-                </Button>
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="p-5 sm:p-6">
+            {isProtein ? (
+              <div className="flex flex-col gap-4 rounded-2xl border border-border/50 bg-cream p-5">
+                <p className="font-heading text-base font-semibold text-bean-black">
+                  Build a plate first
+                </p>
+                <p className="text-sm text-warm-grey">
+                  Proteins are added inside a meal or side plate. Choose a base
+                  first, then add your favourite proteins while you build it.
+                </p>
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <Link href="/menu" onClick={handleClose}>
+                    <Button className="w-full sm:w-auto">Browse Meals</Button>
+                  </Link>
+                  <Link href="/menu?category=sides" onClick={handleClose}>
+                    <Button variant="outline" className="w-full sm:w-auto">
+                      Browse Sides
+                    </Button>
+                  </Link>
+                </div>
               </div>
-            </>
-          )}
+            ) : isCustomizable ? (
+              <MealConfigurator
+                item={item}
+                existing={existing}
+                stickyBar="dialog"
+                onAdded={() => {
+                  onAdded?.();
+                  handleClose();
+                }}
+              />
+            ) : (
+              <>
+                <div className="mt-6">
+                  <label className="mb-2 block text-sm font-medium text-bean-black">
+                    Special Instructions
+                  </label>
+                  <textarea
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    placeholder="e.g. Extra stew, less pepper..."
+                    rows={3}
+                    className="h-20 w-full resize-none rounded-xl border border-border bg-ivory px-4 py-3 text-sm text-bean-black placeholder:text-warm-grey focus:border-palace-orange focus:outline-none focus:ring-2 focus:ring-palace-orange/20"
+                  />
+                </div>
+
+                <div className="mt-6 flex items-center justify-between">
+                  <QuantitySelector value={quantity} onChange={setQuantity} />
+                  <Button variant="default" onClick={handleSimpleAddToCart}>
+                    {existing ? "Update" : "Add to Cart"} -{" "}
+                    {formatCurrency(item.price * quantity)}
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
