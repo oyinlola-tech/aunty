@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 export function Hero() {
@@ -46,59 +47,64 @@ export function Hero() {
         <div className="relative flex-1 flex justify-center lg:justify-end">
           <div className="relative w-full max-w-lg">
             <div className="relative flex items-center justify-center">
-              {/* Stacked food images */}
               <div className="relative w-72 h-72 sm:w-80 sm:h-80">
-                {/* Back image - rotated left */}
                 <div
                   className="absolute -left-4 top-4 w-56 h-56 sm:w-64 sm:h-64 rounded-3xl overflow-hidden shadow-2xl transform -rotate-6 border-4 border-white"
                   style={{ zIndex: 1 }}
                 >
-                  <img
-                    src="/images/hero/jollof-plantain.jpg"
-                    alt="Jollof rice with fried plantain"
-                    className="w-full h-full object-cover"
+                  <Image
+                    src="/images/hero/beans-porridge.jpg"
+                    alt="Beans porridge"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 280px, 320px"
                   />
                 </div>
 
-                {/* Middle image - rotated right */}
                 <div
                   className="absolute right-0 top-8 w-52 h-52 sm:w-60 sm:h-60 rounded-3xl overflow-hidden shadow-2xl transform rotate-3 border-4 border-white"
                   style={{ zIndex: 2 }}
                 >
-                  <img
-                    src="/images/hero/plantain-buffet.jpg"
-                    alt="Fried plantain and skewers"
-                    className="w-full h-full object-cover"
+                  <Image
+                    src="/images/hero/fried-plantain.jpg"
+                    alt="Fried plantain"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 240px, 300px"
                   />
                 </div>
 
-                {/* Front image - straight */}
                 <div
                   className="absolute left-1/2 -translate-x-1/2 bottom-0 w-48 h-48 sm:w-56 sm:h-56 rounded-3xl overflow-hidden shadow-2xl border-4 border-white"
                   style={{ zIndex: 3 }}
                 >
-                  <img
-                    src="/images/hero/nigerian-breakfast.jpg"
-                    alt="Nigerian breakfast with yam and egg"
-                    className="w-full h-full object-cover"
+                  <Image
+                    src="/images/hero/beans-rice.jpg"
+                    alt="Beans with rice"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 200px, 240px"
                   />
                 </div>
               </div>
 
-              {/* Stickers */}
               <div className="absolute -top-2 -right-2 transform rotate-12" style={{ zIndex: 4 }}>
-                <img
+                <Image
                   src="/images/stickers/hot-fresh.svg"
                   alt="Hot and fresh sticker"
-                  className="w-24 h-8 sm:w-28 sm:h-10 drop-shadow-md"
+                  width={112}
+                  height={32}
+                  className="drop-shadow-md sm:w-28 sm:h-10"
                 />
               </div>
 
               <div className="absolute -bottom-2 -left-2 transform -rotate-6" style={{ zIndex: 4 }}>
-                <img
+                <Image
                   src="/images/stickers/so-soft.svg"
                   alt="So soft sticker"
-                  className="w-24 h-8 sm:w-28 sm:h-10 drop-shadow-md"
+                  width={112}
+                  height={32}
+                  className="drop-shadow-md sm:w-28 sm:h-10"
                 />
               </div>
             </div>

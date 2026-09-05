@@ -3,32 +3,32 @@ import { SectionHeading } from "@/components/shared/section-heading";
 
 const galleryItems = [
   {
-    gradient: "from-amber-800 via-amber-700 to-red-600",
-    label: "Ewa Agoyin",
+    src: "/images/gallery/beans-porridge.jpg",
+    label: "Beans Porridge",
     span: "col-span-2 row-span-2",
     aspect: "aspect-square",
   },
   {
-    gradient: "from-yellow-400 via-amber-400 to-amber-500",
+    src: "/images/gallery/fried-plantain.jpg",
     label: "Fried Plantain",
     span: "",
     aspect: "aspect-square",
   },
   {
-    gradient: "from-red-500 via-red-600 to-red-700",
-    label: "Peppered Chicken",
+    src: "/images/gallery/african-beans.jpg",
+    label: "African Beans",
     span: "",
     aspect: "aspect-square",
   },
   {
-    gradient: "from-amber-200 via-amber-300 to-amber-400",
-    label: "Soft Bread",
+    src: "/images/gallery/beans-soup.jpg",
+    label: "Beans Soup",
     span: "",
     aspect: "aspect-square",
   },
   {
-    gradient: "from-amber-600 via-amber-700 to-amber-800",
-    label: "Porridge Beans",
+    src: "/images/gallery/plantain-corn.jpg",
+    label: "Plantain & More",
     span: "",
     aspect: "aspect-square",
   },
@@ -47,15 +47,13 @@ export function Gallery() {
             key={index}
             className={`group relative overflow-hidden rounded-3xl ${item.span} ${item.aspect}`}
           >
-            {/* Gradient background as food visual placeholder */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} transition-transform duration-500 group-hover:scale-105`} />
+            <img
+              src={item.src}
+              alt={item.label}
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
 
-            {/* Subtle texture overlay */}
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.3),transparent_50%)]" />
-            </div>
-
-            {/* Label */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 pt-12">
               <span className="font-heading text-sm font-bold text-white">
                 {item.label}
