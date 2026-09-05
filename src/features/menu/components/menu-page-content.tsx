@@ -8,6 +8,7 @@ import { MenuSearch } from "@/features/menu/components/menu-search";
 import { MenuGrid } from "@/features/menu/components/menu-grid";
 import { ProductModal } from "@/features/menu/components/product-modal";
 import { useMenuFilter } from "@/features/menu/hooks/use-menu-filter";
+import { useCartStore } from "@/features/cart/store/cart-store";
 import { menuItems } from "@/data/menu";
 import { categories } from "@/data/categories";
 import type { MenuItem } from "@/types/menu";
@@ -21,28 +22,39 @@ export default function MenuPageContent() {
     setSearchQuery,
   } = useMenuFilter(menuItems);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
-  const [addModeItem, setAddModeItem] = useState<MenuItem | null>(null);
-
-  const isMealBase = (item: MenuItem) =>
-    item.customization?.sides === true || item.customization?.proteins === true
+  const [guidanceItem, setGuidanceItem] = useState<MenuItem | null>(null);
 
   const handleViewDetails = (item: MenuItem) => {
     setSelectedItem(item)
-    setAddModeItem(null)
+    setGuidanceItem(null)
   }
 
   const handleAdd = (item: MenuItem) => {
     if (!item.available) return
-    if (isMealBase(item)) {
-      setAddModeItem(item)
+
+    if (item.categoryId === "proteins") {
+      setGuidanceItem(item)
       setSelectedItem(null)
-    } else {
-      setSelectedItem(item)
-      setAddModeItem(null)
+      return
     }
+
+    if (item.customization?.sides || item.customization?.proteins) {
+      setSelectedItem(item)
+      setGuidanceItem(null)
+      return
+    }
+
+    const addItem = useCartStore.getState().addItem
+    addItem({
+      menuItemId: item.id,
+      name: item.name,
+      price: item.price,
+      image: item.image,
+      quantity: 1,
+    })
   }
 
-  const activeModalItem = addModeItem || selectedItem
+  const activeModalItem = guidanceItem || selectedItem
 
   return (
     <>
@@ -84,12 +96,12 @@ export default function MenuPageContent() {
           item={activeModalItem}
           onClose={() => {
             setSelectedItem(null)
-            setAddModeItem(null)
+            setGuidanceItem(null)
           }}
           existing={undefined}
           onAdded={() => {
             setSelectedItem(null)
-            setAddModeItem(null)
+            setGuidanceItem(null)
           }}
         />
       )}

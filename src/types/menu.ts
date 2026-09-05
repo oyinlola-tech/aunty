@@ -25,4 +25,5 @@ export interface MenuItem {
   featured: boolean;
   available: boolean;
   customization?: MenuItemCustomization;
+  combo?: boolean;
 }

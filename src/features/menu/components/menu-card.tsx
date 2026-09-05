@@ -5,7 +5,7 @@ import { useCartStore } from "@/features/cart/store/cart-store";
 import { FoodImage } from "@/components/shared/food-image";
 import { PriceDisplay } from "@/components/shared/price-display";
 import type { MenuItem } from "@/types/menu";
-import { Plus } from "lucide-react";
+import { Plus, Info } from "lucide-react";
 
 interface MenuCardProps {
   item: MenuItem;
@@ -40,6 +40,9 @@ export function MenuCard({ item, onViewDetails, onAdd }: MenuCardProps) {
     }
   }
 
+  const isProtein = item.categoryId === "proteins"
+  const showQuickAdd = item.available && !isProtein
+
   return (
     <div
       onClick={handleClick}
@@ -66,6 +69,11 @@ export function MenuCard({ item, onViewDetails, onAdd }: MenuCardProps) {
             Popular
           </span>
         )}
+        {isProtein && item.available && (
+          <span className="absolute right-3 top-3 z-10 rounded-full bg-espresso px-2.5 py-0.5 text-[10px] font-bold uppercase text-white">
+            Add to plate
+          </span>
+        )}
       </FoodImage>
       <div className="p-4">
         <h3 className="font-heading text-base font-semibold text-bean-black">
@@ -74,13 +82,19 @@ export function MenuCard({ item, onViewDetails, onAdd }: MenuCardProps) {
         <p className="mt-1 line-clamp-2 text-xs text-warm-grey">
           {item.description}
         </p>
+        {isProtein && item.available && (
+          <p className="mt-2 flex items-center gap-1.5 text-xs text-warm-grey">
+            <Info className="size-3.5" aria-hidden="true" />
+            Add this inside a meal or side plate.
+          </p>
+        )}
         <div className="mt-3 flex items-center justify-between">
           <PriceDisplay
             price={item.price}
             originalPrice={item.originalPrice}
             size="md"
           />
-          {item.available && (
+          {showQuickAdd && (
             <button
               onClick={handleQuickAdd}
               className="flex size-8 items-center justify-center rounded-full bg-palace-orange text-white transition-colors hover:bg-palace-orange-hover"

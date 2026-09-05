@@ -48,8 +48,8 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
         ) : (
           <>
             <div className="flex-1 space-y-3 overflow-y-auto p-4 sm:p-5">
-              {items.map((item) => (
-                <CartItem key={item.id} item={item} />
+              {items.map((item, index) => (
+                <CartItem key={item.id} item={item} plateNumber={index + 1} />
               ))}
             </div>
             <CartSummary />

@@ -24,7 +24,6 @@ export function CartPage() {
   const hasItems = mounted && items.length > 0
   const shownTotal = mounted ? totalItems : 0
 
-  // Reopens the meal configuration dialog for one cart line (edit mode).
   const [editingItem, setEditingItem] = useState<CartItemType | null>(null)
   const editingMenuItem = editingItem
     ? (menuItems.find((menuItem) => menuItem.id === editingItem.menuItemId) ??
@@ -54,41 +53,47 @@ export function CartPage() {
         <p className="text-warm-grey">
           {!hasItems
             ? "Your plate is looking a little empty."
-            : `${items.length} configured meal${items.length === 1 ? "" : "s"}, ${shownTotal} item${shownTotal === 1 ? "" : "s"} in your cart`}
+            : `${items.length} configured plate${items.length === 1 ? "" : "s"}, ${shownTotal} portion${shownTotal === 1 ? "" : "s"} in your cart`}
         </p>
       </div>
 
       {!hasItems ? (
         <EmptyCart />
       ) : (
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col gap-4">
-            {items.map((item) => (
-              <CartItem key={item.id} item={item} onEdit={setEditingItem} />
+        <div className="grid gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-7 xl:col-span-8">
+            <div className="flex flex-col gap-4">
+            {items.map((item, index) => (
+              <CartItem key={item.id} item={item} plateNumber={index + 1} onEdit={setEditingItem} />
             ))}
+            </div>
           </div>
 
-          <CartSummary />
+          <div className="lg:col-span-5 xl:col-span-4">
+            <div className="sticky top-24">
+              <CartSummary />
 
-          <div className="flex flex-col gap-4">
-            <Button
-              className="w-full"
-              size="lg"
-              onClick={handleCheckout}
-            >
-              Continue to Checkout
-              <ArrowRight className="size-4" />
-            </Button>
+              <div className="mt-4 flex flex-col gap-3">
+                <Button
+                  className="w-full"
+                  size="lg"
+                  onClick={handleCheckout}
+                >
+                  Continue to Checkout
+                  <ArrowRight className="size-4" />
+                </Button>
 
-            <Link
-              href="/menu"
-              className={cn(
-                buttonVariants({ variant: "soft", size: "lg" }),
-                "w-full no-underline"
-              )}
-            >
-              Add More Items
-            </Link>
+                <Link
+                  href="/menu"
+                  className={cn(
+                    buttonVariants({ variant: "soft", size: "lg" }),
+                    "w-full no-underline"
+                  )}
+                >
+                  Add More Items
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       )}

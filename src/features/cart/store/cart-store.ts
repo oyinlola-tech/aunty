@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { CartItem } from "@/types/cart";
+import { menuItems } from "@/data/menu";
 import { getCartConfigKey } from "../utils/cart-identity";
 import { getCartSubtotal, getCartQuantity } from "../utils/pricing";
 
@@ -24,7 +25,18 @@ export const useCartStore = create<CartState>()(
 
       addItem: (item) => {
         set((state) => {
-          const newKey = getCartConfigKey(item)
+          const menuItem = menuItems.find((m) => m.id === item.menuItemId)
+
+          if (menuItem?.categoryId === "proteins") {
+            return state
+          }
+
+          const base: Omit<CartItem, "id"> = {
+            ...item,
+            variant: menuItem?.combo ? "combo" : "plate",
+          }
+
+          const newKey = getCartConfigKey(base)
           const existingIndex = state.items.findIndex(
             (i) => getCartConfigKey(i) === newKey
           )
@@ -33,13 +45,13 @@ export const useCartStore = create<CartState>()(
             const updated = [...state.items]
             updated[existingIndex] = {
               ...updated[existingIndex],
-              quantity: updated[existingIndex].quantity + item.quantity,
+              quantity: updated[existingIndex].quantity + base.quantity,
             }
             return { items: updated }
           }
 
           return {
-            items: [...state.items, { ...item, id: crypto.randomUUID() }],
+            items: [...state.items, { ...base, id: crypto.randomUUID() }],
           }
         })
       },

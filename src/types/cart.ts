@@ -15,4 +15,5 @@ export interface CartItem {
   quantity: number;
   notes?: string;
   addOns?: CartAddOn[];
+  variant?: "plate" | "combo";
 }

@@ -28,6 +28,7 @@ export const menuItems: MenuItem[] = [
     image: "/images/food/combo/ewa-agoyin-egg-combo.webp",
     featured: true,
     available: true,
+    combo: true,
   },
   {
     id: "classic-ewa-agoyin-combo",
@@ -41,6 +42,7 @@ export const menuItems: MenuItem[] = [
     image: "/images/food/combo/classic-ewa-agoyin-combo.webp",
     featured: true,
     available: true,
+    combo: true,
   },
   {
     id: "plain-soft-beans",
@@ -84,6 +86,7 @@ export const menuItems: MenuItem[] = [
     image: "/images/food/sides/soft-bread.webp",
     featured: false,
     available: true,
+    customization: { proteins: true },
   },
   {
     id: "fried-plantain",
@@ -97,6 +100,7 @@ export const menuItems: MenuItem[] = [
     image: "/images/food/sides/fried-plantain.webp",
     featured: true,
     available: true,
+    customization: { proteins: true },
   },
   {
     id: "fried-yam-sticks",
@@ -110,6 +114,7 @@ export const menuItems: MenuItem[] = [
     image: "/images/food/sides/fried-yam-strips.webp",
     featured: false,
     available: true,
+    customization: { proteins: true },
   },
   {
     id: "fried-potatoes",
@@ -123,6 +128,7 @@ export const menuItems: MenuItem[] = [
     image: "/images/food/sides/fried-potatoes.webp",
     featured: false,
     available: true,
+    customization: { proteins: true },
   },
 
   // ─── Proteins ────────────────────────────────────────────────────────

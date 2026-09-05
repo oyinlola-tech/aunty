@@ -11,6 +11,7 @@ import { QuantitySelector } from "./quantity-selector";
 import { MealConfigurator } from "./meal-configurator";
 import type { MenuItem } from "@/types/menu";
 import type { CartItem } from "@/types/cart";
+import Link from "next/link";
 
 interface ProductModalProps {
   item: MenuItem;
@@ -37,6 +38,8 @@ export function ProductModal({
   const isCustomizable =
     item.customization?.sides === true ||
     item.customization?.proteins === true;
+
+  const isProtein = item.categoryId === "proteins"
 
   const isVisible = open !== undefined ? open : true;
   const handleClose = () => {
@@ -98,7 +101,27 @@ export function ProductModal({
             />
           </div>
 
-          {isCustomizable ? (
+          {isProtein ? (
+            <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-border/50 bg-cream p-5">
+              <p className="font-heading text-base font-semibold text-bean-black">
+                Build a plate first
+              </p>
+              <p className="text-sm text-warm-grey">
+                Proteins are added inside a meal or side plate. Choose a base
+                first, then add your favourite proteins while you build it.
+              </p>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Link href="/menu" onClick={handleClose}>
+                  <Button className="w-full sm:w-auto">Browse Meals</Button>
+                </Link>
+                <Link href="/menu?category=sides" onClick={handleClose}>
+                  <Button variant="outline" className="w-full sm:w-auto">
+                    Browse Sides
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          ) : isCustomizable ? (
             <MealConfigurator
               item={item}
               existing={existing}

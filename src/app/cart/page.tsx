@@ -24,8 +24,8 @@ export default function CartPage() {
       ) : (
         <div className="mt-8 space-y-6">
           <div className="space-y-4">
-            {items.map((item) => (
-              <CartItem key={item.id} item={item} />
+            {items.map((item, index) => (
+              <CartItem key={item.id} item={item} plateNumber={index + 1} />
             ))}
           </div>
           <CartSummary />
