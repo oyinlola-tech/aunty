@@ -6,7 +6,6 @@ import { siteConfig } from "@/config/site";
 export function FinalCTA() {
   return (
     <section className="relative overflow-hidden bg-espresso">
-      {/* Decorative elements */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute -right-20 -top-20 size-72 rounded-full bg-palace-orange/10" />
         <div className="absolute -left-10 bottom-10 size-48 rounded-full bg-golden-yellow/5" />

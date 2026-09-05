@@ -14,8 +14,8 @@ export function FeaturedDishes() {
     <SectionContainer>
       <SectionHeading
         eyebrow="POPULAR"
-        title="The favourites. For good reason."
-        description="Our most-loved dishes, freshly prepared every day."
+        title="The dishes everybody orders."
+        description="Fresh from the pot, straight to your plate."
       />
       <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {featured.map((item, index) => (
@@ -32,7 +32,6 @@ export function FeaturedDishes() {
               category={item.categoryId}
               className={index === 0 ? "aspect-square" : "aspect-[4/3]"}
             >
-              {/* Price badge */}
               <div className="absolute right-3 top-3 z-10 rounded-full bg-white/95 px-3 py-1.5 shadow-sm backdrop-blur-sm">
                 <PriceDisplay
                   price={item.price}
@@ -41,7 +40,6 @@ export function FeaturedDishes() {
                 />
               </div>
 
-              {/* Featured badge */}
               {item.featured && (
                 <div className="absolute left-3 top-3 z-10 rounded-full bg-palace-orange px-3 py-1 shadow-sm">
                   <span className="font-heading text-[10px] font-bold uppercase text-white">
@@ -51,7 +49,6 @@ export function FeaturedDishes() {
               )}
             </FoodImage>
 
-            {/* Content */}
             <div className="p-4">
               <h3 className="font-heading text-base font-bold text-bean-black">
                 {item.name}

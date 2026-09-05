@@ -42,13 +42,11 @@ export function BuildYourPlate() {
       <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step, index) => (
           <div key={step.number} className="relative">
-            {/* Connector line (hidden on mobile, last item) */}
             {index < steps.length - 1 && (
               <div className="absolute left-[calc(50%+24px)] top-6 hidden h-px w-[calc(100%-48px)] bg-palace-orange/20 lg:block" />
             )}
 
             <div className="flex flex-col items-center rounded-3xl bg-ivory p-6 text-center shadow-sm transition-all duration-300 hover:shadow-md">
-              {/* Step number */}
               <div className={`flex size-12 items-center justify-center rounded-full ${step.color}`}>
                 <span className="font-heading text-sm font-bold">{step.number}</span>
               </div>

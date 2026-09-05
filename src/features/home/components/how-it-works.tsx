@@ -7,13 +7,13 @@ import { SectionHeading } from "@/components/shared/section-heading";
 const steps = [
   {
     number: "01",
-    title: "Browse the Menu",
+    title: "Browse the menu",
     description: "Explore our beans, sides, and proteins.",
     color: "bg-amber-100 text-amber-700",
   },
   {
     number: "02",
-    title: "Build Your Plate",
+    title: "Build your plate",
     description: "Add food to your cart and tell us how you want it.",
     color: "bg-yellow-100 text-yellow-700",
   },
@@ -42,7 +42,6 @@ export function HowItWorks() {
       <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step, index) => (
           <div key={step.number} className="relative">
-            {/* Connector line */}
             {index < steps.length - 1 && (
               <div className="absolute left-[calc(50%+20px)] top-6 hidden h-px w-[calc(100%-40px)] bg-palace-orange/20 lg:block" />
             )}
