@@ -6,7 +6,6 @@ import { WhyUs } from "@/features/home/components/why-us";
 import { Gallery } from "@/features/home/components/gallery";
 import { HowItWorks } from "@/features/home/components/how-it-works";
 import { Testimonials } from "@/features/home/components/testimonials";
-import { FinalCTA } from "@/features/home/components/final-cta";
 import { DottedDivider } from "@/components/shared/dotted-divider";
 
 export default function HomePage() {
@@ -22,7 +21,6 @@ export default function HomePage() {
       <HowItWorks />
       <DottedDivider />
       <Testimonials />
-      <FinalCTA />
     </>
   );
 }
