@@ -18,11 +18,11 @@ export function Testimonials() {
         title="What our customers say"
         description="Real reviews from real people."
       />
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {testimonials.map((testimonial) => (
           <div
             key={testimonial.id}
-            className={`rounded-2xl p-6 ${colorMap[testimonial.color]}`}
+            className={`rounded-3xl p-6 transition-all duration-300 hover:shadow-md ${colorMap[testimonial.color]}`}
           >
             <div className="flex gap-0.5">
               {Array.from({ length: testimonial.rating }).map((_, i) => (
@@ -32,14 +32,14 @@ export function Testimonials() {
                 />
               ))}
             </div>
-            <p className="mt-3 text-sm leading-relaxed text-bean-black">
+            <p className="mt-4 text-sm leading-relaxed text-bean-black">
               &ldquo;{testimonial.review}&rdquo;
             </p>
-            <div className="mt-4">
+            <div className="mt-5 border-t border-bean-black/10 pt-4">
               <p className="font-heading text-sm font-bold text-bean-black">
                 {testimonial.name}
               </p>
-              <p className="text-xs text-warm-grey">{testimonial.location}</p>
+              <p className="mt-0.5 text-xs text-warm-grey">{testimonial.location}</p>
             </div>
           </div>
         ))}

@@ -1,49 +1,79 @@
 import type { MenuItem } from "@/types/menu";
 
 export const menuItems: MenuItem[] = [
+  // ─── Beans ───────────────────────────────────────────────────────────
   {
     id: "ewa-agoyin",
     name: "Ewa Agoyin",
     slug: "ewa-agoyin",
     description:
       "Soft beans served with rich and flavourful agoyin stew.",
-    price: 2500,
+    price: 3000,
     categoryId: "beans",
     image: "/images/food/beans/ewa-agoyin.jpg",
+    featured: true,
+    available: true,
+    customization: { sides: true, proteins: true },
+  },
+  {
+    id: "ewa-agoyin-egg-combo",
+    name: "Ewa Agoyin & Egg Combo",
+    slug: "ewa-agoyin-egg-combo",
+    description:
+      "A satisfying combo of ewa agoyin paired with egg.",
+    price: 8000,
+    categoryId: "beans",
+    image: "/images/food/beans/ewa-agoyin-egg-combo.jpg",
+    featured: true,
+    available: true,
+  },
+  {
+    id: "classic-ewa-agoyin-combo",
+    name: "Classic Ewa Agoyin Combo",
+    slug: "classic-ewa-agoyin-combo",
+    description:
+      "A complete deal — bread, fish, ponmo and ewa agoyin. Everything you need in one plate.",
+    price: 12000,
+    categoryId: "beans",
+    image: "/images/food/beans/classic-ewa-agoyin-combo.jpg",
     featured: true,
     available: true,
   },
   {
     id: "plain-soft-beans",
-    name: "Plain Soft Beans with Stew",
+    name: "Soft Beans with Stew",
     slug: "plain-soft-beans",
     description:
       "Creamy soft beans paired with our house-made stew.",
-    price: 2000,
+    price: 3500,
     categoryId: "beans",
     image: "/images/food/beans/plain-soft-beans.jpg",
     featured: false,
     available: true,
+    customization: { sides: true, proteins: true },
   },
   {
     id: "soft-porridge-beans",
-    name: "Soft Porridge Beans",
+    name: "Porridge Beans",
     slug: "soft-porridge-beans",
     description:
       "Hearty porridge beans cooked with tender vegetables and spices.",
-    price: 2200,
+    price: 3000,
     categoryId: "beans",
     image: "/images/food/beans/soft-porridge-beans.jpg",
     featured: true,
     available: true,
+    customization: { sides: true, proteins: true },
   },
+
+  // ─── Sides ───────────────────────────────────────────────────────────
   {
     id: "soft-bread",
-    name: "Soft Bread",
+    name: "Bread",
     slug: "soft-bread",
     description:
       "Warm, freshly baked bread — perfect with beans.",
-    price: 500,
+    price: 1500,
     categoryId: "sides",
     image: "/images/food/sides/soft-bread.jpg",
     featured: false,
@@ -54,8 +84,8 @@ export const menuItems: MenuItem[] = [
     name: "Fried Plantain",
     slug: "fried-plantain",
     description:
-      "Golden, sweet plantain fried to perfection.",
-    price: 800,
+      "Golden, sweet plantain fried to perfection. A portion is 5 pieces (5 is the minimum).",
+    price: 1000,
     categoryId: "sides",
     image: "/images/food/sides/fried-plantain.jpg",
     featured: true,
@@ -63,11 +93,11 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: "fried-yam-sticks",
-    name: "Fried Yam Sticks",
+    name: "Fried Yam Strips",
     slug: "fried-yam-sticks",
     description:
       "Crispy on the outside, soft on the inside.",
-    price: 800,
+    price: 1000,
     categoryId: "sides",
     image: "/images/food/sides/fried-yam-sticks.jpg",
     featured: false,
@@ -79,12 +109,14 @@ export const menuItems: MenuItem[] = [
     slug: "fried-potatoes",
     description:
       "Seasoned and fried until golden brown.",
-    price: 800,
+    price: 1000,
     categoryId: "sides",
     image: "/images/food/sides/fried-potatoes.jpg",
     featured: false,
     available: true,
   },
+
+  // ─── Proteins ────────────────────────────────────────────────────────
   {
     id: "fried-fish",
     name: "Fried Fish",
@@ -99,11 +131,11 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: "fried-beef",
-    name: "Fried Beef",
+    name: "Beef",
     slug: "fried-beef",
     description:
       "Tender beef pieces, well-seasoned and fried.",
-    price: 2000,
+    price: 1500,
     categoryId: "proteins",
     image: "/images/food/proteins/fried-beef.jpg",
     featured: false,
@@ -111,11 +143,11 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: "fried-goat-meat",
-    name: "Fried Goat Meat",
+    name: "Goat Meat",
     slug: "fried-goat-meat",
     description:
       "Savoury goat meat, perfectly fried and seasoned.",
-    price: 2500,
+    price: 2000,
     categoryId: "proteins",
     image: "/images/food/proteins/fried-goat-meat.jpg",
     featured: false,
@@ -175,9 +207,33 @@ export const menuItems: MenuItem[] = [
     slug: "sauteed-ponmo",
     description:
       "Soft cow skin sautéed with onions and peppers.",
-    price: 1500,
+    price: 600,
     categoryId: "proteins",
     image: "/images/food/proteins/sauteed-ponmo.jpg",
+    featured: false,
+    available: true,
+  },
+  {
+    id: "egg-protein",
+    name: "Egg",
+    slug: "egg-protein",
+    description:
+      "Boiled egg, a simple and satisfying protein addition.",
+    price: 500,
+    categoryId: "proteins",
+    image: "/images/food/proteins/egg.jpg",
+    featured: false,
+    available: true,
+  },
+  {
+    id: "peppered-snails",
+    name: "Peppered Snails",
+    slug: "peppered-snails",
+    description:
+      "Succulent snails cooked in a rich pepper sauce. Served in pairs (2 pieces minimum).",
+    price: 3000,
+    categoryId: "proteins",
+    image: "/images/food/proteins/peppered-snails.jpg",
     featured: false,
     available: true,
   },

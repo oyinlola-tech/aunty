@@ -1,10 +1,13 @@
 import Link from "next/link";
+import { Soup } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
     <section className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
-      <span className="text-6xl">🫘</span>
+      <div className="flex size-20 items-center justify-center rounded-full bg-cream-deep">
+        <Soup className="size-10 text-palace-orange" />
+      </div>
       <h1 className="mt-6 font-heading text-3xl font-bold text-bean-black">
         Page Not Found
       </h1>

@@ -23,7 +23,7 @@ export const siteConfig = {
   description:
     "Delicious soft beans and comforting Nigerian meals. Freshly made in Port Harcourt.",
   url: siteUrl,
-  location: "Port Harcourt, Nigeria",
+  location: readText(process.env.NEXT_PUBLIC_LOCATION) || "Port Harcourt, Nigeria",
   contact: {
     whatsapp: readText(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER),
     phone: readText(process.env.NEXT_PUBLIC_PHONE),
