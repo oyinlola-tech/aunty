@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/currency";
 import { useCartStore } from "@/features/cart/store/cart-store";
+import { FoodImage } from "@/components/shared/food-image";
 import { QuantitySelector } from "./quantity-selector";
 import type { MenuItem } from "@/types/menu";
 import type { CartItem } from "@/types/cart";
@@ -62,19 +63,18 @@ export function ProductModal({
       <div className="relative z-10 w-full max-w-lg rounded-t-3xl bg-ivory sm:rounded-3xl">
         <button
           onClick={handleClose}
-          className="absolute right-4 top-4 flex size-8 items-center justify-center rounded-full bg-cream-deep text-warm-grey hover:text-bean-black"
+          className="absolute right-4 top-4 z-20 flex size-8 items-center justify-center rounded-full bg-cream-deep text-warm-grey hover:text-bean-black"
           aria-label="Close"
         >
           <X className="size-4" />
         </button>
 
-        <div className="aspect-video w-full overflow-hidden rounded-t-3xl bg-cream-deep sm:rounded-t-3xl">
-          <img
-            src={item.image}
-            alt={item.name}
-            className="h-full w-full object-cover"
-          />
-        </div>
+        <FoodImage
+          src={item.image}
+          alt={item.name}
+          category={item.categoryId}
+          className="aspect-video w-full rounded-t-3xl sm:rounded-t-3xl"
+        />
 
         <div className="p-6">
           <h2 className="font-heading text-2xl font-bold text-bean-black">

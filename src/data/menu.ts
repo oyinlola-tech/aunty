@@ -9,6 +9,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Soft beans served with rich and flavourful agoyin stew.",
     price: 3000,
+    originalPrice: 4000,
     categoryId: "beans",
     image: "/images/food/beans/ewa-agoyin.jpg",
     featured: true,
@@ -22,6 +23,7 @@ export const menuItems: MenuItem[] = [
     description:
       "A satisfying combo of ewa agoyin paired with egg.",
     price: 8000,
+    originalPrice: 9000,
     categoryId: "beans",
     image: "/images/food/beans/ewa-agoyin-egg-combo.jpg",
     featured: true,
@@ -34,6 +36,7 @@ export const menuItems: MenuItem[] = [
     description:
       "A complete deal — bread, fish, ponmo and ewa agoyin. Everything you need in one plate.",
     price: 12000,
+    originalPrice: 13500,
     categoryId: "beans",
     image: "/images/food/beans/classic-ewa-agoyin-combo.jpg",
     featured: true,
@@ -46,6 +49,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Creamy soft beans paired with our house-made stew.",
     price: 3500,
+    originalPrice: 4500,
     categoryId: "beans",
     image: "/images/food/beans/plain-soft-beans.jpg",
     featured: false,
@@ -59,6 +63,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Hearty porridge beans cooked with tender vegetables and spices.",
     price: 3000,
+    originalPrice: 3800,
     categoryId: "beans",
     image: "/images/food/beans/soft-porridge-beans.jpg",
     featured: true,
@@ -74,6 +79,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Warm, freshly baked bread — perfect with beans.",
     price: 1500,
+    originalPrice: 2000,
     categoryId: "sides",
     image: "/images/food/sides/soft-bread.jpg",
     featured: false,
@@ -86,6 +92,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Golden, sweet plantain fried to perfection. A portion is 5 pieces (5 is the minimum).",
     price: 1000,
+    originalPrice: 1500,
     categoryId: "sides",
     image: "/images/food/sides/fried-plantain.jpg",
     featured: true,
@@ -98,6 +105,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Crispy on the outside, soft on the inside.",
     price: 1000,
+    originalPrice: 1500,
     categoryId: "sides",
     image: "/images/food/sides/fried-yam-sticks.jpg",
     featured: false,
@@ -110,6 +118,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Seasoned and fried until golden brown.",
     price: 1000,
+    originalPrice: 1500,
     categoryId: "sides",
     image: "/images/food/sides/fried-potatoes.jpg",
     featured: false,
@@ -124,6 +133,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Freshly fried fish, seasoned and crispy.",
     price: 2000,
+    originalPrice: 2800,
     categoryId: "proteins",
     image: "/images/food/proteins/fried-fish.jpg",
     featured: true,
@@ -136,6 +146,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Tender beef pieces, well-seasoned and fried.",
     price: 1500,
+    originalPrice: 2200,
     categoryId: "proteins",
     image: "/images/food/proteins/fried-beef.jpg",
     featured: false,
@@ -148,6 +159,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Savoury goat meat, perfectly fried and seasoned.",
     price: 2000,
+    originalPrice: 2800,
     categoryId: "proteins",
     image: "/images/food/proteins/fried-goat-meat.jpg",
     featured: false,
@@ -160,6 +172,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Juicy chicken tossed in a rich pepper sauce.",
     price: 2500,
+    originalPrice: 3500,
     categoryId: "proteins",
     image: "/images/food/proteins/peppered-chicken.jpg",
     featured: true,
@@ -172,6 +185,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Tender beef coated in our signature pepper sauce.",
     price: 2500,
+    originalPrice: 3500,
     categoryId: "proteins",
     image: "/images/food/proteins/peppered-beef.jpg",
     featured: false,
@@ -184,6 +198,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Richly spiced goat meat in a bold pepper blend.",
     price: 3000,
+    originalPrice: 4000,
     categoryId: "proteins",
     image: "/images/food/proteins/peppered-goat-meat.jpg",
     featured: false,
@@ -196,6 +211,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Fresh fish in a fiery, flavourful pepper sauce.",
     price: 2500,
+    originalPrice: 3500,
     categoryId: "proteins",
     image: "/images/food/proteins/peppered-fish.jpg",
     featured: false,
@@ -208,6 +224,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Soft cow skin sautéed with onions and peppers.",
     price: 600,
+    originalPrice: 1000,
     categoryId: "proteins",
     image: "/images/food/proteins/sauteed-ponmo.jpg",
     featured: false,
@@ -220,6 +237,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Boiled egg, a simple and satisfying protein addition.",
     price: 500,
+    originalPrice: 800,
     categoryId: "proteins",
     image: "/images/food/proteins/egg.jpg",
     featured: false,
@@ -232,6 +250,7 @@ export const menuItems: MenuItem[] = [
     description:
       "Succulent snails cooked in a rich pepper sauce. Served in pairs (2 pieces minimum).",
     price: 3000,
+    originalPrice: 4000,
     categoryId: "proteins",
     image: "/images/food/proteins/peppered-snails.jpg",
     featured: false,

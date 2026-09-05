@@ -4,6 +4,7 @@ import { Minus, Plus, Trash2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/currency";
 import { useCartStore } from "../store/cart-store";
+import { FoodImage } from "@/components/shared/food-image";
 import type { CartItem as CartItemType } from "@/types/cart";
 
 interface CartItemProps {
@@ -18,13 +19,12 @@ export function CartItem({ item, onEdit }: CartItemProps) {
 
   return (
     <div className="flex gap-4">
-      <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-cream-deep">
-        <img
-          src={item.image}
-          alt={item.name}
-          className="h-full w-full object-cover"
-        />
-      </div>
+      <FoodImage
+        src={item.image}
+        alt={item.name}
+        category="beans"
+        className="size-20 shrink-0 rounded-xl"
+      />
       <div className="flex flex-1 flex-col justify-between">
         <div>
           <h4 className="font-heading text-sm font-semibold text-bean-black">

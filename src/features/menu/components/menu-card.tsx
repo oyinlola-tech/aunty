@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/lib/currency";
 import { useCartStore } from "@/features/cart/store/cart-store";
+import { FoodImage } from "@/components/shared/food-image";
 import type { MenuItem } from "@/types/menu";
 import { Plus } from "lucide-react";
 
@@ -47,25 +48,25 @@ export function MenuCard({ item, onViewDetails, onAdd }: MenuCardProps) {
         !item.available && "opacity-60"
       )}
     >
-      <div className="relative aspect-square overflow-hidden bg-cream-deep">
-        <img
-          src={item.image}
-          alt={item.name}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+      <FoodImage
+        src={item.image}
+        alt={item.name}
+        category={item.categoryId}
+        className="aspect-square"
+      >
         {!item.available && (
-          <div className="absolute inset-0 flex items-center justify-center bg-bean-black/50">
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-bean-black/50">
             <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-bean-black">
               Sold Out
             </span>
           </div>
         )}
         {item.featured && (
-          <span className="absolute left-3 top-3 rounded-full bg-palace-orange px-2.5 py-0.5 text-[10px] font-bold uppercase text-white">
+          <span className="absolute left-3 top-3 z-10 rounded-full bg-palace-orange px-2.5 py-0.5 text-[10px] font-bold uppercase text-white">
             Popular
           </span>
         )}
-      </div>
+      </FoodImage>
       <div className="p-4">
         <h3 className="font-heading text-base font-semibold text-bean-black">
           {item.name}

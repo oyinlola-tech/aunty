@@ -19,6 +19,7 @@ export interface MenuItem {
   slug: string;
   description: string;
   price: number;
+  originalPrice?: number;
   categoryId: MenuCategoryId;
   image: string;
   featured: boolean;

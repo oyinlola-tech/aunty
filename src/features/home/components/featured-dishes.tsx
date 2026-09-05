@@ -3,16 +3,11 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionContainer } from "@/components/shared/section-container";
 import { SectionHeading } from "@/components/shared/section-heading";
+import { FoodImage } from "@/components/shared/food-image";
 import { menuItems } from "@/data/menu";
 import { formatCurrency } from "@/lib/currency";
 
 const featured = menuItems.filter((item) => item.featured).slice(0, 4);
-
-const categoryColors: Record<string, string> = {
-  beans: "from-amber-700 to-amber-900",
-  sides: "from-yellow-400 to-amber-500",
-  proteins: "from-red-500 to-red-700",
-};
 
 export function FeaturedDishes() {
   return (
@@ -31,22 +26,14 @@ export function FeaturedDishes() {
               index === 0 ? "sm:col-span-2 sm:row-span-2" : ""
             }`}
           >
-            {/* Image area */}
-            <div
-              className={`relative overflow-hidden bg-gradient-to-br ${
-                categoryColors[item.categoryId] || "from-amber-700 to-amber-900"
-              } ${index === 0 ? "aspect-square" : "aspect-[4/3]"}`}
+            <FoodImage
+              src={item.image}
+              alt={item.name}
+              category={item.categoryId}
+              className={index === 0 ? "aspect-square" : "aspect-[4/3]"}
             >
-              {/* Fallback food visual */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative">
-                  <div className="size-20 rounded-full bg-white/20 shadow-inner sm:size-24" />
-                  <div className="absolute inset-2 rounded-full bg-white/10" />
-                </div>
-              </div>
-
               {/* Price badge */}
-              <div className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1.5 shadow-sm backdrop-blur-sm">
+              <div className="absolute right-3 top-3 z-10 rounded-full bg-white/95 px-3 py-1.5 shadow-sm backdrop-blur-sm">
                 <span className="font-heading text-sm font-bold text-bean-black">
                   {formatCurrency(item.price)}
                 </span>
@@ -54,13 +41,13 @@ export function FeaturedDishes() {
 
               {/* Featured badge */}
               {item.featured && (
-                <div className="absolute left-3 top-3 rounded-full bg-palace-orange px-3 py-1 shadow-sm">
+                <div className="absolute left-3 top-3 z-10 rounded-full bg-palace-orange px-3 py-1 shadow-sm">
                   <span className="font-heading text-[10px] font-bold uppercase text-white">
                     Popular
                   </span>
                 </div>
               )}
-            </div>
+            </FoodImage>
 
             {/* Content */}
             <div className="p-4">
