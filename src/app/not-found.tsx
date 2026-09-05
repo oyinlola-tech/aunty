@@ -1,34 +1,24 @@
-import Link from "next/link"
-import { AlertCircle, ArrowRight } from "lucide-react"
-import { SectionContainer } from "@/components/shared/section-container"
-import { Sticker } from "@/components/shared/sticker"
-import { buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
-    <SectionContainer className="flex flex-col items-center gap-8 py-16 text-center">
-      <div className="flex size-24 items-center justify-center rounded-full bg-cream-deep">
-        <AlertCircle className="size-12 text-warm-grey" aria-hidden="true" />
+    <section className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
+      <span className="text-6xl">🫘</span>
+      <h1 className="mt-6 font-heading text-3xl font-bold text-bean-black">
+        Page Not Found
+      </h1>
+      <p className="mt-2 max-w-sm text-warm-grey">
+        Oops! Looks like this page got eaten. Let&apos;s get you back to the menu.
+      </p>
+      <div className="mt-6 flex gap-3">
+        <Link href="/">
+          <Button variant="default">Go Home</Button>
+        </Link>
+        <Link href="/menu">
+          <Button variant="outline">View Menu</Button>
+        </Link>
       </div>
-
-      <div className="flex flex-col items-center gap-3">
-        <Sticker variant="orange">Oops</Sticker>
-        <h1 className="font-heading text-3xl font-bold text-bean-black">
-          Looks like this plate went missing.
-        </h1>
-        <p className="max-w-sm text-warm-grey">
-          The page you&apos;re looking for doesn&apos;t exist or has been moved.
-        </p>
-      </div>
-
-      <Link
-        href="/menu"
-        className={cn(buttonVariants({ size: "lg" }), "no-underline")}
-      >
-        Back to the Menu
-        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-      </Link>
-    </SectionContainer>
-  )
+    </section>
+  );
 }

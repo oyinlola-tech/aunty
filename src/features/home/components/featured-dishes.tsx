@@ -1,75 +1,59 @@
-import Link from "next/link"
-import { menuItems } from "@/data/menu"
-import { SectionContainer } from "@/components/shared/section-container"
-import { SectionHeading } from "@/components/shared/section-heading"
-import { Reveal } from "@/components/shared/reveal"
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
-import Image from "next/image"
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { SectionContainer } from "@/components/shared/section-container";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { Sticker } from "@/components/shared/sticker";
+import { menuItems } from "@/data/menu";
+import { formatCurrency } from "@/lib/currency";
 
-const featuredItems = menuItems.filter((item) => item.featured)
+const featured = menuItems.filter((item) => item.featured);
 
 export function FeaturedDishes() {
   return (
-    <SectionContainer className="flex flex-col gap-10">
-      <Reveal>
-        <SectionHeading
-          sticker="The favourites"
-          title="The favourites. For good reason."
-          description="These are the dishes our customers love the most."
-        />
-      </Reveal>
-
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {featuredItems.slice(0, 4).map((item, index) => (
-          <Reveal key={item.id} delay={index * 0.06} className="flex">
-            <Link
-              href={`/menu/${item.slug}`}
-              className={cn(
-                "group relative flex h-full w-full flex-col overflow-hidden rounded-2xl bg-cream-deep border border-border/50 transition-all hover:shadow-lg"
-              )}
-            >
-              <div className="relative aspect-square overflow-hidden bg-cream-deep">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-
-              <div className="flex flex-1 flex-col gap-3 p-4">
-                <span className="text-xs font-semibold uppercase tracking-wider text-palace-orange">
-                  #{index + 1}
+    <SectionContainer>
+      <SectionHeading
+        eyebrow="POPULAR"
+        title="The favourites. For good reason."
+        description="Our most-loved dishes, freshly prepared every day."
+      />
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {featured.slice(0, 4).map((item) => (
+          <div
+            key={item.id}
+            className="group overflow-hidden rounded-2xl bg-ivory shadow-sm transition-all hover:shadow-md"
+          >
+            <div className="aspect-square overflow-hidden bg-cream-deep">
+              <img
+                src={item.image}
+                alt={item.name}
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
+            <div className="p-4">
+              <h3 className="font-heading text-base font-semibold text-bean-black">
+                {item.name}
+              </h3>
+              <p className="mt-1 line-clamp-2 text-xs text-warm-grey">
+                {item.description}
+              </p>
+              <div className="mt-3 flex items-center justify-between">
+                <span className="font-heading text-lg font-bold text-bean-black">
+                  {formatCurrency(item.price)}
                 </span>
-                <h3 className="font-heading text-lg font-semibold text-bean-black line-clamp-1">
-                  {item.name}
-                </h3>
-                <p className="flex-1 text-sm text-warm-grey line-clamp-2">
-                  {item.description}
-                </p>
               </div>
-
-              <span className="absolute bottom-4 right-4 inline-flex items-center gap-1 rounded-full border border-border bg-cream-deep px-3 py-1.5 text-xs font-semibold text-bean-black shadow-sm transition-all group-hover:bg-espresso group-hover:text-white">
-                View
-                <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
-              </span>
-            </Link>
-          </Reveal>
+            </div>
+          </div>
         ))}
       </div>
-
-      <Reveal className="flex justify-center">
-        <Link
-          href="/menu"
-          className={cn(buttonVariants({ size: "lg" }), "no-underline")}
-        >
-          View Full Menu
-          <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+      <div className="mt-8 text-center">
+        <Link href="/menu">
+          <Button variant="outline">
+            View Full Menu
+            <ArrowRight className="size-4" />
+          </Button>
         </Link>
-      </Reveal>
+      </div>
     </SectionContainer>
-  )
+  );
 }

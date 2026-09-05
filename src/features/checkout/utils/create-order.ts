@@ -1,36 +1,22 @@
-import type { Order } from "@/types/common"
-import type { CartItem } from "@/types/cart"
+import type { CartItem } from "@/types/cart";
+import type { Order } from "@/types/common";
 
-export interface CreateOrderInput {
-  /** Unique reference for this order (see order-reference.ts). */
-  reference: string
-  customer: {
-    name: string
-    phone: string
-  }
-  delivery: {
-    area: string
-    address: string
-    directions?: string
-  }
-  items: CartItem[]
-  subtotal: number
-  notes?: string
-}
-
-/**
- * Builds a structured order object from the cart and the completed
- * checkout form. Phase 1 sends this order to WhatsApp; a future
- * backend can consume the same shape.
- */
-export function createOrder(input: CreateOrderInput): Order {
+export function createOrder(data: {
+  reference: string;
+  customer: { name: string; phone: string };
+  delivery: { area: string; address: string; directions?: string };
+  items: CartItem[];
+  subtotal: number;
+  notes?: string;
+}): Order {
   return {
-    reference: input.reference,
-    customer: input.customer,
-    delivery: input.delivery,
-    items: input.items,
-    subtotal: input.subtotal,
-    notes: input.notes,
+    id: crypto.randomUUID(),
+    reference: data.reference,
+    customer: data.customer,
+    delivery: data.delivery,
+    items: data.items,
+    subtotal: data.subtotal,
+    notes: data.notes,
     createdAt: new Date().toISOString(),
-  }
+  };
 }

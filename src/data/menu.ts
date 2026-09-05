@@ -1,76 +1,51 @@
-import type { MenuItem } from "@/types/menu"
-
-/**
- * Development placeholder shown until real Soft Beans Palace food
- * photography is available for a dish. Prices are also pending.
- */
-export const PHOTO_PLACEHOLDER = "/images/food/photo-coming-soon.svg"
-
-/**
- * PRICES — the single place to change prices.
- *
- * `price` is the numeric Naira amount for one portion of the dish (no
- * formatting, no currency symbol). Edit the number below and every part of
- * the app — menu card, food dialog, cart, checkout and the WhatsApp order
- * message — updates automatically.
- *
- * A price of `0` means the owner has not confirmed it yet; the UI shows
- * "Price on request" instead of ₦0. Never hardcode formatted prices in
- * components; format through formatCurrency() (src/lib/currency.ts).
- */
+import type { MenuItem } from "@/types/menu";
 
 export const menuItems: MenuItem[] = [
-  // Beans
   {
     id: "ewa-agoyin",
     name: "Ewa Agoyin",
     slug: "ewa-agoyin",
     description:
-      "Soft, tender beans served with rich and flavourful agoyin stew. A classic Nigerian comfort food.",
-    price: 0,
+      "Soft beans served with rich and flavourful agoyin stew.",
+    price: 2500,
     categoryId: "beans",
-    image: "/images/food/beans/ewa-agoyin.svg",
+    image: "/images/food/beans/ewa-agoyin.jpg",
     featured: true,
     available: true,
-    customization: { sides: true, proteins: true },
   },
   {
     id: "plain-soft-beans",
     name: "Plain Soft Beans with Stew",
-    slug: "plain-soft-beans-with-stew",
+    slug: "plain-soft-beans",
     description:
-      "Simply prepared soft beans served with a savoury tomato stew. No extras, just delicious beans.",
-    price: 0,
+      "Creamy soft beans paired with our house-made stew.",
+    price: 2000,
     categoryId: "beans",
-    image: "/images/food/beans/plain-soft-beans.svg",
+    image: "/images/food/beans/plain-soft-beans.jpg",
     featured: false,
     available: true,
-    customization: { sides: true, proteins: true },
   },
   {
     id: "soft-porridge-beans",
     name: "Soft Porridge Beans",
     slug: "soft-porridge-beans",
     description:
-      "Creamy soft beans cooked to perfection with spices. Comfort food at its best.",
-    price: 0,
+      "Hearty porridge beans cooked with tender vegetables and spices.",
+    price: 2200,
     categoryId: "beans",
-    image: "/images/food/beans/soft-porridge-beans.svg",
+    image: "/images/food/beans/soft-porridge-beans.jpg",
     featured: true,
     available: true,
-    customization: { sides: true, proteins: true },
   },
-
-  // Sides
   {
     id: "soft-bread",
     name: "Soft Bread",
     slug: "soft-bread",
     description:
-      "Fresh, soft bread that pairs perfectly with any of our beans or sides.",
-    price: 0,
+      "Warm, freshly baked bread — perfect with beans.",
+    price: 500,
     categoryId: "sides",
-    image: PHOTO_PLACEHOLDER,
+    image: "/images/food/sides/soft-bread.jpg",
     featured: false,
     available: true,
   },
@@ -79,10 +54,10 @@ export const menuItems: MenuItem[] = [
     name: "Fried Plantain",
     slug: "fried-plantain",
     description:
-      "Golden fried plantain with a perfect sweet and savory balance. A popular side choice.",
-    price: 0,
+      "Golden, sweet plantain fried to perfection.",
+    price: 800,
     categoryId: "sides",
-    image: "/images/food/sides/fried-plantain.svg",
+    image: "/images/food/sides/fried-plantain.jpg",
     featured: true,
     available: true,
   },
@@ -91,10 +66,10 @@ export const menuItems: MenuItem[] = [
     name: "Fried Yam Sticks",
     slug: "fried-yam-sticks",
     description:
-      "Crispy fried yam sticks — a crunchy, satisfying side with great texture.",
-    price: 0,
+      "Crispy on the outside, soft on the inside.",
+    price: 800,
     categoryId: "sides",
-    image: PHOTO_PLACEHOLDER,
+    image: "/images/food/sides/fried-yam-sticks.jpg",
     featured: false,
     available: true,
   },
@@ -103,24 +78,22 @@ export const menuItems: MenuItem[] = [
     name: "Fried Potatoes",
     slug: "fried-potatoes",
     description:
-      "Golden fried potatoes seasoned to perfection. Simple, satisfying, and delicious.",
-    price: 0,
+      "Seasoned and fried until golden brown.",
+    price: 800,
     categoryId: "sides",
-    image: PHOTO_PLACEHOLDER,
+    image: "/images/food/sides/fried-potatoes.jpg",
     featured: false,
     available: true,
   },
-
-  // Proteins
   {
     id: "fried-fish",
     name: "Fried Fish",
     slug: "fried-fish",
     description:
-      "Perfectly fried fish with a crispy golden coating. Pairs beautifully with beans.",
-    price: 0,
+      "Freshly fried fish, seasoned and crispy.",
+    price: 2000,
     categoryId: "proteins",
-    image: "/images/food/proteins/fried-fish.svg",
+    image: "/images/food/proteins/fried-fish.jpg",
     featured: true,
     available: true,
   },
@@ -129,10 +102,10 @@ export const menuItems: MenuItem[] = [
     name: "Fried Beef",
     slug: "fried-beef",
     description:
-      "Tender fried beef seasoned with rich Nigerian spices. Hearty and satisfying.",
-    price: 0,
+      "Tender beef pieces, well-seasoned and fried.",
+    price: 2000,
     categoryId: "proteins",
-    image: PHOTO_PLACEHOLDER,
+    image: "/images/food/proteins/fried-beef.jpg",
     featured: false,
     available: true,
   },
@@ -141,10 +114,10 @@ export const menuItems: MenuItem[] = [
     name: "Fried Goat Meat",
     slug: "fried-goat-meat",
     description:
-      "Succulent fried goat meat with bold Nigerian seasoning. A popular protein choice.",
-    price: 0,
+      "Savoury goat meat, perfectly fried and seasoned.",
+    price: 2500,
     categoryId: "proteins",
-    image: PHOTO_PLACEHOLDER,
+    image: "/images/food/proteins/fried-goat-meat.jpg",
     featured: false,
     available: true,
   },
@@ -153,10 +126,10 @@ export const menuItems: MenuItem[] = [
     name: "Peppered Chicken",
     slug: "peppered-chicken",
     description:
-      "Flavorful peppered chicken cooked with aromatic spices. Rich and delicious.",
-    price: 0,
+      "Juicy chicken tossed in a rich pepper sauce.",
+    price: 2500,
     categoryId: "proteins",
-    image: PHOTO_PLACEHOLDER,
+    image: "/images/food/proteins/peppered-chicken.jpg",
     featured: true,
     available: true,
   },
@@ -165,10 +138,10 @@ export const menuItems: MenuItem[] = [
     name: "Peppered Beef",
     slug: "peppered-beef",
     description:
-      "Beef cooked in a rich peppered sauce. Tender, flavorful, and packed with taste.",
-    price: 0,
+      "Tender beef coated in our signature pepper sauce.",
+    price: 2500,
     categoryId: "proteins",
-    image: PHOTO_PLACEHOLDER,
+    image: "/images/food/proteins/peppered-beef.jpg",
     featured: false,
     available: true,
   },
@@ -177,10 +150,10 @@ export const menuItems: MenuItem[] = [
     name: "Peppered Goat Meat",
     slug: "peppered-goat-meat",
     description:
-      "Goat meat in a delicious peppered sauce. A beloved Nigerian delicacy.",
-    price: 0,
+      "Richly spiced goat meat in a bold pepper blend.",
+    price: 3000,
     categoryId: "proteins",
-    image: PHOTO_PLACEHOLDER,
+    image: "/images/food/proteins/peppered-goat-meat.jpg",
     featured: false,
     available: true,
   },
@@ -189,10 +162,10 @@ export const menuItems: MenuItem[] = [
     name: "Peppered Fish",
     slug: "peppered-fish",
     description:
-      "Fish cooked in spicy peppered sauce. Bold flavour and tender fish in every bite.",
-    price: 0,
+      "Fresh fish in a fiery, flavourful pepper sauce.",
+    price: 2500,
     categoryId: "proteins",
-    image: PHOTO_PLACEHOLDER,
+    image: "/images/food/proteins/peppered-fish.jpg",
     featured: false,
     available: true,
   },
@@ -201,11 +174,11 @@ export const menuItems: MenuItem[] = [
     name: "Sauteed Ponmo",
     slug: "sauteed-ponmo",
     description:
-      "Beautifully sauteed ponmo with rich spices. A traditional Nigerian favourite.",
-    price: 0,
+      "Soft cow skin sautéed with onions and peppers.",
+    price: 1500,
     categoryId: "proteins",
-    image: PHOTO_PLACEHOLDER,
+    image: "/images/food/proteins/sauteed-ponmo.jpg",
     featured: false,
     available: true,
   },
-]
+];

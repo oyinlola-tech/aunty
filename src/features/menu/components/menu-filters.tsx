@@ -1,15 +1,14 @@
-"use client"
+"use client";
 
-import { cn } from "@/lib/utils"
-import type { MenuFilter } from "@/types/common"
-import { Button } from "@/components/ui/button"
-import type { MenuCategory } from "@/types/menu"
+import { cn } from "@/lib/utils";
+import type { MenuCategory } from "@/types/menu";
+import type { MenuFilter } from "@/types/common";
 
 interface MenuFiltersProps {
-  categories: MenuCategory[]
-  activeFilter: MenuFilter
-  onFilterChange?: (filter: MenuFilter) => void
-  className?: string
+  categories: MenuCategory[];
+  activeFilter: MenuFilter;
+  onFilterChange: (filter: MenuFilter) => void;
+  className?: string;
 }
 
 export function MenuFilters({
@@ -18,28 +17,27 @@ export function MenuFilters({
   onFilterChange,
   className,
 }: MenuFiltersProps) {
-  return (
-    <div className={cn("flex flex-wrap gap-2", className)}>
-      {categories.map((category) => {
-        const isActive = activeFilter === category.slug
+  const allFilters: { id: MenuFilter; name: string }[] = [
+    { id: "all", name: "All" },
+    ...categories.map((c) => ({ id: c.slug as MenuFilter, name: c.name })),
+  ];
 
-        return (
-          <Button
-            key={category.id}
-            variant={isActive ? "default" : "outline"}
-            size="sm"
-            className={cn(
-              "rounded-full h-10 whitespace-nowrap",
-              isActive && "bg-palace-orange hover:bg-palace-orange-hover",
-              !isActive &&
-                "bg-cream-deep border-border/50 hover:bg-cream hover:text-bean-black"
-            )}
-            onClick={() => onFilterChange?.(category.slug as MenuFilter)}
-          >
-            {category.name}
-          </Button>
-        )
-      })}
+  return (
+    <div className={cn("flex gap-2 overflow-x-auto pb-2 scrollbar-none", className)}>
+      {allFilters.map((filter) => (
+        <button
+          key={filter.id}
+          onClick={() => onFilterChange(filter.id)}
+          className={cn(
+            "shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors",
+            activeFilter === filter.id
+              ? "bg-bean-black text-white"
+              : "bg-cream-deep text-warm-grey hover:bg-doodle"
+          )}
+        >
+          {filter.name}
+        </button>
+      ))}
     </div>
-  )
+  );
 }

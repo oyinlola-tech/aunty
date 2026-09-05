@@ -1,29 +1,20 @@
-import { SectionContainer } from "@/components/shared/section-container"
-import { SectionHeading } from "@/components/shared/section-heading"
-import { Reveal } from "@/components/shared/reveal"
-import { Flame, Soup, Puzzle, ChefHat } from "lucide-react"
-import type { LucideIcon } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { SectionContainer } from "@/components/shared/section-container";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { Leaf, Heart, Flame, ChefHat } from "lucide-react";
 
-interface ValuePoint {
-  icon: LucideIcon
-  title: string
-  description: string
-}
-
-const valuePoints: ValuePoint[] = [
+const values = [
   {
-    icon: Flame,
+    icon: Leaf,
     title: "Freshly Prepared",
-    description: "Made fresh to give you the best flavour in every bite.",
+    description: "Made fresh to give you the best flavour.",
   },
   {
-    icon: Soup,
+    icon: Heart,
     title: "Comfort in Every Bite",
     description: "Soft, satisfying food made to feel like home.",
   },
   {
-    icon: Puzzle,
+    icon: Flame,
     title: "Your Plate, Your Way",
     description: "Mix your beans, sides, and proteins the way you like them.",
   },
@@ -32,43 +23,35 @@ const valuePoints: ValuePoint[] = [
     title: "Made With Care",
     description: "Good food deserves attention from preparation to delivery.",
   },
-]
+];
 
 export function WhyUs() {
   return (
-    <SectionContainer className="flex flex-col gap-10">
-      <Reveal>
-        <SectionHeading
-          sticker="Why Us"
-          stickerVariant="purple"
-          title="What makes us different"
-          description="We believe in good food, good service, and making you happy."
-        />
-      </Reveal>
-
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {valuePoints.map((point, index) => {
-          const Icon = point.icon
+    <SectionContainer>
+      <SectionHeading
+        eyebrow="WHY US"
+        title="Why Soft Beans Palace?"
+        description="We put love into every plate."
+      />
+      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {values.map((value) => {
+          const Icon = value.icon;
           return (
-            <Reveal key={point.title} delay={index * 0.06} className="flex">
-              <div
-                className={cn(
-                  "flex h-full w-full flex-col gap-4 rounded-2xl bg-cream p-6 transition-all hover:shadow-md",
-                  index % 2 === 1 && "bg-cream-deep"
-                )}
-              >
-                <div className="flex size-12 items-center justify-center rounded-full bg-palace-orange text-white">
-                  <Icon className="size-6" aria-hidden="true" />
-                </div>
-                <h3 className="font-heading text-lg font-bold text-bean-black">
-                  {point.title}
-                </h3>
-                <p className="text-sm text-warm-grey">{point.description}</p>
+            <div
+              key={value.title}
+              className="flex flex-col items-center rounded-2xl bg-ivory p-6 text-center shadow-sm"
+            >
+              <div className="flex size-12 items-center justify-center rounded-full bg-palace-orange/10">
+                <Icon className="size-6 text-palace-orange" />
               </div>
-            </Reveal>
-          )
+              <h3 className="mt-4 font-heading text-base font-bold text-bean-black">
+                {value.title}
+              </h3>
+              <p className="mt-1 text-sm text-warm-grey">{value.description}</p>
+            </div>
+          );
         })}
       </div>
     </SectionContainer>
-  )
+  );
 }

@@ -1,46 +1,44 @@
-"use client"
+"use client";
 
-import { useState, useMemo, useCallback } from "react"
-import type { MenuItem } from "@/types/menu"
-import type { MenuFilter } from "@/types/common"
+import { useMemo, useState } from "react";
+import type { MenuItem } from "@/types/menu";
+import type { MenuFilter } from "@/types/common";
 
 export function useMenuFilter(
-  items: MenuItem[],
+  items: MenuItem[] = [],
   defaultFilter: MenuFilter = "all"
 ) {
-  const [activeFilter, setActiveFilter] = useState<MenuFilter>(defaultFilter)
-  const [searchQuery, setSearchQuery] = useState("")
+  const [activeFilter, setActiveFilter] = useState<MenuFilter>(defaultFilter);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredItems = useMemo(() => {
-    let result = items
+    let result: MenuItem[] = items;
 
     if (activeFilter !== "all") {
-      result = result.filter((item) => item.categoryId === activeFilter)
+      result = result.filter((item) => item.categoryId === activeFilter);
     }
 
     if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase().trim()
+      const query = searchQuery.toLowerCase();
       result = result.filter(
         (item) =>
           item.name.toLowerCase().includes(query) ||
           item.description.toLowerCase().includes(query)
-      )
+      );
     }
 
-    return result
-  }, [items, activeFilter, searchQuery])
+    return result;
+  }, [items, activeFilter, searchQuery]);
 
-  const handleFilterChange = useCallback((filter: MenuFilter) => {
-    setActiveFilter(filter)
-    setSearchQuery("")
-  }, [])
+  const handleFilterChange = (filter: MenuFilter) => {
+    setActiveFilter(filter);
+  };
 
   return {
     activeFilter,
     searchQuery,
     filteredItems,
-    setActiveFilter,
-    setSearchQuery,
     handleFilterChange,
-  }
+    setSearchQuery,
+  };
 }

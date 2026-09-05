@@ -1,12 +1,6 @@
-import type { MenuCategory } from "@/types/menu"
+import type { MenuCategory } from "@/types/menu";
 
 export const categories: MenuCategory[] = [
-  {
-    id: "all",
-    name: "All",
-    slug: "all",
-    description: "Every delicious option",
-  },
   {
     id: "beans",
     name: "Beans",
@@ -17,12 +11,12 @@ export const categories: MenuCategory[] = [
     id: "sides",
     name: "Sides",
     slug: "sides",
-    description: "Perfect complements.",
+    description: "The perfect companions to your beans.",
   },
   {
     id: "proteins",
     name: "Proteins",
     slug: "proteins",
-    description: "Added deliciousness.",
+    description: "Flavourful proteins to complete your meal.",
   },
-]
+];

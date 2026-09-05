@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { siteConfig } from "@/config/site"
 import { navigation } from "@/data/navigation"
-import { createWhatsAppUrl } from "@/features/checkout/utils/whatsapp-url"
+import { createWhatsAppUrl } from "@/features/checkout/utils/whatsapp-message"
 
 const whatsappNumber = siteConfig.contact.whatsapp
 const whatsappHref = whatsappNumber

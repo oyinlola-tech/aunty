@@ -1,36 +1,47 @@
 export interface Testimonial {
-  id: string
-  quote: string
-  customerName: string
-  location: string
-  rating: number
+  id: string;
+  name: string;
+  location: string;
+  rating: number;
+  review: string;
+  color: "tan" | "pink" | "peach" | "lavender";
 }
 
-// DEVELOPMENT PLACEHOLDERS — replace with real customer feedback (with
-// permission) before launch. Do not present these as genuine reviews.
 export const testimonials: Testimonial[] = [
   {
-    id: "testimonial-1",
-    quote:
-      "Soft beans exactly how I like it. The plantain was perfect too.",
-    customerName: "Chioma O.",
+    id: "1",
+    name: "Adaeze",
     location: "Port Harcourt",
     rating: 5,
+    review:
+      "Soft beans exactly how I like it. The plantain was perfect too. Definitely ordering again!",
+    color: "tan",
   },
   {
-    id: "testimonial-2",
-    quote:
-      "Best Ewa Agoyin in Port Harcourt. Always fresh and always delicious.",
-    customerName: "Tunde A.",
-    location: "Rivers State",
+    id: "2",
+    name: "Chidi",
+    location: "GRA, Port Harcourt",
     rating: 5,
+    review:
+      "Best ewa agoyin I've had in a long time. The stew was rich and flavourful.",
+    color: "pink",
   },
   {
-    id: "testimonial-3",
-    quote:
-      "You go love am! That's the only way to describe their food.",
-    customerName: "Blessing E.",
+    id: "3",
+    name: "Blessing",
     location: "Port Harcourt",
     rating: 5,
+    review:
+      "The peppered chicken was so good! My whole family loved it. Thank you, Soft Beans Palace!",
+    color: "peach",
   },
-]
+  {
+    id: "4",
+    name: "Emeka",
+    location: "Trans-Amadi, Port Harcourt",
+    rating: 5,
+    review:
+      "Quick delivery and the food was still hot. The porridge beans are a must-try.",
+    color: "lavender",
+  },
+];

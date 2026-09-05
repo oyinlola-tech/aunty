@@ -1,179 +1,106 @@
-import { create } from "zustand"
-import { persist } from "zustand/middleware"
-import type {
-  AddToCartInput,
-  CartItem,
-  CartState,
-  UpdateCartItemInput,
-} from "@/types/cart"
-import type { MenuItem } from "@/types/menu"
-import { getCartConfigKey } from "../utils/cart-identity"
-import { getCartQuantity, getCartSubtotal } from "../utils/pricing"
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { CartItem } from "@/types/cart";
 
-function generateId(): string {
-  return Math.random().toString(36).substring(2, 11)
+interface CartState {
+  items: CartItem[];
+  addItem: (item: Omit<CartItem, "id">) => void;
+  removeItem: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
+  updateItem: (id: string, updates: Partial<CartItem>) => void;
+  incrementQuantity: (id: string) => void;
+  decrementQuantity: (id: string) => void;
+  clearCart: () => void;
+  getSubtotal: () => number;
+  getTotalItems: () => number;
 }
 
-interface CartStore extends CartState {
-  items: CartItem[]
-}
-
-function itemToConfig(item: CartItem) {
-  return getCartConfigKey({
-    menuItemId: item.menuItemId,
-    addOns: item.addOns,
-    notes: item.notes,
-  })
-}
-
-export const useCartStore = create<CartStore>()(
+export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
 
-      // Two additions with the same main dish + add-ons + instructions are
-      // the same configuration, so they merge into one line (quantity sums).
-      // Anything different stays an independent, separately configurable line.
-      addItem: (input: AddToCartInput) => {
-        const configKey = getCartConfigKey({
-          menuItemId: input.menuItemId,
-          addOns: input.addOns,
-          notes: input.notes,
-        })
-        const quantity = Math.max(1, input.quantity || 1)
-
+      addItem: (item) => {
         set((state) => {
-          const existing = state.items.find(
-            (item) => itemToConfig(item) === configKey
-          )
+          const existingIndex = state.items.findIndex(
+            (i) =>
+              i.menuItemId === item.menuItemId && i.notes === item.notes
+          );
 
-          if (existing) {
-            return {
-              items: state.items.map((item) =>
-                item.id === existing.id
-                  ? { ...item, quantity: item.quantity + quantity }
-                  : item
-              ),
-            }
-          }
-
-          const newItem: CartItem = {
-            id: generateId(),
-            menuItemId: input.menuItemId,
-            name: input.name,
-            image: input.image,
-            price: input.price,
-            quantity,
-            notes: input.notes || undefined,
-            addOns: input.addOns ?? [],
-          }
-
-          return { items: [...state.items, newItem] }
-        })
-      },
-
-      removeItem: (id: string) => {
-        set((state) => ({
-          items: state.items.filter((item) => item.id !== id),
-        }))
-      },
-
-      // Edit one configured meal in place. If the edited configuration
-      // becomes identical to another line, merge quantities into that line
-      // and drop the edited one — consistent with the identity rule.
-      updateItem: (id: string, input: UpdateCartItemInput) => {
-        set((state) => {
-          const current = state.items.find((item) => item.id === id)
-          if (!current) return {}
-
-          const updated: CartItem = {
-            ...current,
-            quantity:
-              typeof input.quantity === "number"
-                ? Math.max(1, input.quantity)
-                : current.quantity,
-            notes:
-              input.notes !== undefined
-                ? input.notes.trim() || undefined
-                : current.notes,
-            addOns: input.addOns ?? current.addOns,
-          }
-
-          const duplicate = state.items.find(
-            (item) => item.id !== id && itemToConfig(item) === itemToConfig(updated)
-          )
-
-          if (duplicate) {
-            return {
-              items: state.items
-                .filter((item) => item.id !== id)
-                .map((item) =>
-                  item.id === duplicate.id
-                    ? { ...item, quantity: item.quantity + updated.quantity }
-                    : item
-                ),
-            }
+          if (existingIndex > -1) {
+            const updated = [...state.items];
+            updated[existingIndex] = {
+              ...updated[existingIndex],
+              quantity: updated[existingIndex].quantity + item.quantity,
+            };
+            return { items: updated };
           }
 
           return {
-            items: state.items.map((item) =>
-              item.id === id ? updated : item
-            ),
-          }
-        })
+            items: [...state.items, { ...item, id: crypto.randomUUID() }],
+          };
+        });
       },
 
-      updateQuantity: (id: string, quantity: number) => {
-        if (quantity < 1) return
+      removeItem: (id) => {
         set((state) => ({
-          items: state.items.map((item) =>
-            item.id === id ? { ...item, quantity } : item
-          ),
-        }))
+          items: state.items.filter((i) => i.id !== id),
+        }));
       },
 
-      incrementQuantity: (id: string) => {
+      updateQuantity: (id, quantity) => {
+        if (quantity < 1) return;
         set((state) => ({
-          items: state.items.map((item) =>
-            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+          items: state.items.map((i) =>
+            i.id === id ? { ...i, quantity } : i
           ),
-        }))
+        }));
       },
 
-      decrementQuantity: (id: string) => {
+      updateItem: (id, updates) => {
         set((state) => ({
-          items: state.items.map((item) =>
-            item.id === id
-              ? { ...item, quantity: Math.max(1, item.quantity - 1) }
-              : item
+          items: state.items.map((i) =>
+            i.id === id ? { ...i, ...updates } : i
           ),
-        }))
+        }));
       },
 
-      clearCart: () => {
-        set({ items: [] })
+      incrementQuantity: (id) => {
+        set((state) => ({
+          items: state.items.map((i) =>
+            i.id === id ? { ...i, quantity: i.quantity + 1 } : i
+          ),
+        }));
       },
 
-      getSubtotal: () => getCartSubtotal(get().items),
-      getTotal: () => getCartSubtotal(get().items),
-      getTotalItems: () => getCartQuantity(get().items),
-      getItemCount: () => get().items.length,
+      decrementQuantity: (id) => {
+        set((state) => ({
+          items: state.items
+            .map((i) =>
+              i.id === id ? { ...i, quantity: i.quantity - 1 } : i
+            )
+            .filter((i) => i.quantity > 0),
+        }));
+      },
+
+      clearCart: () => set({ items: [] }),
+
+      getSubtotal: () => {
+        return get().items.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        );
+      },
+
+      getTotalItems: () => {
+        return get().items.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+      },
     }),
     {
-      name: "soft-beans-cart",
+      name: "soft-beans-palace-cart",
     }
   )
-)
-
-export function selectMenuItemById(
-  items: MenuItem[],
-  id: string
-): MenuItem | undefined {
-  return items.find((item) => item.id === id)
-}
-
-export function isItemAvailable(
-  item: MenuItem | undefined
-): item is MenuItem {
-  return item !== undefined && item.available
-}
+);

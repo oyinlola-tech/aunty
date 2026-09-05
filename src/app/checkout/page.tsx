@@ -1,25 +1,24 @@
-import type { Metadata } from "next"
-import { CheckoutExperience } from "@/features/checkout/components/checkout-experience"
+import type { Metadata } from "next";
+import { SectionContainer } from "@/components/shared/section-container";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { CheckoutForm } from "@/features/checkout/components/checkout-form";
 
 export const metadata: Metadata = {
   title: "Checkout",
-  description: "Review your order and complete it via WhatsApp with Soft Beans Palace.",
-  robots: { index: false },
-}
+  description: "Complete your order from Soft Beans Palace.",
+};
 
 export default function CheckoutPage() {
   return (
-    <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:px-6 lg:px-8">
-      <div className="flex flex-col gap-3">
-        <h1 className="font-heading text-3xl font-bold text-bean-black">
-          Checkout
-        </h1>
-        <p className="text-warm-grey">
-          Review your order and complete it on WhatsApp.
-        </p>
+    <SectionContainer className="max-w-2xl">
+      <SectionHeading
+        eyebrow="CHECKOUT"
+        title="Review your order"
+        description="Fill in your details and continue on WhatsApp to place your order."
+      />
+      <div className="mt-8">
+        <CheckoutForm />
       </div>
-
-      <CheckoutExperience />
-    </div>
-  )
+    </SectionContainer>
+  );
 }

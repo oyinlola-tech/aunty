@@ -1,73 +1,110 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
-import type { CartItem } from "@/types/cart"
-import type { MenuItem } from "@/types/menu"
-import { MealConfigurator } from "./meal-configurator"
+import { useState } from "react";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { formatCurrency } from "@/lib/currency";
+import { useCartStore } from "@/features/cart/store/cart-store";
+import { QuantitySelector } from "./quantity-selector";
+import type { MenuItem } from "@/types/menu";
+import type { CartItem } from "@/types/cart";
 
 interface ProductModalProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  item: MenuItem
-  /** Present when the dialog is editing an existing configured cart line. */
-  existing?: CartItem
+  item: MenuItem;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  onClose?: () => void;
+  existing?: CartItem;
 }
 
 export function ProductModal({
+  item,
   open,
   onOpenChange,
-  item,
+  onClose,
   existing,
 }: ProductModalProps) {
-  const isMealBase =
-    item.customization?.sides === true || item.customization?.proteins === true
+  const [quantity, setQuantity] = useState(existing?.quantity ?? 1);
+  const [notes, setNotes] = useState(existing?.notes ?? "");
+  const addItem = useCartStore((s) => s.addItem);
+  const updateItem = useCartStore((s) => s.updateItem);
+
+  const isVisible = open !== undefined ? open : true;
+  const handleClose = () => {
+    if (onClose) onClose();
+    if (onOpenChange) onOpenChange(false);
+  };
+
+  function handleAddToCart() {
+    if (existing) {
+      updateItem(existing.id, {
+        quantity,
+        notes: notes.trim() || undefined,
+      });
+    } else {
+      addItem({
+        menuItemId: item.id,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        quantity,
+        notes: notes.trim() || undefined,
+      });
+    }
+    handleClose();
+  }
+
+  if (!isVisible) return null;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[92vh] overflow-y-auto rounded-2xl p-0 sm:max-w-xl">
-        <div className="flex flex-col gap-5 p-5 sm:p-6">
-          <div className="relative flex aspect-video w-full overflow-hidden rounded-2xl bg-cream-deep">
-            <Image
-              src={item.image}
-              alt={item.name}
-              fill
-              sizes="(max-width: 640px) 100vw, 50vw"
-              className="object-cover"
-              priority
+    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
+      <div className="fixed inset-0 bg-bean-black/50" onClick={handleClose} />
+      <div className="relative z-10 w-full max-w-lg rounded-t-3xl bg-ivory sm:rounded-3xl">
+        <button
+          onClick={handleClose}
+          className="absolute right-4 top-4 flex size-8 items-center justify-center rounded-full bg-cream-deep text-warm-grey hover:text-bean-black"
+          aria-label="Close"
+        >
+          <X className="size-4" />
+        </button>
+
+        <div className="aspect-video w-full overflow-hidden rounded-t-3xl bg-cream-deep sm:rounded-t-3xl">
+          <img
+            src={item.image}
+            alt={item.name}
+            className="h-full w-full object-cover"
+          />
+        </div>
+
+        <div className="p-6">
+          <h2 className="font-heading text-2xl font-bold text-bean-black">
+            {item.name}
+          </h2>
+          <p className="mt-2 text-sm text-warm-grey">{item.description}</p>
+          <p className="mt-3 font-heading text-xl font-bold text-palace-orange">
+            {formatCurrency(item.price)}
+          </p>
+
+          <div className="mt-6">
+            <label className="mb-2 block text-sm font-medium text-bean-black">
+              Special Instructions
+            </label>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="e.g. Extra stew, less pepper..."
+              className="h-20 w-full resize-none rounded-xl border border-border bg-ivory px-4 py-3 text-sm text-bean-black placeholder:text-warm-grey focus:border-palace-orange focus:outline-none focus:ring-2 focus:ring-palace-orange/20"
             />
           </div>
 
-          <div className="flex flex-col gap-4">
-            <DialogTitle className="font-heading text-2xl font-bold text-balance text-bean-black">
-              {item.name}
-            </DialogTitle>
-
-            <p className="leading-relaxed text-warm-grey">{item.description}</p>
-
-            {isMealBase && (
-              <p className="rounded-xl bg-cream p-3 text-sm text-warm-grey">
-                Build your plate — add any number of sides and proteins, each
-                with its own quantity. Everything optional.
-              </p>
-            )}
-
-            {!item.available && (
-              <div className="flex items-center gap-2 rounded-full bg-warm-grey px-3 py-2 text-sm font-semibold text-white">
-                <span className="size-2 rounded-full bg-white" />
-                Currently unavailable
-              </div>
-            )}
+          <div className="mt-6 flex items-center justify-between">
+            <QuantitySelector value={quantity} onChange={setQuantity} />
+            <Button variant="default" onClick={handleAddToCart}>
+              {existing ? "Update" : "Add to Cart"} - {formatCurrency(item.price * quantity)}
+            </Button>
           </div>
-
-          <MealConfigurator
-            item={item}
-            existing={existing}
-            stickyBar="dialog"
-            onAdded={() => onOpenChange(false)}
-          />
         </div>
-      </DialogContent>
-    </Dialog>
-  )
+      </div>
+    </div>
+  );
 }

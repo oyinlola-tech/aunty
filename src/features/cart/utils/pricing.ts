@@ -6,8 +6,8 @@ export function getAddOnTotal(addOn: Pick<CartAddOn, "unitPrice" | "quantity">):
 }
 
 /** Total of every selected side and protein in a configured meal. */
-export function getAddOnsTotal(addOns: Pick<CartAddOn, "unitPrice" | "quantity">[]): number {
-  return addOns.reduce((sum, addOn) => sum + getAddOnTotal(addOn), 0)
+export function getAddOnsTotal(addOns: Pick<CartAddOn, "unitPrice" | "quantity">[] | undefined): number {
+  return (addOns ?? []).reduce((sum, addOn) => sum + getAddOnTotal(addOn), 0)
 }
 
 /**
