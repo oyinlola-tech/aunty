@@ -4,10 +4,11 @@ import { SectionContainer } from "@/components/shared/section-container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { categories } from "@/data/categories";
 
-const categoryVisuals: Record<string, { gradient: string; shape: string }> = {
+const categoryVisuals: Record<string, { gradient: string; shape: string; icon?: string }> = {
   beans: {
     gradient: "from-amber-700 via-amber-800 to-amber-900",
     shape: "rounded-full",
+    icon: "/images/icons/categories/beans.svg",
   },
   sides: {
     gradient: "from-yellow-400 via-amber-400 to-amber-500",
@@ -42,11 +43,19 @@ export function Categories() {
                   <div
                     className={`absolute inset-0 bg-gradient-to-br ${visual.gradient} opacity-10 ${visual.shape} transition-transform duration-300 group-hover:scale-110`}
                   />
-                  <span
-                    className={`relative text-3xl ${visual.shape} bg-gradient-to-br ${visual.gradient} bg-clip-text text-transparent font-heading font-bold`}
-                  >
-                    {category.name.charAt(0)}
-                  </span>
+                  {visual.icon ? (
+                    <img
+                      src={visual.icon}
+                      alt=""
+                      className="relative size-12 object-contain"
+                    />
+                  ) : (
+                    <span
+                      className={`relative text-3xl ${visual.shape} bg-gradient-to-br ${visual.gradient} bg-clip-text text-transparent font-heading font-bold`}
+                    >
+                      {category.name.charAt(0)}
+                    </span>
+                  )}
                 </div>
 
                 <div className="text-center">
