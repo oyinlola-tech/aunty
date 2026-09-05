@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { CartItem } from "@/types/cart";
+import { getCartConfigKey } from "../utils/cart-identity";
+import { getCartSubtotal, getCartQuantity } from "../utils/pricing";
 
 interface CartState {
   items: CartItem[];
@@ -22,39 +24,39 @@ export const useCartStore = create<CartState>()(
 
       addItem: (item) => {
         set((state) => {
+          const newKey = getCartConfigKey(item)
           const existingIndex = state.items.findIndex(
-            (i) =>
-              i.menuItemId === item.menuItemId && i.notes === item.notes
-          );
+            (i) => getCartConfigKey(i) === newKey
+          )
 
           if (existingIndex > -1) {
-            const updated = [...state.items];
+            const updated = [...state.items]
             updated[existingIndex] = {
               ...updated[existingIndex],
               quantity: updated[existingIndex].quantity + item.quantity,
-            };
-            return { items: updated };
+            }
+            return { items: updated }
           }
 
           return {
             items: [...state.items, { ...item, id: crypto.randomUUID() }],
-          };
-        });
+          }
+        })
       },
 
       removeItem: (id) => {
         set((state) => ({
           items: state.items.filter((i) => i.id !== id),
-        }));
+        }))
       },
 
       updateQuantity: (id, quantity) => {
-        if (quantity < 1) return;
+        if (quantity < 1) return
         set((state) => ({
           items: state.items.map((i) =>
             i.id === id ? { ...i, quantity } : i
           ),
-        }));
+        }))
       },
 
       updateItem: (id, updates) => {
@@ -62,7 +64,7 @@ export const useCartStore = create<CartState>()(
           items: state.items.map((i) =>
             i.id === id ? { ...i, ...updates } : i
           ),
-        }));
+        }))
       },
 
       incrementQuantity: (id) => {
@@ -70,7 +72,7 @@ export const useCartStore = create<CartState>()(
           items: state.items.map((i) =>
             i.id === id ? { ...i, quantity: i.quantity + 1 } : i
           ),
-        }));
+        }))
       },
 
       decrementQuantity: (id) => {
@@ -80,24 +82,14 @@ export const useCartStore = create<CartState>()(
               i.id === id ? { ...i, quantity: i.quantity - 1 } : i
             )
             .filter((i) => i.quantity > 0),
-        }));
+        }))
       },
 
       clearCart: () => set({ items: [] }),
 
-      getSubtotal: () => {
-        return get().items.reduce(
-          (total, item) => total + item.price * item.quantity,
-          0
-        );
-      },
+      getSubtotal: () => getCartSubtotal(get().items),
 
-      getTotalItems: () => {
-        return get().items.reduce(
-          (total, item) => total + item.quantity,
-          0
-        );
-      },
+      getTotalItems: () => getCartQuantity(get().items),
     }),
     {
       name: "soft-beans-palace-cart",

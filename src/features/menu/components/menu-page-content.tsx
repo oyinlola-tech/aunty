@@ -21,6 +21,28 @@ export default function MenuPageContent() {
     setSearchQuery,
   } = useMenuFilter(menuItems);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+  const [addModeItem, setAddModeItem] = useState<MenuItem | null>(null);
+
+  const isMealBase = (item: MenuItem) =>
+    item.customization?.sides === true || item.customization?.proteins === true
+
+  const handleViewDetails = (item: MenuItem) => {
+    setSelectedItem(item)
+    setAddModeItem(null)
+  }
+
+  const handleAdd = (item: MenuItem) => {
+    if (!item.available) return
+    if (isMealBase(item)) {
+      setAddModeItem(item)
+      setSelectedItem(null)
+    } else {
+      setSelectedItem(item)
+      setAddModeItem(null)
+    }
+  }
+
+  const activeModalItem = addModeItem || selectedItem
 
   return (
     <>
@@ -50,13 +72,25 @@ export default function MenuPageContent() {
       </SectionContainer>
 
       <SectionContainer>
-        <MenuGrid items={filteredItems} onViewDetails={setSelectedItem} />
+        <MenuGrid
+          items={filteredItems}
+          onViewDetails={handleViewDetails}
+          onAdd={handleAdd}
+        />
       </SectionContainer>
 
-      {selectedItem && (
+      {activeModalItem && (
         <ProductModal
-          item={selectedItem}
-          onClose={() => setSelectedItem(null)}
+          item={activeModalItem}
+          onClose={() => {
+            setSelectedItem(null)
+            setAddModeItem(null)
+          }}
+          existing={undefined}
+          onAdded={() => {
+            setSelectedItem(null)
+            setAddModeItem(null)
+          }}
         />
       )}
     </>

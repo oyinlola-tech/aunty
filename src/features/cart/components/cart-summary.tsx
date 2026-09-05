@@ -8,11 +8,15 @@ import { useCartStore } from "../store/cart-store";
 export function CartSummary() {
   const subtotal = useCartStore((s) => s.getSubtotal());
   const totalItems = useCartStore((s) => s.getTotalItems());
+  const items = useCartStore((s) => s.items);
 
   return (
-    <div className="border-t border-border/50 pt-4">
+    <div className="border-t border-border/50 p-4 sm:p-5">
       <div className="flex items-center justify-between text-sm text-warm-grey">
-        <span>Items ({totalItems})</span>
+        <span>
+          {items.length} {items.length === 1 ? "plate" : "plates"} · {totalItems}{" "}
+          {totalItems === 1 ? "portion" : "portions"}
+        </span>
         <span>{formatCurrency(subtotal)}</span>
       </div>
       <div className="mt-2 flex items-center justify-between text-base font-semibold text-bean-black">

@@ -11,11 +11,35 @@ export function createWhatsAppUrl(
 
 export function generateWhatsAppMessage(order: Order): string {
   const items = order.items
-    .map(
-      (item: any, index: number) =>
-        `${index + 1}. ${item.name} × ${item.quantity}${item.notes ? ` (${item.notes})` : ""}`
-    )
-    .join("\n");
+    .map((item, index: number) => {
+      const lines: string[] = [
+        `${index + 1}. ${item.name} × ${item.quantity}`,
+      ]
+
+      const sides = item.addOns?.filter((a) => a.categoryId === "sides") ?? [];
+      const proteins = item.addOns?.filter((a) => a.categoryId === "proteins") ?? [];
+
+      if (sides.length > 0) {
+        lines.push("   Sides:")
+        sides.forEach((addOn) => {
+          lines.push(`   - ${addOn.name} × ${addOn.quantity}`)
+        })
+      }
+
+      if (proteins.length > 0) {
+        lines.push("   Proteins:")
+        proteins.forEach((addOn) => {
+          lines.push(`   - ${addOn.name} × ${addOn.quantity}`)
+        })
+      }
+
+      if (item.notes) {
+        lines.push(`   Notes: ${item.notes}`)
+      }
+
+      return lines.join("\n")
+    })
+    .join("\n\n");
 
   const sections = [
     `Hello Soft Beans Palace 👋`,
@@ -43,7 +67,7 @@ export function generateWhatsAppMessage(order: Order): string {
   }
 
   if (order.notes) {
-    sections.push(``, `SPECIAL INSTRUCTIONS`, order.notes);
+    sections.push(``, `ORDER NOTES`, order.notes);
   }
 
   sections.push(``, `Thank you!`);

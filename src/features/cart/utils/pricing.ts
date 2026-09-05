@@ -30,7 +30,13 @@ export function getCartSubtotal(items: CartItem[]): number {
   return items.reduce((sum, item) => sum + getCartItemLineTotal(item), 0)
 }
 
-/** Total items = sum of configured-meal quantities (e.g. 2 lines × qty 3 = 6 meals). */
+/** Total items = sum of configured-meal quantities plus all add-on portions. */
 export function getCartQuantity(items: CartItem[]): number {
-  return items.reduce((sum, item) => sum + item.quantity, 0)
+  return items.reduce((sum, item) => {
+    const addOnPortions = (item.addOns ?? []).reduce(
+      (addOnSum, addOn) => addOnSum + addOn.quantity * item.quantity,
+      0
+    )
+    return sum + item.quantity + addOnPortions
+  }, 0)
 }

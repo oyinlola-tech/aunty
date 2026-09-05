@@ -1,6 +1,6 @@
 "use client";
 
-import { Minus, Plus, Trash2, Pencil } from "lucide-react";
+import { Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/currency";
 import { useCartStore } from "../store/cart-store";
@@ -9,16 +9,19 @@ import type { CartItem as CartItemType } from "@/types/cart";
 
 interface CartItemProps {
   item: CartItemType;
-  onEdit?: (item: CartItemType) => void;
 }
 
-export function CartItem({ item, onEdit }: CartItemProps) {
+export function CartItem({ item }: CartItemProps) {
   const incrementQuantity = useCartStore((s) => s.incrementQuantity);
   const decrementQuantity = useCartStore((s) => s.decrementQuantity);
   const removeItem = useCartStore((s) => s.removeItem);
 
+  const sides = item.addOns?.filter((a) => a.categoryId === "sides") ?? []
+  const proteins = item.addOns?.filter((a) => a.categoryId === "proteins") ?? []
+  const hasAddOns = sides.length > 0 || proteins.length > 0
+
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 rounded-2xl border border-border/50 bg-white p-3 shadow-sm transition-colors hover:border-border">
       <FoodImage
         src={item.image}
         alt={item.name}
@@ -27,14 +30,44 @@ export function CartItem({ item, onEdit }: CartItemProps) {
       />
       <div className="flex flex-1 flex-col justify-between">
         <div>
-          <h4 className="font-heading text-sm font-semibold text-bean-black">
-            {item.name}
-          </h4>
+          <div className="flex items-start justify-between gap-2">
+            <h4 className="font-heading text-sm font-semibold text-bean-black">
+              {item.name}
+            </h4>
+            <span className="text-sm font-bold text-bean-black">
+              {formatCurrency(item.price * item.quantity)}
+            </span>
+          </div>
+
+          {hasAddOns && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {sides.map((addOn) => (
+                <span
+                  key={addOn.menuItemId}
+                  className="inline-flex items-center gap-1 rounded-full bg-cream-deep px-2 py-0.5 text-xs font-medium text-warm-grey"
+                >
+                  {addOn.name} × {addOn.quantity * item.quantity}
+                </span>
+              ))}
+              {proteins.map((addOn) => (
+                <span
+                  key={addOn.menuItemId}
+                  className="inline-flex items-center gap-1 rounded-full bg-cream-deep px-2 py-0.5 text-xs font-medium text-warm-grey"
+                >
+                  {addOn.name} × {addOn.quantity * item.quantity}
+                </span>
+              ))}
+            </div>
+          )}
+
           {item.notes && (
-            <p className="mt-0.5 text-xs text-warm-grey">{item.notes}</p>
+            <p className="mt-1.5 text-xs text-warm-grey italic">
+              &ldquo;{item.notes}&rdquo;
+            </p>
           )}
         </div>
-        <div className="flex items-center justify-between">
+
+        <div className="mt-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
@@ -56,27 +89,14 @@ export function CartItem({ item, onEdit }: CartItemProps) {
               <Plus className="size-3" />
             </Button>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-bean-black">
-              {formatCurrency(item.price * item.quantity)}
-            </span>
-            {onEdit && (
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                onClick={() => onEdit(item)}
-                aria-label={`Edit ${item.name}`}
-              >
-                <Pencil className="size-3 text-warm-grey" />
-              </Button>
-            )}
+          <div className="flex items-center gap-1">
             <Button
               variant="ghost"
               size="icon-sm"
               onClick={() => removeItem(item.id)}
               aria-label={`Remove ${item.name} from cart`}
             >
-              <Trash2 className="size-3 text-warm-grey" />
+              <Trash2 className="size-3.5 text-warm-grey" />
             </Button>
           </div>
         </div>

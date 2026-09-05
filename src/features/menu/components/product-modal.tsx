@@ -8,6 +8,7 @@ import { useCartStore } from "@/features/cart/store/cart-store";
 import { FoodImage } from "@/components/shared/food-image";
 import { PriceDisplay } from "@/components/shared/price-display";
 import { QuantitySelector } from "./quantity-selector";
+import { MealConfigurator } from "./meal-configurator";
 import type { MenuItem } from "@/types/menu";
 import type { CartItem } from "@/types/cart";
 
@@ -17,6 +18,7 @@ interface ProductModalProps {
   onOpenChange?: (open: boolean) => void;
   onClose?: () => void;
   existing?: CartItem;
+  onAdded?: () => void;
 }
 
 export function ProductModal({
@@ -25,19 +27,24 @@ export function ProductModal({
   onOpenChange,
   onClose,
   existing,
+  onAdded,
 }: ProductModalProps) {
   const [quantity, setQuantity] = useState(existing?.quantity ?? 1);
   const [notes, setNotes] = useState(existing?.notes ?? "");
   const addItem = useCartStore((s) => s.addItem);
   const updateItem = useCartStore((s) => s.updateItem);
 
+  const isCustomizable =
+    item.customization?.sides === true ||
+    item.customization?.proteins === true;
+
   const isVisible = open !== undefined ? open : true;
   const handleClose = () => {
-    if (onClose) onClose();
-    if (onOpenChange) onOpenChange(false);
+    onClose?.();
+    onOpenChange?.(false);
   };
 
-  function handleAddToCart() {
+  function handleSimpleAddToCart() {
     if (existing) {
       updateItem(existing.id, {
         quantity,
@@ -54,6 +61,7 @@ export function ProductModal({
       });
     }
     handleClose();
+    onAdded?.();
   }
 
   if (!isVisible) return null;
@@ -90,24 +98,39 @@ export function ProductModal({
             />
           </div>
 
-          <div className="mt-6">
-            <label className="mb-2 block text-sm font-medium text-bean-black">
-              Special Instructions
-            </label>
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="e.g. Extra stew, less pepper..."
-              className="h-20 w-full resize-none rounded-xl border border-border bg-ivory px-4 py-3 text-sm text-bean-black placeholder:text-warm-grey focus:border-palace-orange focus:outline-none focus:ring-2 focus:ring-palace-orange/20"
+          {isCustomizable ? (
+            <MealConfigurator
+              item={item}
+              existing={existing}
+              stickyBar="dialog"
+              onAdded={() => {
+                onAdded?.();
+                handleClose();
+              }}
             />
-          </div>
+          ) : (
+            <>
+              <div className="mt-6">
+                <label className="mb-2 block text-sm font-medium text-bean-black">
+                  Special Instructions
+                </label>
+                <textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="e.g. Extra stew, less pepper..."
+                  className="h-20 w-full resize-none rounded-xl border border-border bg-ivory px-4 py-3 text-sm text-bean-black placeholder:text-warm-grey focus:border-palace-orange focus:outline-none focus:ring-2 focus:ring-palace-orange/20"
+                />
+              </div>
 
-          <div className="mt-6 flex items-center justify-between">
-            <QuantitySelector value={quantity} onChange={setQuantity} />
-            <Button variant="default" onClick={handleAddToCart}>
-              {existing ? "Update" : "Add to Cart"} - {formatCurrency(item.price * quantity)}
-            </Button>
-          </div>
+              <div className="mt-6 flex items-center justify-between">
+                <QuantitySelector value={quantity} onChange={setQuantity} />
+                <Button variant="default" onClick={handleSimpleAddToCart}>
+                  {existing ? "Update" : "Add to Cart"} -{" "}
+                  {formatCurrency(item.price * quantity)}
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -24,7 +24,7 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
       />
 
       <div
-        className="relative z-10 flex h-full w-full max-w-md flex-col bg-ivory shadow-2xl sm:ml-auto sm:rounded-l-3xl"
+        className="relative z-10 flex h-full w-full max-w-lg flex-col bg-ivory shadow-2xl sm:ml-auto sm:rounded-l-3xl"
         style={{
           animation: "sbp-slide-in 0.3s ease-out",
         }}
@@ -47,7 +47,7 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
           <EmptyCart />
         ) : (
           <>
-            <div className="flex-1 space-y-4 overflow-y-auto p-5">
+            <div className="flex-1 space-y-3 overflow-y-auto p-4 sm:p-5">
               {items.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
