@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useCallback, useRef, useState } from "react";
-import { X, ArrowRight } from "lucide-react";
+import { X, AlertTriangle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/currency";
 import { useCartStore } from "@/features/cart/store/cart-store";
@@ -20,6 +20,7 @@ interface ProductModalProps {
   onClose?: () => void;
   existing?: CartItem;
   onAdded?: () => void;
+  triggerRef?: React.RefObject<HTMLElement | null>;
 }
 
 export function ProductModal({
@@ -29,24 +30,18 @@ export function ProductModal({
   onClose,
   existing,
   onAdded,
+  triggerRef,
 }: ProductModalProps) {
   const [quantity, setQuantity] = useState(existing?.quantity ?? 1);
   const [notes, setNotes] = useState(existing?.notes ?? "");
   const addItem = useCartStore((s) => s.addItem);
   const updateItem = useCartStore((s) => s.updateItem);
   const dialogRef = useRef<HTMLDivElement>(null);
-
-  const isCustomizable =
-    item.customization?.sides === true ||
-    item.customization?.proteins === true;
-
-  const isProtein = item.categoryId === "proteins";
-
-  const isVisible = open !== undefined ? open : false;
-  const handleClose = useCallback(() => {
-    onClose?.();
-    onOpenChange?.(false);
-  }, [onClose, onOpenChange]);
+  const initialQuantityRef = useRef(existing?.quantity ?? 1);
+  const initialNotesRef = useRef(existing?.notes ?? "");
+  const initialAddOnsRef = useRef<CartAddOn[]>([]);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const pendingCloseRef = useRef<(() => void) | null>(null);
 
   const [configState, setConfigState] = useState({
     canSave: true,
@@ -56,6 +51,52 @@ export function ProductModal({
     mealQuantity: 1,
     selectedAddOns: [] as CartAddOn[],
   });
+
+  const isCustomizable =
+    item.customization?.sides === true ||
+    item.customization?.proteins === true;
+
+  const isProtein = item.categoryId === "proteins";
+
+  const isVisible = open !== undefined ? open : false;
+  const handleClose = useCallback(() => {
+    const hasChanges =
+      quantity !== initialQuantityRef.current ||
+      notes !== initialNotesRef.current ||
+      JSON.stringify(configState.selectedAddOns) !== JSON.stringify(initialAddOnsRef.current);
+
+    if (hasChanges) {
+      pendingCloseRef.current = () => {
+        onClose?.();
+        onOpenChange?.(false);
+        setShowConfirm(false);
+      };
+      setShowConfirm(true);
+      return;
+    }
+
+    onClose?.();
+    onOpenChange?.(false);
+    triggerRef?.current?.focus();
+  }, [quantity, notes, configState.selectedAddOns, onClose, onOpenChange, triggerRef]);
+
+  const confirmClose = useCallback(() => {
+    triggerRef?.current?.focus();
+    pendingCloseRef.current?.();
+  }, [triggerRef]);
+
+  const cancelClose = useCallback(() => {
+    setShowConfirm(false);
+    pendingCloseRef.current = null;
+  }, []);
+
+  useEffect(() => {
+    if (isVisible) {
+      initialQuantityRef.current = existing?.quantity ?? 1;
+      initialNotesRef.current = existing?.notes ?? "";
+      initialAddOnsRef.current = existing?.addOns ?? [];
+    }
+  }, [isVisible, existing]);
 
   useEffect(() => {
     if (!isVisible) return;
@@ -71,6 +112,10 @@ export function ProductModal({
     if (!isVisible) return;
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        if (showConfirm) {
+          cancelClose();
+          return;
+        }
         handleClose();
         return;
       }
@@ -98,7 +143,7 @@ export function ProductModal({
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isVisible, handleClose]);
+  }, [isVisible, handleClose, showConfirm, cancelClose]);
 
   function handleSimpleAddToCart() {
     if (existing) {
@@ -148,7 +193,7 @@ export function ProductModal({
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
       <div
         className="fixed inset-0 bg-bean-black/50"
-        onClick={handleClose}
+        onClick={showConfirm ? cancelClose : handleClose}
         aria-hidden="true"
       />
       <div
@@ -159,12 +204,46 @@ export function ProductModal({
         aria-label={`${item.name} details`}
       >
         <button
-          onClick={handleClose}
+          onClick={showConfirm ? cancelClose : handleClose}
           className="absolute right-4 top-4 z-20 flex size-8 items-center justify-center rounded-full bg-cream-deep text-warm-grey transition-colors hover:text-bean-black"
           aria-label="Close"
         >
           <X className="size-4" />
         </button>
+
+        {showConfirm && (
+          <div className="absolute inset-0 z-30 flex items-center justify-center bg-bean-black/50 p-6">
+            <div className="w-full max-w-sm rounded-2xl bg-ivory p-6 shadow-xl">
+              <div className="flex items-center gap-3">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-peach/20">
+                  <AlertTriangle className="size-5 text-warm-brown" />
+                </div>
+                <h3 className="font-heading text-lg font-bold text-bean-black">
+                  Discard changes?
+                </h3>
+              </div>
+              <p className="mt-3 text-sm text-warm-grey">
+                You have unsaved changes. If you close now, your configuration will be lost.
+              </p>
+              <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={cancelClose}
+                >
+                  Keep Editing
+                </Button>
+                <Button
+                  variant="default"
+                  className="w-full"
+                  onClick={confirmClose}
+                >
+                  Discard
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="shrink-0">
           <FoodImage

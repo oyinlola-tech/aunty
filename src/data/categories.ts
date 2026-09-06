@@ -19,4 +19,10 @@ export const categories: MenuCategory[] = [
     slug: "proteins",
     description: "Flavourful proteins to complete your meal.",
   },
+  {
+    id: "combos",
+    name: "Combos",
+    slug: "combos",
+    description: "Complete plates — beans, sides, and proteins together.",
+  },
 ];

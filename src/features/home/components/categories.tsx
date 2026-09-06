@@ -21,6 +21,11 @@ const categoryVisuals: Record<string, { gradient: string; shape: string; icon?: 
     shape: "rounded-full",
     icon: "/images/icons/categories/proteins.svg",
   },
+  combos: {
+    gradient: "from-orange-400 via-orange-500 to-orange-600",
+    shape: "rounded-2xl -rotate-2",
+    icon: "/images/icons/categories/combos.svg",
+  },
 };
 
 export function Categories() {

@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useState, useRef } from "react";
 import { useCartStore } from "@/features/cart/store/cart-store";
 import { useMounted } from "@/hooks/use-mounted";
 import { CartItem } from "@/features/cart/components/cart-item";
@@ -11,13 +9,10 @@ import { EmptyCart } from "@/features/cart/components/empty-cart";
 import { ProductModal } from "@/features/menu/components/product-modal";
 import { menuItems } from "@/data/menu";
 import { SectionContainer } from "@/components/shared/section-container";
-import { ArrowRight, ShoppingBag } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { ShoppingBag } from "lucide-react";
 import type { CartItem as CartItemType } from "@/types/cart";
 
 export default function CartPage() {
-  const router = useRouter();
   const items = useCartStore((s) => s.items);
   const totalItems = useCartStore((s) => s.getTotalItems());
   const mounted = useMounted();
@@ -29,11 +24,10 @@ export default function CartPage() {
     ? (menuItems.find((menuItem) => menuItem.id === editingItem.menuItemId) ??
       null)
     : null;
+  const editTriggerRef = useRef<HTMLDivElement>(null);
 
-  const handleCheckout = () => {
-    if (hasItems) {
-      router.push("/checkout");
-    }
+  const handleEdit = (item: CartItemType) => {
+    setEditingItem(item);
   };
 
   return (
@@ -64,7 +58,13 @@ export default function CartPage() {
           <div className="lg:col-span-7 xl:col-span-8">
             <div className="flex flex-col gap-4">
               {items.map((item, index) => (
-                <CartItem key={item.id} item={item} plateNumber={index + 1} onEdit={setEditingItem} />
+                <div key={item.id} ref={item.id === editingItem?.id ? editTriggerRef : undefined}>
+                  <CartItem
+                    item={item}
+                    plateNumber={index + 1}
+                    onEdit={handleEdit}
+                  />
+                </div>
               ))}
             </div>
           </div>
@@ -72,27 +72,6 @@ export default function CartPage() {
           <div className="lg:col-span-5 xl:col-span-4">
             <div className="sticky top-24">
               <CartSummary />
-
-              <div className="mt-4 flex flex-col gap-3">
-                <Button
-                  className="w-full"
-                  size="lg"
-                  onClick={handleCheckout}
-                >
-                  Continue to Checkout
-                  <ArrowRight className="size-4" />
-                </Button>
-
-                <Link
-                  href="/menu"
-                  className={cn(
-                    buttonVariants({ variant: "soft", size: "lg" }),
-                    "w-full no-underline"
-                  )}
-                >
-                  Add More Items
-                </Link>
-              </div>
             </div>
           </div>
         </div>
@@ -106,6 +85,7 @@ export default function CartPage() {
           }}
           item={editingMenuItem}
           existing={editingItem}
+          triggerRef={editTriggerRef}
         />
       )}
     </SectionContainer>

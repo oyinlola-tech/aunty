@@ -1,5 +1,6 @@
 "use client";
 
+import { forwardRef } from "react";
 import { Pencil, Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/currency";
@@ -13,23 +14,24 @@ interface CartItemProps {
   onEdit?: (item: CartItemType) => void;
 }
 
-export function CartItem({ item, plateNumber, onEdit }: CartItemProps) {
-  const incrementQuantity = useCartStore((s) => s.incrementQuantity);
-  const decrementQuantity = useCartStore((s) => s.decrementQuantity);
-  const removeItem = useCartStore((s) => s.removeItem);
+export const CartItem = forwardRef<HTMLDivElement, CartItemProps>(
+  ({ item, plateNumber, onEdit }: CartItemProps, ref) => {
+    const incrementQuantity = useCartStore((s) => s.incrementQuantity);
+    const decrementQuantity = useCartStore((s) => s.decrementQuantity);
+    const removeItem = useCartStore((s) => s.removeItem);
 
-  const sides = item.addOns?.filter((a) => a.categoryId === "sides") ?? [];
-  const proteins = item.addOns?.filter((a) => a.categoryId === "proteins") ?? [];
-  const hasAddOns = sides.length > 0 || proteins.length > 0;
+    const sides = item.addOns?.filter((a) => a.categoryId === "sides") ?? [];
+    const proteins = item.addOns?.filter((a) => a.categoryId === "proteins") ?? [];
+    const hasAddOns = sides.length > 0 || proteins.length > 0;
 
-  const addOnsTotal = (item.addOns ?? []).reduce(
-    (sum, addOn) => sum + addOn.unitPrice * addOn.quantity * item.quantity,
-    0
-  );
-  const plateTotal = item.price * item.quantity + addOnsTotal;
+    const addOnsTotal = (item.addOns ?? []).reduce(
+      (sum, addOn) => sum + addOn.unitPrice * addOn.quantity * item.quantity,
+      0
+    );
+    const plateTotal = item.price * item.quantity + addOnsTotal;
 
-  return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-border/50 bg-white p-4 shadow-sm transition-colors hover:border-border sm:p-5">
+    return (
+      <div ref={ref} className="flex flex-col gap-4 rounded-2xl border border-border/50 bg-white p-4 shadow-sm transition-colors hover:border-border sm:p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <span className="font-heading text-xs font-bold uppercase tracking-widest text-palace-orange">
@@ -165,4 +167,6 @@ export function CartItem({ item, plateNumber, onEdit }: CartItemProps) {
       )}
     </div>
   );
-}
+});
+
+CartItem.displayName = "CartItem";

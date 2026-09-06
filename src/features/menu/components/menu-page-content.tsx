@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { SectionContainer } from "@/components/shared/section-container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { MenuFilters } from "@/features/menu/components/menu-filters";
@@ -12,17 +13,35 @@ import { useCartStore } from "@/features/cart/store/cart-store";
 import { menuItems } from "@/data/menu";
 import { categories } from "@/data/categories";
 import type { MenuItem } from "@/types/menu";
+import type { MenuFilter } from "@/types/common";
 
 export default function MenuPageContent() {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category");
+  const validCategory: MenuFilter =
+    categoryParam === "sides" || categoryParam === "proteins" || categoryParam === "beans" || categoryParam === "combos"
+      ? categoryParam
+      : "all";
+
   const {
     activeFilter,
     searchQuery,
     filteredItems,
     handleFilterChange,
     setSearchQuery,
-  } = useMenuFilter(menuItems);
+  } = useMenuFilter(menuItems, validCategory);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [guidanceItem, setGuidanceItem] = useState<MenuItem | null>(null);
+
+  const itemSlug = searchParams.get("item");
+
+  if (itemSlug && !selectedItem && !guidanceItem) {
+    const found = menuItems.find((item) => item.slug === itemSlug);
+    if (found) {
+      setSelectedItem(found);
+      setGuidanceItem(null);
+    }
+  }
 
   const handleViewDetails = (item: MenuItem) => {
     setSelectedItem(item)

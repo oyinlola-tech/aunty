@@ -1,4 +1,4 @@
-export type MenuFilter = "all" | "beans" | "sides" | "proteins";
+export type MenuFilter = "all" | "beans" | "sides" | "proteins" | "combos";
 
 export interface Order {
   id: string;

@@ -6,7 +6,7 @@ export interface MenuCategory {
   image?: string;
 }
 
-export type MenuCategoryId = "beans" | "sides" | "proteins";
+export type MenuCategoryId = "beans" | "sides" | "proteins" | "combos";
 
 export interface MenuItemCustomization {
   sides?: boolean;

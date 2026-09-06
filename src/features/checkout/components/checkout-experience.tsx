@@ -145,9 +145,9 @@ export function CheckoutExperience() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-8 lg:flex-row lg:gap-8"
+      className="grid gap-8 lg:grid-cols-12"
     >
-      <div className="flex flex-col gap-8 lg:max-w-lg">
+      <div className="flex flex-col gap-8 lg:col-span-7">
         <div className="flex flex-col gap-4 rounded-2xl border border-border/50 bg-cream p-6">
           <CustomerDetails
             nameField={register("customerName")}
@@ -193,127 +193,129 @@ export function CheckoutExperience() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-6 lg:max-w-md">
-        <OrderSummary
-          items={items}
-          subtotal={subtotal}
-          notes={orderNotes || undefined}
-        />
+      <div className="flex flex-col gap-6 lg:col-span-5">
+        <div className="lg:sticky lg:top-24">
+          <OrderSummary
+            items={items}
+            subtotal={subtotal}
+            notes={orderNotes || undefined}
+          />
 
-        <PaymentSection amount={subtotal} payment={siteConfig.payment} />
+          <PaymentSection amount={subtotal} payment={siteConfig.payment} />
 
-        {configError && (
-          <p className="rounded-xl bg-peach p-4 text-sm font-medium text-warm-brown">
-            {configError}
-          </p>
-        )}
-
-        {submitError && (
-          <p className="rounded-xl bg-peach p-4 text-sm font-medium text-warm-brown">
-            {submitError}
-          </p>
-        )}
-
-        {submitted ? (
-          <div className="flex flex-col gap-4 rounded-2xl border border-palace-orange/40 bg-cream p-5">
-            <div className="flex items-start gap-3">
-              <div className="flex size-10 flex-shrink-0 items-center justify-center rounded-full bg-muted-green">
-                <Check className="size-5 text-white" aria-hidden="true" />
-              </div>
-              <div className="flex flex-col gap-0.5">
-                <h3 className="font-heading text-lg font-bold text-bean-black">
-                  Your order is ready to send
-                </h3>
-                <p className="text-sm text-warm-grey">
-                  Review it in WhatsApp, attach your payment receipt, then send.
-                </p>
-              </div>
-            </div>
-
-            <div
-              role="status"
-              aria-live="polite"
-              className="flex flex-col gap-1 rounded-xl bg-espresso p-4 text-white"
-            >
-              <span className="text-xs tracking-wide text-white/70 uppercase">
-                Your order reference
-              </span>
-              <span className="font-mono text-xl font-bold tracking-wider text-palace-orange">
-                {submitted.reference}
-              </span>
-              <p className="mt-1 text-xs leading-relaxed text-white/70">
-                Keep this reference to discuss your order with us — it also
-                appears at the top and bottom of your WhatsApp message.
-              </p>
-            </div>
-
-            <a
-              href={submitted.whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                buttonVariants({ size: "lg" }),
-                "w-full no-underline"
-              )}
-            >
-              Open WhatsApp with my order
-              <MessageCircle className="size-4" />
-            </a>
-
-            <p className="text-center text-xs leading-relaxed text-warm-grey">
-              WhatsApp should have opened automatically. If it did not, tap the
-              button above. Before sending, attach your bank transfer receipt
-              to the conversation.
+          {configError && (
+            <p className="rounded-xl bg-peach p-4 text-sm font-medium text-warm-brown">
+              {configError}
             </p>
+          )}
 
-            <div className="flex flex-col gap-2 border-t border-border/50 pt-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleDone}
+          {submitError && (
+            <p className="rounded-xl bg-peach p-4 text-sm font-medium text-warm-brown">
+              {submitError}
+            </p>
+          )}
+
+          {submitted ? (
+            <div className="flex flex-col gap-4 rounded-2xl border border-palace-orange/40 bg-cream p-5">
+              <div className="flex items-start gap-3">
+                <div className="flex size-10 flex-shrink-0 items-center justify-center rounded-full bg-muted-green">
+                  <Check className="size-5 text-white" aria-hidden="true" />
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <h3 className="font-heading text-lg font-bold text-bean-black">
+                    Your order is ready to send
+                  </h3>
+                  <p className="text-sm text-warm-grey">
+                    Review it in WhatsApp, attach your payment receipt, then send.
+                  </p>
+                </div>
+              </div>
+
+              <div
+                role="status"
+                aria-live="polite"
+                className="flex flex-col gap-1 rounded-xl bg-espresso p-4 text-white"
               >
-                Done — back to the menu
-              </Button>
-              <p className="text-center text-xs text-warm-grey">
-                Nothing is charged by this website — your transfer is confirmed
-                by Soft Beans Palace when your receipt arrives.
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4">
-            {paymentConfigured && (
-              <div className="flex items-start gap-2 rounded-xl bg-cream-deep p-3 text-sm leading-relaxed text-bean-black/80">
-                <Check
-                  className="mt-0.5 size-4 flex-shrink-0 text-muted-green"
-                  aria-hidden="true"
-                />
-                <p>
-                  Made your transfer? Tap below and WhatsApp opens with your
-                  order and reference ready.
+                <span className="text-xs tracking-wide text-white/70 uppercase">
+                  Your order reference
+                </span>
+                <span className="font-mono text-xl font-bold tracking-wider text-palace-orange">
+                  {submitted.reference}
+                </span>
+                <p className="mt-1 text-xs leading-relaxed text-white/70">
+                  Keep this reference to discuss your order with us — it also
+                  appears at the top and bottom of your WhatsApp message.
                 </p>
               </div>
-            )}
-            <Button
-              type="submit"
-              className="w-full"
-              size="lg"
-              disabled={isSubmitting}
-            >
-              {isSubmitting
-                ? "Preparing..."
-                : paymentConfigured
-                  ? "I've Made Payment — Open WhatsApp"
-                  : "Continue on WhatsApp"}
-              {!isSubmitting && <ArrowRight className="size-4" />}
-            </Button>
-            <p className="text-center text-xs leading-relaxed text-warm-grey">
-              {paymentConfigured
-                ? "Tapping this states that you have paid — Soft Beans Palace confirms the transfer when your receipt arrives on WhatsApp."
-                : "WhatsApp opens with your order pre-filled — review it, attach anything we should see, and send."}
-            </p>
-          </div>
-        )}
+
+              <a
+                href={submitted.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  buttonVariants({ size: "lg" }),
+                  "w-full no-underline"
+                )}
+              >
+                Open WhatsApp with my order
+                <MessageCircle className="size-4" />
+              </a>
+
+              <p className="text-center text-xs leading-relaxed text-warm-grey">
+                WhatsApp should have opened automatically. If it did not, tap the
+                button above. Before sending, attach your bank transfer receipt
+                to the conversation.
+              </p>
+
+              <div className="flex flex-col gap-2 border-t border-border/50 pt-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleDone}
+                >
+                  Done — back to the menu
+                </Button>
+                <p className="text-center text-xs text-warm-grey">
+                  Nothing is charged by this website — your transfer is confirmed
+                  by Soft Beans Palace when your receipt arrives.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {paymentConfigured && (
+                <div className="flex items-start gap-2 rounded-xl bg-cream-deep p-3 text-sm leading-relaxed text-bean-black/80">
+                  <Check
+                    className="mt-0.5 size-4 flex-shrink-0 text-muted-green"
+                    aria-hidden="true"
+                  />
+                  <p>
+                    Made your transfer? Tap below and WhatsApp opens with your
+                    order and reference ready.
+                  </p>
+                </div>
+              )}
+              <Button
+                type="submit"
+                className="w-full"
+                size="lg"
+                disabled={isSubmitting}
+              >
+                {isSubmitting
+                  ? "Preparing..."
+                  : paymentConfigured
+                    ? "I've Made Payment — Open WhatsApp"
+                    : "Continue on WhatsApp"}
+                {!isSubmitting && <ArrowRight className="size-4" />}
+              </Button>
+              <p className="text-center text-xs leading-relaxed text-warm-grey">
+                {paymentConfigured
+                  ? "Tapping this states that you have paid — Soft Beans Palace confirms the transfer when your receipt arrives on WhatsApp."
+                  : "WhatsApp opens with your order pre-filled — review it, attach anything we should see, and send."}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </form>
   )
