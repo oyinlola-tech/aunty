@@ -30,36 +30,17 @@ export default function MenuPageContent() {
     handleFilterChange,
     setSearchQuery,
   } = useMenuFilter(menuItems, validCategory);
-  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [guidanceItem, setGuidanceItem] = useState<MenuItem | null>(null);
-
-  const itemSlug = searchParams.get("item");
-
-  if (itemSlug && !selectedItem && !guidanceItem) {
-    const found = menuItems.find((item) => item.slug === itemSlug);
-    if (found) {
-      setSelectedItem(found);
-      setGuidanceItem(null);
-    }
-  }
-
-  const handleViewDetails = (item: MenuItem) => {
-    setSelectedItem(item)
-    setGuidanceItem(null)
-  }
 
   const handleAdd = (item: MenuItem) => {
     if (!item.available) return
 
     if (item.categoryId === "proteins") {
       setGuidanceItem(item)
-      setSelectedItem(null)
       return
     }
 
     if (item.customization?.sides || item.customization?.proteins) {
-      setSelectedItem(item)
-      setGuidanceItem(null)
       return
     }
 
@@ -72,8 +53,6 @@ export default function MenuPageContent() {
       quantity: 1,
     })
   }
-
-  const activeModalItem = guidanceItem || selectedItem
 
   return (
     <>
@@ -105,22 +84,19 @@ export default function MenuPageContent() {
       <SectionContainer>
         <MenuGrid
           items={filteredItems}
-          onViewDetails={handleViewDetails}
           onAdd={handleAdd}
         />
       </SectionContainer>
 
-      {activeModalItem && (
+      {guidanceItem && (
         <ProductModal
           open
-          item={activeModalItem}
+          item={guidanceItem}
           onClose={() => {
-            setSelectedItem(null)
             setGuidanceItem(null)
           }}
           existing={undefined}
           onAdded={() => {
-            setSelectedItem(null)
             setGuidanceItem(null)
           }}
         />

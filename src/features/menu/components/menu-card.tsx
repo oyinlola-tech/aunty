@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import { useCartStore } from "@/features/cart/store/cart-store";
 import { FoodImage } from "@/components/shared/food-image";
 import { PriceDisplay } from "@/components/shared/price-display";
@@ -14,6 +15,7 @@ interface MenuCardProps {
 }
 
 export function MenuCard({ item, onViewDetails, onAdd }: MenuCardProps) {
+  const router = useRouter();
   const addItem = useCartStore((s) => s.addItem);
 
   function handleQuickAdd(e: React.MouseEvent) {
@@ -33,6 +35,11 @@ export function MenuCard({ item, onViewDetails, onAdd }: MenuCardProps) {
   }
 
   function handleClick() {
+    const isCustomizable = (item.customization?.sides || item.customization?.proteins) && item.categoryId !== "proteins"
+    if (isCustomizable && item.available) {
+      router.push(`/menu/${item.slug}`)
+      return
+    }
     if (onAdd && item.categoryId === "proteins") {
       onAdd(item);
     } else if (onViewDetails) {
@@ -50,7 +57,7 @@ export function MenuCard({ item, onViewDetails, onAdd }: MenuCardProps) {
       onClick={handleClick}
       className={cn(
         "group cursor-pointer overflow-hidden rounded-2xl bg-ivory shadow-sm transition-all hover:shadow-md",
-        !item.available && "opacity-60"
+        !item.available && "opacity-60 cursor-default"
       )}
     >
       <FoodImage
