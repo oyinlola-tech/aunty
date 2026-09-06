@@ -36,6 +36,8 @@ export async function generateMetadata({
 
   const category = categories.find((cat) => cat.id === item.categoryId)
 
+  const itemImage = `${siteConfig.url}${item.image}`
+
   return {
     title: item.name,
     description: `${item.description} Order from Soft Beans Palace in Port Harcourt via WhatsApp.`,
@@ -43,10 +45,19 @@ export async function generateMetadata({
     openGraph: {
       title: `${item.name} | ${siteConfig.name}`,
       description: item.description,
+      images: [
+        {
+          url: itemImage,
+          width: 1200,
+          height: 630,
+          alt: `${item.name} from Soft Beans Palace`,
+        },
+      ],
     },
     twitter: {
       title: `${item.name} | ${siteConfig.name}`,
       description: item.description,
+      images: [itemImage],
     },
     keywords: [
       item.name.toLowerCase(),

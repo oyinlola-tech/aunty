@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "Get in touch with Soft Beans Palace. Order via WhatsApp or reach us directly.",
+  alternates: { canonical: "/contact" },
 };
 
 const contactItems = [

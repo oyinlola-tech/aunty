@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "About",
   description:
     "Learn about Soft Beans Palace, a food business in Port Harcourt specialising in beans-based meals.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

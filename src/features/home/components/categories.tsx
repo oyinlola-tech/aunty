@@ -36,7 +36,7 @@ export function Categories() {
         title="What are you craving?"
         description="Pick a category and explore our menu."
       />
-      <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {categories
           .filter((category) => category.id !== "all")
           .map((category) => {
