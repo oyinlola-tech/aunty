@@ -1,6 +1,6 @@
 "use client"
 
-import { useId, useState } from "react"
+import { useId, useMemo, useState, useEffect } from "react"
 import { ArrowRight, Plus, X } from "lucide-react"
 import { formatCurrency } from "@/lib/currency"
 import { cn } from "@/lib/utils"
@@ -42,10 +42,20 @@ interface MealConfiguratorProps {
   onAdded?: () => void
   /**
    * Where the sticky order bar is anchored:
-   * - "dialog": pinned to the bottom of the scrollable dialog
+   * - "dialog": not used — dialog-level footer is preferred
    * - "page": pinned above the mobile bottom navigation on dish pages
+   * - "none": no sticky bar rendered at all
    */
-  stickyBar?: "dialog" | "page"
+  stickyBar?: "page" | "none"
+  /** Called with the current config whenever quantity, add-ons, or notes change. */
+  onChange?: (state: {
+    canSave: boolean
+    isSubmitting: boolean
+    lineTotal: number
+    unitPrice: number
+    mealQuantity: number
+    selectedAddOns: CartAddOn[]
+  }) => void
   className?: string
 }
 
@@ -64,7 +74,8 @@ export function MealConfigurator({
   item,
   existing,
   onAdded,
-  stickyBar = "dialog",
+  stickyBar = "page",
+  onChange,
   className,
 }: MealConfiguratorProps) {
   const notesId = useId()
@@ -86,23 +97,30 @@ export function MealConfigurator({
   const [picker, setPicker] = useState<AddOnKind | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const sideOptions = allowSides
-    ? menuItems.filter(
-        (option) => option.categoryId === "sides" && option.available
-      )
-    : []
-  const proteinOptions = allowProteins
-    ? menuItems.filter(
-        (option) => option.categoryId === "proteins" && option.available
-      )
-    : []
+  const sideOptions = useMemo(() => {
+    return allowSides
+      ? menuItems.filter(
+          (option) => option.categoryId === "sides" && option.available
+        )
+      : [];
+  }, [allowSides]);
+
+  const proteinOptions = useMemo(() => {
+    return allowProteins
+      ? menuItems.filter(
+          (option) => option.categoryId === "proteins" && option.available
+        )
+      : [];
+  }, [allowProteins]);
 
   // Every non-zero selection, snapshotted as typed cart data so identity,
   // pricing and the WhatsApp message all share one representation.
-  const selectedAddOns: CartAddOn[] = [
-    ...collectAddOns(sideOptions, sideCounts, "sides"),
-    ...collectAddOns(proteinOptions, proteinCounts, "proteins"),
-  ]
+  const selectedAddOns = useMemo(() => {
+    return [
+      ...collectAddOns(sideOptions, sideCounts, "sides"),
+      ...collectAddOns(proteinOptions, proteinCounts, "proteins"),
+    ] as CartAddOn[];
+  }, [sideOptions, sideCounts, proteinOptions, proteinCounts]);
 
   const isEditing = existing !== undefined
   const addOnsTotal = getAddOnsTotal(selectedAddOns)
@@ -110,6 +128,17 @@ export function MealConfigurator({
   const lineTotal = unitPrice * mealQuantity
   const hasPrices = unitPrice > 0
   const canSave = item.available && mealQuantity >= 1
+
+  useEffect(() => {
+    onChange?.({
+      canSave,
+      isSubmitting,
+      lineTotal,
+      unitPrice,
+      mealQuantity,
+      selectedAddOns,
+    })
+  }, [canSave, isSubmitting, lineTotal, unitPrice, mealQuantity, selectedAddOns, onChange])
 
   function commitAddOns(kind: AddOnKind, counts: Record<string, number>) {
     const setter = kind === "sides" ? setSideCounts : setProteinCounts
@@ -218,12 +247,13 @@ export function MealConfigurator({
       </div>
 
       {/* Sticky order bar: price breakdown + total + action */}
-      <div
-        className={cn(
-          "sticky z-10 bottom-0 flex flex-col rounded-2xl border-t border-border/50 bg-cream/95 shadow-[0_-6px_24px_rgba(27,22,17,0.07)] backdrop-blur-sm",
-          stickyBar === "page" && "bottom-16 md:bottom-0"
-        )}
-      >
+      {stickyBar !== "none" && (
+        <div
+          className={cn(
+            "sticky z-10 bottom-0 flex flex-col rounded-2xl border-t border-border/50 bg-cream/95 shadow-[0_-6px_24px_rgba(27,22,17,0.07)] backdrop-blur-sm",
+            stickyBar === "page" && "bottom-16 md:bottom-0"
+          )}
+        >
         <div className="flex flex-col gap-1.5 px-4 pt-3.5 text-sm sm:px-6">
           <div className="flex items-center justify-between gap-3">
             <span className="font-medium text-bean-black">{item.name}</span>
@@ -295,6 +325,7 @@ export function MealConfigurator({
           </Button>
         </div>
       </div>
+      )}
 
       {/* Focused side/protein picker */}
       {allowSides && picker === "sides" && (

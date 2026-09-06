@@ -22,14 +22,14 @@ export function generateWhatsAppMessage(order: Order): string {
       if (sides.length > 0) {
         lines.push("   Sides:")
         sides.forEach((addOn) => {
-          lines.push(`   - ${addOn.name} × ${addOn.quantity}`)
+          lines.push(`   - ${addOn.name} × ${addOn.quantity * item.quantity}`)
         })
       }
 
       if (proteins.length > 0) {
         lines.push("   Proteins:")
         proteins.forEach((addOn) => {
-          lines.push(`   - ${addOn.name} × ${addOn.quantity}`)
+          lines.push(`   - ${addOn.name} × ${addOn.quantity * item.quantity}`)
         })
       }
 
@@ -63,7 +63,7 @@ export function generateWhatsAppMessage(order: Order): string {
   ];
 
   if (order.delivery.directions) {
-    sections.push(`Landmark: ${order.delivery.directions}`);
+    sections.push(`Nearest Landmark: ${order.delivery.directions}`);
   }
 
   if (order.notes) {

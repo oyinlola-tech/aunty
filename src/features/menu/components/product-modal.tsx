@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useCallback, useState } from "react";
-import { X } from "lucide-react";
+import { useEffect, useCallback, useRef, useState } from "react";
+import { X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/currency";
 import { useCartStore } from "@/features/cart/store/cart-store";
@@ -10,7 +10,7 @@ import { PriceDisplay } from "@/components/shared/price-display";
 import { QuantitySelector } from "./quantity-selector";
 import { MealConfigurator } from "./meal-configurator";
 import type { MenuItem } from "@/types/menu";
-import type { CartItem } from "@/types/cart";
+import type { CartItem, CartAddOn } from "@/types/cart";
 import Link from "next/link";
 
 interface ProductModalProps {
@@ -34,6 +34,7 @@ export function ProductModal({
   const [notes, setNotes] = useState(existing?.notes ?? "");
   const addItem = useCartStore((s) => s.addItem);
   const updateItem = useCartStore((s) => s.updateItem);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const isCustomizable =
     item.customization?.sides === true ||
@@ -41,11 +42,20 @@ export function ProductModal({
 
   const isProtein = item.categoryId === "proteins";
 
-  const isVisible = open !== undefined ? open : true;
+  const isVisible = open !== undefined ? open : false;
   const handleClose = useCallback(() => {
     onClose?.();
     onOpenChange?.(false);
   }, [onClose, onOpenChange]);
+
+  const [configState, setConfigState] = useState({
+    canSave: true,
+    isSubmitting: false,
+    lineTotal: item.price,
+    unitPrice: item.price,
+    mealQuantity: 1,
+    selectedAddOns: [] as CartAddOn[],
+  });
 
   useEffect(() => {
     if (!isVisible) return;
@@ -62,6 +72,28 @@ export function ProductModal({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         handleClose();
+        return;
+      }
+      if (event.key !== "Tab" || !dialogRef.current) return;
+
+      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey) {
+        if (document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
       }
     };
     document.addEventListener("keydown", handleKeyDown);
@@ -88,6 +120,28 @@ export function ProductModal({
     onAdded?.();
   }
 
+  function handleConfigSave() {
+    if (existing) {
+      updateItem(existing.id, {
+        quantity: configState.mealQuantity,
+        notes: notes.trim() || undefined,
+        addOns: configState.selectedAddOns,
+      });
+    } else {
+      addItem({
+        menuItemId: item.id,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        quantity: configState.mealQuantity,
+        notes: notes.trim() || undefined,
+        addOns: configState.selectedAddOns,
+      });
+    }
+    handleClose();
+    onAdded?.();
+  }
+
   if (!isVisible) return null;
 
   return (
@@ -98,6 +152,7 @@ export function ProductModal({
         aria-hidden="true"
       />
       <div
+        ref={dialogRef}
         className="relative z-10 flex h-full max-h-[85vh] w-full flex-col overflow-hidden rounded-t-3xl bg-ivory sm:max-h-[90vh] sm:max-w-lg sm:rounded-3xl"
         role="dialog"
         aria-modal="true"
@@ -159,7 +214,8 @@ export function ProductModal({
               <MealConfigurator
                 item={item}
                 existing={existing}
-                stickyBar="dialog"
+                stickyBar="none"
+                onChange={setConfigState}
                 onAdded={() => {
                   onAdded?.();
                   handleClose();
@@ -191,6 +247,36 @@ export function ProductModal({
             )}
           </div>
         </div>
+
+        {isCustomizable && !isProtein && (
+          <div className="shrink-0 border-t border-border/50 bg-cream/95 p-4 sm:p-5">
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+              <div className="flex flex-col leading-tight">
+                <span className="text-xs text-warm-grey">
+                  Total · {configState.mealQuantity} × {formatCurrency(configState.unitPrice)}
+                </span>
+                <span className="font-heading text-xl font-bold text-bean-black">
+                  {formatCurrency(configState.lineTotal)}
+                </span>
+              </div>
+              <Button
+                size="lg"
+                className="flex-shrink-0"
+                disabled={!configState.canSave || configState.isSubmitting}
+                onClick={handleConfigSave}
+              >
+                {configState.isSubmitting
+                  ? existing
+                    ? "Saving..."
+                    : "Adding..."
+                  : existing
+                    ? "Save Changes"
+                    : "Add to Cart"}
+                {!configState.isSubmitting && <ArrowRight className="size-4" aria-hidden="true" />}
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

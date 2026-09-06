@@ -33,7 +33,9 @@ export function MenuCard({ item, onViewDetails, onAdd }: MenuCardProps) {
   }
 
   function handleClick() {
-    if (onViewDetails) {
+    if (onAdd && item.categoryId === "proteins") {
+      onAdd(item);
+    } else if (onViewDetails) {
       onViewDetails(item);
     } else if (onAdd) {
       onAdd(item);

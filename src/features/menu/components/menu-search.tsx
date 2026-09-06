@@ -24,6 +24,7 @@ export function MenuSearch({
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        aria-label="Search dishes"
         className="h-11 w-full rounded-full border border-border bg-ivory pl-10 pr-10 text-sm text-bean-black placeholder:text-warm-grey focus:border-palace-orange focus:outline-none focus:ring-2 focus:ring-palace-orange/20"
       />
       {value && (

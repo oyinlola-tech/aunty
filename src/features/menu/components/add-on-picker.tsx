@@ -1,6 +1,6 @@
 "use client"
 
-import { useId, useMemo, useState } from "react"
+import { useId, useMemo, useRef, useState, useEffect } from "react"
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 import { Check, Minus, Plus, Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -56,6 +56,7 @@ export function AddOnPicker({
   }))
   const [query, setQuery] = useState("")
   const searchId = useId()
+  const popupRef = useRef<HTMLDivElement>(null)
 
   const noun = kind === "sides" ? "side" : "protein"
 
@@ -104,6 +105,34 @@ export function AddOnPicker({
 
   const clearSearch = () => setQuery("")
 
+  useEffect(() => {
+    if (!open || !popupRef.current) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+      const focusable = popupRef.current?.querySelectorAll<HTMLElement>(
+        "button, [href], input, textarea, select, [tabindex]:not([tabindex='-1'])"
+      )
+      if (!focusable || focusable.length === 0) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+
+      if (event.shiftKey) {
+        if (document.activeElement === first) {
+          event.preventDefault()
+          last.focus()
+        }
+      } else {
+        if (document.activeElement === last) {
+          event.preventDefault()
+          first.focus()
+        }
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [open])
+
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
@@ -113,6 +142,7 @@ export function AddOnPicker({
         />
 
         <DialogPrimitive.Popup
+          ref={popupRef}
           data-slot="addon-picker"
           className={cn(
             // Mobile: bottom sheet that hugs the screen.

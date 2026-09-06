@@ -12,8 +12,26 @@ interface PaymentSectionProps {
 }
 
 export function PaymentSection({ amount, payment }: PaymentSectionProps) {
-  if (!payment.bankName && !payment.accountName && !payment.accountNumber) {
-    return null;
+  const hasDetails = payment.bankName || payment.accountName || payment.accountNumber
+
+  if (!hasDetails) {
+    return (
+      <div className="rounded-2xl border border-border/50 bg-cream p-5">
+        <div className="flex items-center gap-3">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-palace-orange/10">
+            <Landmark className="size-5 text-palace-orange" />
+          </div>
+          <div>
+            <h3 className="font-heading text-base font-bold text-bean-black">
+              Pay by Bank Transfer
+            </h3>
+            <p className="text-xs text-warm-grey">
+              Payment details are being set up. You&apos;ll receive account information on WhatsApp after placing your order.
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

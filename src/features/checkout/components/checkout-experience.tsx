@@ -31,9 +31,8 @@ export function CheckoutExperience() {
   const mounted = useMounted()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  // One stable reference + WhatsApp link per submission action. They are
-  // generated together exactly once and reused for every follow-up render,
-  // so a rerender or a second tap can never mint a different order number.
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  
   const [submitted, setSubmitted] = useState<{
     reference: string
     whatsappUrl: string
@@ -94,7 +93,6 @@ export function CheckoutExperience() {
   }
 
   const onSubmit = (data: CheckoutFormData) => {
-    // Never generate a second reference or a second draft for one action.
     if (submitted) return
 
     const whatsappNumber = siteConfig.contact.whatsapp
@@ -107,6 +105,7 @@ export function CheckoutExperience() {
 
     setIsSubmitting(true)
     setConfigError(null)
+    setSubmitError(null)
 
     try {
       const reference = generateOrderReference()
@@ -131,6 +130,8 @@ export function CheckoutExperience() {
       setSubmitted({ reference, whatsappUrl: url })
 
       window.open(url, "_blank", "noopener,noreferrer")
+    } catch {
+      setSubmitError("Something went wrong while preparing your order. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -204,6 +205,12 @@ export function CheckoutExperience() {
         {configError && (
           <p className="rounded-xl bg-peach p-4 text-sm font-medium text-warm-brown">
             {configError}
+          </p>
+        )}
+
+        {submitError && (
+          <p className="rounded-xl bg-peach p-4 text-sm font-medium text-warm-brown">
+            {submitError}
           </p>
         )}
 

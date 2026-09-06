@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { X } from "lucide-react";
+import { X, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCartStore } from "../store/cart-store";
-import { EmptyCart } from "./empty-cart";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/lib/currency";
@@ -34,8 +33,17 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: CartDrawerProps) 
         onOpenChange?.(false);
       }
     };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onOpenChange?.(false);
+      }
+    };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, [open, onOpenChange]);
 
   if (!open) return null;
@@ -43,16 +51,19 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: CartDrawerProps) 
   return (
     <div
       ref={dropdownRef}
-      className="absolute right-0 top-full z-50 mt-2 w-80 rounded-2xl border border-border/50 bg-ivory shadow-xl"
+      className="absolute right-0 top-full z-50 mt-2 w-96 rounded-2xl border border-border/50 bg-ivory shadow-xl"
     >
       <div className="flex items-center justify-between border-b border-border/50 p-4">
-        <div>
+        <div className="flex items-center gap-2">
+          <ShoppingBag className="size-4 text-palace-orange" aria-hidden="true" />
           <h3 className="font-heading text-base font-bold text-bean-black">
             Your Cart
           </h3>
-          <p className="text-xs text-warm-grey">
-            {items.length} plate{items.length === 1 ? "" : "s"} ready
-          </p>
+          {items.length > 0 && (
+            <span className="rounded-full bg-palace-orange px-2 py-0.5 text-xs font-bold text-white">
+              {items.length}
+            </span>
+          )}
         </div>
         <button
           type="button"
@@ -65,47 +76,68 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: CartDrawerProps) 
       </div>
 
       {items.length === 0 ? (
-        <div className="p-6 text-center">
-          <EmptyCart />
+        <div className="flex flex-col items-center gap-3 p-8 text-center">
+          <div className="flex size-12 items-center justify-center rounded-full bg-cream-deep">
+            <ShoppingBag className="size-6 text-warm-grey" aria-hidden="true" />
+          </div>
+          <div>
+            <p className="font-heading text-sm font-semibold text-bean-black">
+              Your cart is waiting.
+            </p>
+            <p className="mt-1 text-xs text-warm-grey">
+              Start building your perfect plate.
+            </p>
+          </div>
+          <Link
+            href="/menu"
+            className={cn(buttonVariants({ size: "sm" }), "mt-2 no-underline")}
+            onClick={() => onOpenChange?.(false)}
+          >
+            Explore Menu
+          </Link>
         </div>
       ) : (
         <>
-          <div className="max-h-[50vh] space-y-3 overflow-y-auto p-3">
-            {items.map((item, index) => (
-              <div
-                key={item.id}
-                className="flex items-start gap-3 rounded-xl border border-border/50 bg-white p-3"
-              >
-                <div className="relative size-12 shrink-0 overflow-hidden rounded-lg">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="truncate text-sm font-semibold text-bean-black">
-                      {item.name}
-                    </p>
-                    <span className="text-xs font-bold text-bean-black">
-                      {formatCurrency(item.price * item.quantity)}
-                    </span>
+          <div className="max-h-[50vh] space-y-2 overflow-y-auto p-3">
+            {items.map((item) => {
+              const sides = item.addOns?.filter((a) => a.categoryId === "sides") ?? [];
+              const proteins = item.addOns?.filter((a) => a.categoryId === "proteins") ?? [];
+              const addOnSummary = [
+                ...(sides.length > 0 ? [`${sides.length} side${sides.length === 1 ? "" : "s"}`] : []),
+                ...(proteins.length > 0 ? [`${proteins.length} protein${proteins.length === 1 ? "" : "s"}`] : []),
+              ].join(" · ");
+
+              return (
+                <div
+                  key={item.id}
+                  className="flex items-start gap-3 rounded-xl border border-border/50 bg-white p-3"
+                >
+                  <div className="relative size-12 shrink-0 overflow-hidden rounded-lg">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                  <p className="mt-0.5 text-xs text-warm-grey">
-                    Plate {index + 1}
-                    {item.addOns && item.addOns.length > 0 && (
-                      <>
-                        {" "}
-                        · {item.addOns.length} add-on
-                        {item.addOns.length === 1 ? "" : "s"}
-                      </>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="truncate text-sm font-semibold text-bean-black">
+                        {item.name}
+                      </p>
+                      <span className="text-xs font-bold text-bean-black">
+                        {formatCurrency(item.price * item.quantity)}
+                      </span>
+                    </div>
+                    {addOnSummary && (
+                      <p className="mt-0.5 text-xs text-warm-grey">
+                        {addOnSummary}
+                      </p>
                     )}
-                  </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="border-t border-border/50 p-4">

@@ -28,6 +28,7 @@ export function MenuFilters({
         <button
           key={filter.id}
           onClick={() => onFilterChange(filter.id)}
+          aria-pressed={activeFilter === filter.id}
           className={cn(
             "shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors",
             activeFilter === filter.id

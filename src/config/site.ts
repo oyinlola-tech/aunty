@@ -15,6 +15,14 @@ const siteUrl =
     ? rawSiteUrl.trim()
     : "http://localhost:3000"
 
+if (siteUrl === "http://localhost:3000") {
+  console.warn(
+    "[siteConfig] NEXT_PUBLIC_SITE_URL is not set or invalid. " +
+      "SEO metadata, Open Graph images, and canonical URLs will point to localhost. " +
+      "Set NEXT_PUBLIC_SITE_URL in your environment."
+  )
+}
+
 const readText = (value: unknown): string =>
   typeof value === "string" ? value.trim() : ""
 
