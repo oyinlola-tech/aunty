@@ -31,6 +31,12 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
+  alternates: {
+    canonical: siteConfig.url,
+    languages: {
+      en: siteConfig.url,
+    },
+  },
   icons: {
     icon: "/images/brand/favicon.svg",
   },
@@ -75,6 +81,14 @@ const websiteJsonLd = {
   inLanguage: "en",
 };
 
+const aboutPageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: `About ${siteConfig.name}`,
+  description: siteConfig.description,
+  url: `${siteConfig.url}/about`,
+};
+
 const restaurantJsonLd = {
   "@context": "https://schema.org",
   "@type": "Restaurant",
@@ -86,6 +100,15 @@ const restaurantJsonLd = {
   areaServed: "Port Harcourt",
   ...(siteConfig.contact.phone
     ? { telephone: siteConfig.contact.phone }
+    : {}),
+  ...(siteConfig.location && siteConfig.location !== "Port Harcourt, Nigeria"
+    ? {
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Port Harcourt",
+          addressCountry: "NG",
+        },
+      }
     : {}),
 };
 
@@ -103,6 +126,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageJsonLd) }}
         />
         <script
           type="application/ld+json"
