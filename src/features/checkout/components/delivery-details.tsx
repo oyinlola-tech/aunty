@@ -1,11 +1,12 @@
 "use client";
 
+import type { UseFormRegisterReturn } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 
 interface DeliveryDetailsProps {
-  areaField: any;
-  addressField: any;
-  directionsField: any;
+  areaField: UseFormRegisterReturn<"area">;
+  addressField: UseFormRegisterReturn<"address">;
+  directionsField: UseFormRegisterReturn<"directions">;
   areaError?: string;
   addressError?: string;
 }

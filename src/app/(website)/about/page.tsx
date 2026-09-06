@@ -20,8 +20,8 @@ export default function AboutPage() {
         />
         <div className="mx-auto mt-8 max-w-2xl space-y-6 text-center text-warm-grey">
           <p>
-            We believe beans is one of Nigeria's most underrated comfort foods.
-            When done right, it's soft, flavourful, and deeply satisfying.
+            We believe beans is one of Nigeria&apos;s most underrated comfort foods.
+            When done right, it&apos;s soft, flavourful, and deeply satisfying.
           </p>
           <p>
             Our menu is built around beans — from classic Ewa Agoyin to creamy

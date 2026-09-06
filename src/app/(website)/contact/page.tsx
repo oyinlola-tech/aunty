@@ -71,7 +71,7 @@ export default function ContactPage() {
             Prefer to order on WhatsApp?
           </h2>
           <p className="mt-2 text-white/70">
-            Send us a message and we'll sort you out.
+            Send us a message and we&apos;ll sort you out.
           </p>
         </div>
       </SectionContainer>

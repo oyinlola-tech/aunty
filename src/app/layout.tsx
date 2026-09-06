@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Fredoka } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
 
@@ -108,7 +109,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantJsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

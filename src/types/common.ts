@@ -17,12 +17,3 @@ export interface Order {
   notes?: string;
   createdAt: string;
 }
-
-export interface CheckoutFormData {
-  customerName: string;
-  phoneNumber: string;
-  area: string;
-  address: string;
-  directions?: string;
-  notes?: string;
-}

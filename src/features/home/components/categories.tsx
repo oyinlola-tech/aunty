@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { SectionContainer } from "@/components/shared/section-container";
 import { SectionHeading } from "@/components/shared/section-heading";
@@ -46,11 +47,13 @@ export function Categories() {
                     className={`absolute inset-0 bg-gradient-to-br ${visual.gradient} opacity-10 ${visual.shape} transition-transform duration-300 group-hover:scale-110`}
                   />
                   {visual.icon ? (
-                    <img
-                      src={visual.icon}
-                      alt=""
-                      className="relative size-12 object-contain"
-                    />
+                   <Image
+                     src={visual.icon}
+                     alt=""
+                     width={48}
+                     height={48}
+                     className="relative size-12 object-contain"
+                   />
                   ) : (
                     <span
                       className={`relative text-3xl ${visual.shape} bg-gradient-to-br ${visual.gradient} bg-clip-text text-transparent font-heading font-bold`}

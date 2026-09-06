@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Soup } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -42,11 +43,12 @@ export function FoodImage({
           <Soup className="size-10 text-white/60" />
         </div>
       ) : (
-        <img
+        <Image
           src={src}
           alt={alt}
+          fill
           className={cn(
-            "h-full w-full object-cover transition-transform duration-300 group-hover:scale-105",
+            "object-cover transition-transform duration-300 group-hover:scale-105",
             imgClassName
           )}
           loading="lazy"

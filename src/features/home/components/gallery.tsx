@@ -1,5 +1,6 @@
 import { SectionContainer } from "@/components/shared/section-container";
 import { SectionHeading } from "@/components/shared/section-heading";
+import Image from "next/image";
 
 const galleryItems = [
   {
@@ -47,9 +48,10 @@ export function Gallery() {
             key={index}
             className={`group relative overflow-hidden rounded-3xl ${item.span} ${item.aspect}`}
           >
-            <img
+            <Image
               src={item.src}
               alt={item.label}
+              fill
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
             />

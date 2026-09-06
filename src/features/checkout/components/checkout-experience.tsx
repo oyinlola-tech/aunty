@@ -16,7 +16,7 @@ import { checkoutSchema, type CheckoutFormData } from "../schemas/checkout.schem
 import { createOrder } from "../utils/create-order"
 import { generateOrderReference } from "../utils/order-reference"
 import { generateWhatsAppMessage } from "../utils/whatsapp-message"
-import { createWhatsAppUrl } from "../utils/whatsapp-url"
+import { createWhatsAppUrl } from "../utils/whatsapp-message"
 import { siteConfig } from "@/config/site"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"

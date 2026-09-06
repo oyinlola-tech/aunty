@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { createWhatsAppUrl } from "@/features/checkout/utils/whatsapp-message";
 import { Doodle } from "@/components/shared/doodle";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const whatsappNumber = siteConfig.contact.whatsapp;
 const whatsappHref = whatsappNumber
@@ -45,6 +47,7 @@ function TikTokIcon({ className }: { className?: string }) {
 
 export function Footer() {
   const reduceMotion = useReducedMotion();
+  const pathname = usePathname();
 
   return (
     <footer>
@@ -203,13 +206,13 @@ export function Footer() {
             </div>
 
             <nav aria-label="Quick links" className="flex flex-wrap justify-center gap-6 text-sm">
-              <Link href="/menu" className="text-warm-grey transition-colors hover:text-palace-orange">
+              <Link href="/menu" className={cn("text-warm-grey transition-colors hover:text-palace-orange", pathname === "/menu" && "text-bean-black")} aria-current={pathname === "/menu" ? "page" : undefined}>
                 Menu
               </Link>
-              <Link href="/about" className="text-warm-grey transition-colors hover:text-palace-orange">
+              <Link href="/about" className={cn("text-warm-grey transition-colors hover:text-palace-orange", pathname === "/about" && "text-bean-black")} aria-current={pathname === "/about" ? "page" : undefined}>
                 About
               </Link>
-              <Link href="/contact" className="text-warm-grey transition-colors hover:text-palace-orange">
+              <Link href="/contact" className={cn("text-warm-grey transition-colors hover:text-palace-orange", pathname === "/contact" && "text-bean-black")} aria-current={pathname === "/contact" ? "page" : undefined}>
                 Contact
               </Link>
               {whatsappHref && (

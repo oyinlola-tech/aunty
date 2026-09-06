@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useCartStore } from "../store/cart-store";
 import { EmptyCart } from "./empty-cart";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -76,10 +77,11 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: CartDrawerProps) 
                 className="flex items-start gap-3 rounded-xl border border-border/50 bg-white p-3"
               >
                 <div className="relative size-12 shrink-0 overflow-hidden rounded-lg">
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.name}
-                    className="size-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
                 <div className="flex-1 min-w-0">

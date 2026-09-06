@@ -18,7 +18,7 @@ import { generateOrderReference } from "../utils/order-reference";
 import {
   generateWhatsAppMessage,
 } from "../utils/whatsapp-message";
-import { createWhatsAppUrl } from "../utils/whatsapp-url";
+import { createWhatsAppUrl } from "../utils/whatsapp-message";
 import { siteConfig } from "@/config/site";
 
 export function CheckoutForm() {
@@ -41,7 +41,7 @@ export function CheckoutForm() {
       reference,
       customer: {
         name: data.customerName,
-        phone: data.phoneNumber,
+        phone: data.phoneNumber.replace(/[\s-]/g, ""),
       },
       delivery: {
         area: data.area,

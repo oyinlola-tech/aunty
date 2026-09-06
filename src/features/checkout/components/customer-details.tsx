@@ -1,10 +1,11 @@
 "use client";
 
+import type { UseFormRegisterReturn } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 
 interface CustomerDetailsProps {
-  nameField: any;
-  phoneField: any;
+  nameField: UseFormRegisterReturn<"customerName">;
+  phoneField: UseFormRegisterReturn<"phoneNumber">;
   nameError?: string;
   phoneError?: string;
 }

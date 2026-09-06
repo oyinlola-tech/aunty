@@ -5,7 +5,6 @@ export interface NavLink {
 
 export interface Navigation {
   navLinks: NavLink[];
-  menuCategories: NavLink[];
 }
 
 export const navigation: Navigation = {
@@ -14,10 +13,5 @@ export const navigation: Navigation = {
     { href: "/menu", label: "Menu" },
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
-  ],
-  menuCategories: [
-    { href: "/menu?category=beans", label: "Beans" },
-    { href: "/menu?category=sides", label: "Sides" },
-    { href: "/menu?category=proteins", label: "Proteins" },
   ],
 };

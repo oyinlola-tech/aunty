@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SectionContainer } from "@/components/shared/section-container";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { CheckoutForm } from "@/features/checkout/components/checkout-form";
+import { CheckoutExperience } from "@/features/checkout/components/checkout-experience";
 
 export const metadata: Metadata = {
   title: "Checkout",
@@ -17,7 +17,7 @@ export default function CheckoutPage() {
         description="Fill in your details and continue on WhatsApp to place your order."
       />
       <div className="mt-8">
-        <CheckoutForm />
+        <CheckoutExperience />
       </div>
     </SectionContainer>
   );
