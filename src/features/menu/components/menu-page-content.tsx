@@ -112,6 +112,7 @@ export default function MenuPageContent() {
 
       {activeModalItem && (
         <ProductModal
+          open
           item={activeModalItem}
           onClose={() => {
             setSelectedItem(null)
