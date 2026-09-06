@@ -1,6 +1,8 @@
 "use client";
 
-import { Landmark } from "lucide-react";
+import { useState } from "react";
+import { Landmark, Copy, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface PaymentSectionProps {
   amount: number;
@@ -12,6 +14,7 @@ interface PaymentSectionProps {
 }
 
 export function PaymentSection({ amount, payment }: PaymentSectionProps) {
+  const [copied, setCopied] = useState(false);
   const hasDetails = payment.bankName || payment.accountName || payment.accountNumber
 
   if (!hasDetails) {
@@ -33,6 +36,17 @@ export function PaymentSection({ amount, payment }: PaymentSectionProps) {
       </div>
     )
   }
+
+  const handleCopy = async () => {
+    if (!payment.accountNumber) return;
+    try {
+      await navigator.clipboard.writeText(payment.accountNumber);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard API unavailable — silently ignore
+    }
+  };
 
   return (
     <div className="rounded-2xl border border-border/50 bg-cream p-5">
@@ -61,9 +75,24 @@ export function PaymentSection({ amount, payment }: PaymentSectionProps) {
           </p>
         )}
         {payment.accountNumber && (
-          <p className="text-bean-black">
-            <span className="text-warm-grey">Account:</span> {payment.accountNumber}
-          </p>
+          <div className="flex items-center justify-between rounded-xl bg-ivory px-4 py-3">
+            <div>
+              <span className="text-xs text-warm-grey">Account Number</span>
+              <p className="text-xl font-bold tracking-wider text-bean-black">
+                {payment.accountNumber}
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              onClick={handleCopy}
+              aria-label={copied ? "Copied" : "Copy account number"}
+              className="shrink-0"
+            >
+              {copied ? <Check className="size-4 text-muted-green" /> : <Copy className="size-4" />}
+            </Button>
+          </div>
         )}
       </div>
     </div>
