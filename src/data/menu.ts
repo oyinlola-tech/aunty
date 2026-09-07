@@ -139,7 +139,7 @@ export const menuItems: MenuItem[] = [
     name: "Fried Fish",
     slug: "fried-fish",
     description:
-      "Freshly fried fish, seasoned and crispy.",
+      "Freshly fried fish, seasoned and crispy. Price is per one piece.",
     price: 2000,
     originalPrice: 2800,
     categoryId: "proteins",
@@ -152,7 +152,7 @@ export const menuItems: MenuItem[] = [
     name: "Beef",
     slug: "fried-beef",
     description:
-      "Tender beef pieces, well-seasoned and fried.",
+      "Tender beef pieces, well-seasoned and fried. Price is per one piece.",
     price: 1500,
     originalPrice: 2200,
     categoryId: "proteins",
@@ -165,7 +165,7 @@ export const menuItems: MenuItem[] = [
     name: "Goat Meat",
     slug: "fried-goat-meat",
     description:
-      "Savoury goat meat, perfectly fried and seasoned.",
+      "Savoury goat meat, perfectly fried and seasoned. Price is per one piece.",
     price: 2000,
     originalPrice: 2800,
     categoryId: "proteins",
@@ -178,7 +178,7 @@ export const menuItems: MenuItem[] = [
     name: "Peppered Chicken",
     slug: "peppered-chicken",
     description:
-      "Juicy chicken tossed in a rich pepper sauce.",
+      "Juicy chicken tossed in a rich pepper sauce. Price is per one piece.",
     price: 2500,
     originalPrice: 3500,
     categoryId: "proteins",
@@ -191,7 +191,7 @@ export const menuItems: MenuItem[] = [
     name: "Peppered Beef",
     slug: "peppered-beef",
     description:
-      "Tender beef coated in our signature pepper sauce.",
+      "Tender beef coated in our signature pepper sauce. Price is per one piece.",
     price: 2500,
     originalPrice: 3500,
     categoryId: "proteins",
@@ -204,7 +204,7 @@ export const menuItems: MenuItem[] = [
     name: "Peppered Goat Meat",
     slug: "peppered-goat-meat",
     description:
-      "Richly spiced goat meat in a bold pepper blend.",
+      "Richly spiced goat meat in a bold pepper blend. Price is per one piece.",
     price: 3000,
     originalPrice: 4000,
     categoryId: "proteins",
@@ -217,7 +217,7 @@ export const menuItems: MenuItem[] = [
     name: "Peppered Fish",
     slug: "peppered-fish",
     description:
-      "Fresh fish in a fiery, flavourful pepper sauce.",
+      "Fresh fish in a fiery, flavourful pepper sauce. Price is per one piece.",
     price: 2500,
     originalPrice: 3500,
     categoryId: "proteins",
@@ -230,7 +230,7 @@ export const menuItems: MenuItem[] = [
     name: "Sauteed Ponmo",
     slug: "sauteed-ponmo",
     description:
-      "Soft cow skin sautéed with onions and peppers.",
+      "Soft cow skin sautéed with onions and peppers. Price is per one piece.",
     price: 600,
     originalPrice: 1000,
     categoryId: "proteins",
@@ -243,7 +243,7 @@ export const menuItems: MenuItem[] = [
     name: "Egg",
     slug: "egg-protein",
     description:
-      "Boiled egg, a simple and satisfying protein addition.",
+      "Boiled egg, a simple and satisfying protein addition. Price is per one egg.",
     price: 500,
     originalPrice: 800,
     categoryId: "proteins",
