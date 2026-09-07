@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowRight, Check, MessageCircle } from "lucide-react"
 import { useCartStore } from "@/features/cart/store/cart-store"
+import { useOrderHistoryStore } from "@/features/checkout/store/order-history-store"
 import { useMounted } from "@/hooks/use-mounted"
 import { CustomerDetails } from "./customer-details"
 import { DeliveryDetails } from "./delivery-details"
@@ -129,6 +130,8 @@ export function CheckoutExperience() {
       const url = createWhatsAppUrl(whatsappNumber, orderMessage)
       setSubmitted({ reference, whatsappUrl: url })
 
+      useOrderHistoryStore.getState().addOrder(order)
+
       window.open(url, "_blank", "noopener,noreferrer")
     } catch {
       setSubmitError("Something went wrong while preparing your order. Please try again.")
@@ -223,10 +226,10 @@ export function CheckoutExperience() {
                 </div>
                 <div className="flex flex-col gap-0.5">
                   <h3 className="font-heading text-lg font-bold text-bean-black">
-                    Your order is ready to send
+                    Your order is being processed
                   </h3>
                   <p className="text-sm text-warm-grey">
-                    Review it in WhatsApp, attach your payment receipt, then send.
+                    We received your order. Review it in WhatsApp, attach your payment receipt, then send.
                   </p>
                 </div>
               </div>

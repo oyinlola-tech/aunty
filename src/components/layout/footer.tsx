@@ -215,6 +215,9 @@ export function Footer() {
               <Link href="/contact" className={cn("text-warm-grey transition-colors hover:text-palace-orange", pathname === "/contact" && "text-bean-black")} aria-current={pathname === "/contact" ? "page" : undefined}>
                 Contact
               </Link>
+              <Link href="/orders" className={cn("text-warm-grey transition-colors hover:text-palace-orange", pathname === "/orders" && "text-bean-black")} aria-current={pathname === "/orders" ? "page" : undefined}>
+                Orders
+              </Link>
               {whatsappHref && (
                 <Link
                   href={whatsappHref}
